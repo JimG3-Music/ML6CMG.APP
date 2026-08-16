@@ -2,620 +2,611 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#080808">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
 
 <title>ML6CMG Song Builder</title>
 
 <style>
 
 *{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 html{
-scroll-behavior:smooth;
+    scroll-behavior:smooth;
 }
 
 body{
-margin:0;
-padding-bottom:150px;
-background:
-radial-gradient(circle at top,#28231c 0,#0d0d0d 45%,#050505 100%);
-color:#eee;
-font-family:Georgia,serif;
+    margin:0;
+    padding-bottom:145px;
+    background:
+        radial-gradient(circle at top,#29231a 0,#111 42%,#050505 100%);
+    color:#eee;
+    font-family:Georgia,serif;
 }
 
 header{
-position:sticky;
-top:0;
-z-index:100;
-background:rgba(7,7,7,.97);
-border-bottom:1px solid #554a38;
-padding:13px;
-backdrop-filter:blur(12px);
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,7,7,.97);
+    border-bottom:1px solid #514734;
+    padding:13px;
+    backdrop-filter:blur(12px);
 }
 
 .header-inner{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .logo{
-font-family:Arial,sans-serif;
-font-weight:bold;
-letter-spacing:2px;
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
 .logo small{
-display:block;
-font-family:Georgia,serif;
-font-weight:normal;
-font-size:10px;
-letter-spacing:0;
-color:#999;
-margin-top:3px;
-}
-
-button{
-font:inherit;
-color:#eee;
-background:#151515;
-border:1px solid #40392f;
-border-radius:5px;
-padding:9px 12px;
-cursor:pointer;
-}
-
-button:hover{
-border-color:#c19a58;
-}
-
-.gold{
-color:#dfbd7d;
-border-color:#a98247;
+    display:block;
+    font-family:Georgia,serif;
+    font-weight:normal;
+    font-size:10px;
+    letter-spacing:0;
+    color:#999;
+    margin-top:3px;
 }
 
 main{
-max-width:1100px;
-margin:auto;
-padding:20px 14px 40px;
+    max-width:1100px;
+    margin:auto;
+    padding:20px 14px 40px;
 }
 
 .panel{
-background:rgba(14,14,14,.96);
-border:1px solid #302e2a;
-padding:20px;
-margin-bottom:18px;
+    background:rgba(13,13,13,.97);
+    border:1px solid #302d28;
+    padding:20px;
+    margin-bottom:18px;
 }
 
 h1,h2{
-font-family:Arial,sans-serif;
-text-transform:uppercase;
-letter-spacing:2px;
+    font-family:Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:2px;
 }
 
 h1{
-font-size:19px;
-margin:0 0 8px;
+    font-size:19px;
+    margin:0 0 8px;
 }
 
 h2{
-font-size:16px;
-color:#d7b574;
+    font-size:16px;
+    color:#d7b574;
 }
 
 .description{
-font-size:13px;
-line-height:1.5;
-color:#999;
-margin-top:0;
+    font-size:13px;
+    line-height:1.5;
+    color:#999;
+    margin-top:0;
 }
 
+button{
+    font:inherit;
+    color:#eee;
+    background:#151515;
+    border:1px solid #40392f;
+    border-radius:5px;
+    padding:9px 12px;
+    cursor:pointer;
+}
+
+button:hover{
+    border-color:#c19a58;
+}
+
+.gold{
+    color:#dfbd7d;
+    border-color:#a98247;
+}
 
 /* =========================
    KEY SELECTOR
 ========================= */
 
 .key-buttons{
-display:flex;
-flex-wrap:wrap;
-gap:7px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
 }
 
 .key-buttons button{
-min-width:49px;
+    min-width:49px;
 }
 
 .key-buttons .selected{
-background:#302417;
-border-color:#c39a57;
-color:#e2c180;
+    background:#302417;
+    border-color:#c39a57;
+    color:#e2c180;
 }
-
 
 /* =========================
    CIRCLE
 ========================= */
 
 .circle-area{
-display:flex;
-justify-content:center;
-overflow:hidden;
+    display:flex;
+    justify-content:center;
+    overflow:hidden;
 }
 
 .circle{
-position:relative;
-width:min(94vw,600px);
-height:min(94vw,600px);
-border-radius:50%;
+    position:relative;
+    width:min(94vw,600px);
+    height:min(94vw,600px);
+    border-radius:50%;
 
-background:
-radial-gradient(
-circle,
-#2b261e 0 20%,
-#171513 21% 43%,
-#28231c 44% 45%,
-#111 46% 69%,
-#080808 70%
-);
+    background:
+        radial-gradient(
+            circle,
+            #2b261e 0 20%,
+            #171513 21% 43%,
+            #28231c 44% 45%,
+            #111 46% 69%,
+            #080808 70%
+        );
 
-border:1px solid #66573d;
+    border:1px solid #66573d;
 }
 
 .ring{
-position:absolute;
-border-radius:50%;
-pointer-events:none;
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
 }
 
 .ring.outer{
-inset:7%;
-border:1px solid #433c31;
+    inset:7%;
+    border:1px solid #433c31;
 }
 
 .ring.middle{
-inset:26%;
-border:1px solid #403a31;
+    inset:26%;
+    border:1px solid #403a31;
 }
 
 .ring.inner{
-inset:43%;
-border:1px solid #494031;
+    inset:43%;
+    border:1px solid #494031;
 }
 
 .circle-centre{
-position:absolute;
-z-index:30;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:125px;
-height:125px;
-border-radius:50%;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-text-align:center;
-background:#080808;
-border:1px solid #b18a4e;
+    position:absolute;
+    z-index:30;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:125px;
+    height:125px;
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:#080808;
+    border:1px solid #b18a4e;
 }
 
 .circle-centre strong{
-font-family:Arial,sans-serif;
-font-size:26px;
-color:#dfbd7c;
+    font-family:Arial,sans-serif;
+    font-size:26px;
+    color:#dfbd7c;
 }
 
 .circle-centre span{
-font-size:10px;
-letter-spacing:2px;
-color:#999;
+    font-size:10px;
+    letter-spacing:2px;
+    color:#999;
 }
 
 .circle-centre small{
-font-size:9px;
-color:#666;
-margin-top:6px;
+    font-size:9px;
+    color:#666;
+    margin-top:6px;
 }
 
 .circle-node{
-position:absolute;
-transform:translate(-50%,-50%);
-z-index:20;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-border-radius:50%;
-user-select:none;
-touch-action:manipulation;
-font-family:Arial,sans-serif;
-font-weight:bold;
+    position:absolute;
+    transform:translate(-50%,-50%);
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    border-radius:50%;
+    user-select:none;
+    touch-action:manipulation;
+    font-family:Arial,sans-serif;
+    font-weight:bold;
 }
 
 .circle-node.major{
-width:76px;
-height:76px;
-background:#171717;
-border:1px solid #51493c;
-font-size:15px;
+    width:76px;
+    height:76px;
+    background:#171717;
+    border:1px solid #51493c;
+    font-size:15px;
 }
 
 .circle-node.minor{
-width:67px;
-height:67px;
-background:#121212;
-border:1px solid #484239;
-font-size:12px;
+    width:67px;
+    height:67px;
+    background:#121212;
+    border:1px solid #484239;
+    font-size:12px;
 }
 
 .circle-node.diminished{
-width:62px;
-height:62px;
-background:#0d0d0d;
-border:1px dashed #65583f;
-font-size:11px;
+    width:62px;
+    height:62px;
+    background:#0d0d0d;
+    border:1px dashed #65583f;
+    font-size:11px;
 }
 
 .circle-node.active{
-background:#302619;
-border-color:#c39a57;
-color:#e2c180;
-box-shadow:0 0 20px rgba(190,150,80,.3);
+    background:#302619;
+    border-color:#c39a57;
+    color:#e2c180;
+    box-shadow:0 0 20px rgba(190,150,80,.3);
 }
 
 .circle-node small{
-display:block;
-font-size:8px;
-font-weight:normal;
-color:#777;
-margin-top:3px;
+    display:block;
+    font-size:8px;
+    font-weight:normal;
+    color:#777;
+    margin-top:3px;
 }
 
 .circle-legend{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:18px;
-margin-top:15px;
-font-family:Arial,sans-serif;
-font-size:10px;
-color:#888;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:18px;
+    margin-top:15px;
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    color:#888;
 }
 
 .circle-help{
-text-align:center;
-margin-top:12px;
-font-size:11px;
-color:#777;
+    text-align:center;
+    margin-top:12px;
+    font-size:11px;
+    color:#777;
 }
-
 
 /* =========================
    PROGRESSION
 ========================= */
 
 .progression{
-display:flex;
-flex-wrap:wrap;
-gap:9px;
-min-height:100px;
-padding:12px;
-background:#080808;
-border:1px solid #2b2926;
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    min-height:100px;
+    padding:12px;
+    background:#080808;
+    border:1px solid #2b2926;
 }
 
 .empty{
-padding:20px;
-color:#666;
-font-style:italic;
+    padding:20px;
+    color:#666;
+    font-style:italic;
 }
 
 .chord-card{
-position:relative;
-width:112px;
-background:#1b1712;
-border:1px solid #a27e46;
-border-radius:6px;
-padding:11px 8px 9px;
-text-align:center;
+    position:relative;
+    width:112px;
+    background:#1b1712;
+    border:1px solid #a27e46;
+    border-radius:6px;
+    padding:11px 8px 9px;
+    text-align:center;
 }
 
 .chord-card strong{
-display:block;
-font-family:Arial,sans-serif;
-font-size:19px;
-color:#dfbd7c;
+    display:block;
+    font-family:Arial,sans-serif;
+    font-size:19px;
+    color:#dfbd7c;
 }
 
 .chord-position{
-font-family:Arial,sans-serif;
-font-size:9px;
-color:#777;
-margin-top:3px;
+    font-family:Arial,sans-serif;
+    font-size:9px;
+    color:#777;
+    margin-top:3px;
 }
 
 .beat-controls{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:6px;
-margin-top:9px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+    margin-top:9px;
 }
 
 .beat-controls button{
-width:29px;
-height:29px;
-padding:0;
+    width:29px;
+    height:29px;
+    padding:0;
 }
 
 .beat-number{
-min-width:25px;
-font-family:Arial,sans-serif;
-font-weight:bold;
-color:#d5b371;
+    min-width:25px;
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    color:#d5b371;
 }
 
 .delete-chord{
-position:absolute;
-right:3px;
-top:3px;
-border:0;
-background:transparent;
-padding:2px 5px;
-color:#777;
+    position:absolute;
+    right:3px;
+    top:3px;
+    border:0;
+    background:transparent;
+    padding:2px 5px;
+    color:#777;
 }
 
 .delete-chord:hover{
-color:#e08b80;
+    color:#e08b80;
 }
 
 .tap-message{
-margin-top:12px;
-padding:11px;
-background:#14120f;
-border-left:3px solid #a27e46;
-font-size:12px;
-color:#999;
+    margin-top:12px;
+    padding:11px;
+    background:#14120f;
+    border-left:3px solid #a27e46;
+    font-size:12px;
+    color:#999;
 }
-
 
 /* =========================
    SONG DETAILS
 ========================= */
 
 .field{
-margin-bottom:14px;
+    margin-bottom:14px;
 }
 
 .field label{
-display:block;
-font-family:Arial,sans-serif;
-font-size:10px;
-text-transform:uppercase;
-letter-spacing:1px;
-color:#888;
-margin-bottom:5px;
+    display:block;
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:#888;
+    margin-bottom:5px;
 }
 
 input{
-width:100%;
-background:#080808;
-border:1px solid #3a3731;
-border-radius:4px;
-padding:11px;
-color:#eee;
-font:inherit;
+    width:100%;
+    background:#080808;
+    border:1px solid #3a3731;
+    border-radius:4px;
+    padding:11px;
+    color:#eee;
+    font:inherit;
 }
-
 
 /* =========================
    LYRICS
 ========================= */
 
 .lyric-chord{
-margin-bottom:20px;
-border:1px solid #302e2a;
-background:#0a0a0a;
+    margin-bottom:20px;
+    border:1px solid #302e2a;
+    background:#0a0a0a;
 }
 
 .lyric-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px;
-background:#171410;
-border-bottom:1px solid #39332a;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    background:#171410;
+    border-bottom:1px solid #39332a;
 }
 
 .lyric-header strong{
-font-family:Arial,sans-serif;
-font-size:16px;
-color:#d8b675;
+    font-family:Arial,sans-serif;
+    font-size:16px;
+    color:#d8b675;
 }
 
 .lyric-header span{
-font-size:10px;
-color:#888;
+    font-size:10px;
+    color:#888;
 }
 
 .beat-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:7px;
-padding:9px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+    padding:9px;
 }
 
 .beat-box{
-background:#111;
-border:1px solid #34312b;
-padding:7px;
+    background:#111;
+    border:1px solid #34312b;
+    padding:7px;
 }
 
 .beat-title{
-font-family:Arial,sans-serif;
-font-size:9px;
-color:#b68c4e;
-margin-bottom:6px;
+    font-family:Arial,sans-serif;
+    font-size:9px;
+    color:#b68c4e;
+    margin-bottom:6px;
 }
 
 .beat-box textarea{
-width:100%;
-min-height:58px;
-resize:vertical;
-background:#080808;
-border:1px solid #2f2c27;
-color:#eee;
-padding:7px;
-font:13px Georgia,serif;
+    width:100%;
+    min-height:58px;
+    resize:vertical;
+    background:#080808;
+    border:1px solid #2f2c27;
+    color:#eee;
+    padding:7px;
+    font:13px Georgia,serif;
 }
 
 .subdivision{
-margin-top:6px;
+    margin-top:6px;
 }
 
 .subdivision select{
-width:100%;
-background:#090909;
-border:1px solid #302e2a;
-color:#aaa;
-padding:5px;
-font-size:10px;
+    width:100%;
+    background:#090909;
+    border:1px solid #302e2a;
+    color:#aaa;
+    padding:5px;
+    font-size:10px;
 }
-
 
 /* =========================
    STICKY CHORD BAR
 ========================= */
 
 .sticky{
-position:fixed;
-z-index:200;
-left:0;
-right:0;
-bottom:0;
-background:rgba(7,7,7,.98);
-border-top:1px solid #a27e46;
-box-shadow:0 -8px 25px rgba(0,0,0,.7);
-padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+    position:fixed;
+    z-index:200;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(7,7,7,.98);
+    border-top:1px solid #a27e46;
+    box-shadow:0 -8px 25px rgba(0,0,0,.7);
+    padding:9px 8px calc(9px + env(safe-area-inset-bottom));
 }
 
 .sticky-title{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-font-family:Arial,sans-serif;
-font-size:10px;
-text-transform:uppercase;
-letter-spacing:1px;
-color:#888;
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:#888;
 }
 
 .quick-chords{
-max-width:1100px;
-margin:7px auto 0;
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:5px;
+    max-width:1100px;
+    margin:7px auto 0;
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:5px;
 }
 
 .quick{
-min-height:47px;
-padding:5px;
+    min-height:47px;
+    padding:5px;
 }
 
 .quick strong{
-display:block;
-font-family:Arial,sans-serif;
-font-size:14px;
+    display:block;
+    font-family:Arial,sans-serif;
+    font-size:14px;
 }
 
 .quick small{
-display:block;
-font-size:8px;
-color:#777;
+    display:block;
+    font-size:8px;
+    color:#777;
 }
-
 
 /* =========================
    MODAL
 ========================= */
 
 .modal{
-position:fixed;
-z-index:500;
-inset:0;
-background:rgba(0,0,0,.92);
-display:none;
-align-items:center;
-justify-content:center;
-padding:15px;
+    position:fixed;
+    z-index:500;
+    inset:0;
+    background:rgba(0,0,0,.92);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
 }
 
 .modal.show{
-display:flex;
+    display:flex;
 }
 
 .modal-box{
-width:min(94vw,520px);
-max-height:90vh;
-overflow:auto;
-background:#111;
-border:1px solid #b18a4f;
-padding:20px;
+    width:min(94vw,520px);
+    max-height:90vh;
+    overflow:auto;
+    background:#111;
+    border:1px solid #b18a4f;
+    padding:20px;
 }
 
 .modal-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .modal-header h2{
-margin:0;
+    margin:0;
 }
 
 .option-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
 .option-grid button{
-padding:13px 5px;
+    padding:13px 5px;
 }
-
 
 /* =========================
    TOAST
 ========================= */
 
 .toast{
-position:fixed;
-z-index:1000;
-left:50%;
-bottom:110px;
-transform:translateX(-50%);
-background:#211c15;
-border:1px solid #b18a4f;
-padding:10px 16px;
-opacity:0;
-pointer-events:none;
-transition:.2s;
-white-space:nowrap;
+    position:fixed;
+    z-index:1000;
+    left:50%;
+    bottom:110px;
+    transform:translateX(-50%);
+    background:#211c15;
+    border:1px solid #b18a4f;
+    padding:10px 16px;
+    opacity:0;
+    pointer-events:none;
+    transition:.2s;
+    white-space:nowrap;
 }
 
 .toast.show{
-opacity:1;
+    opacity:1;
 }
-
 
 /* =========================
    MOBILE
@@ -623,49 +614,49 @@ opacity:1;
 
 @media(max-width:650px){
 
-.circle{
-width:96vw;
-height:96vw;
-}
+    .circle{
+        width:96vw;
+        height:96vw;
+    }
 
-.circle-node.major{
-width:65px;
-height:65px;
-font-size:12px;
-}
+    .circle-node.major{
+        width:65px;
+        height:65px;
+        font-size:12px;
+    }
 
-.circle-node.minor{
-width:55px;
-height:55px;
-font-size:10px;
-}
+    .circle-node.minor{
+        width:55px;
+        height:55px;
+        font-size:10px;
+    }
 
-.circle-node.diminished{
-width:50px;
-height:50px;
-font-size:9px;
-}
+    .circle-node.diminished{
+        width:50px;
+        height:50px;
+        font-size:9px;
+    }
 
-.circle-centre{
-width:92px;
-height:92px;
-}
+    .circle-centre{
+        width:92px;
+        height:92px;
+    }
 
-.circle-centre strong{
-font-size:20px;
-}
+    .circle-centre strong{
+        font-size:20px;
+    }
 
-.beat-grid{
-grid-template-columns:repeat(2,1fr);
-}
+    .beat-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 
-.quick-chords{
-grid-template-columns:repeat(4,1fr);
-}
+    .quick-chords{
+        grid-template-columns:repeat(4,1fr);
+    }
 
-.option-grid{
-grid-template-columns:repeat(2,1fr);
-}
+    .option-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 
 }
 
@@ -706,9 +697,7 @@ onclick="newSong()">
 <main>
 
 
-<!-- =========================
-     KEY
-========================= -->
+<!-- KEY -->
 
 <section class="panel">
 
@@ -718,8 +707,8 @@ Choose Your Key
 
 <p class="description">
 
-Select the musical key. The app automatically uses the correct
-flat or sharp spelling for that key.
+Select the key of the song. Chord spelling follows the
+selected key, including flats and sharps.
 
 </p>
 
@@ -731,9 +720,7 @@ class="key-buttons">
 </section>
 
 
-<!-- =========================
-     CIRCLE
-========================= -->
+<!-- CIRCLE -->
 
 <section class="panel">
 
@@ -743,9 +730,11 @@ Circle of Fifths
 
 <p class="description">
 
-The seven chords shown belong to the selected major key.
-Tap a chord to add it. Hold a chord for two seconds to see
-additional chord variations.
+Tap a chord once to add a new chord position.
+Hold a chord for two seconds to see chord variations.
+
+Every tap is a new occurrence — even when the chord
+has already appeared earlier.
 
 </p>
 
@@ -770,7 +759,7 @@ MAJOR
 </span>
 
 <small>
-7 diatonic chords
+Diatonic chords
 </small>
 
 </div>
@@ -789,16 +778,14 @@ MAJOR
 
 <div class="circle-help">
 
-Tap = add chord · Hold 2 seconds = chord variations
+Tap = add chord · Hold 2 seconds = variations
 
 </div>
 
 </section>
 
 
-<!-- =========================
-     PROGRESSION
-========================= -->
+<!-- PROGRESSION -->
 
 <section class="panel">
 
@@ -808,9 +795,16 @@ Your Chord Progression
 
 <p class="description">
 
-Every tap creates a completely new chord occurrence.
-Repeating a chord later in the song does not alter the
-earlier chord.
+Each card is an individual chord occurrence.
+
+For example:
+
+<strong>
+F → Dm → C → F
+</strong>
+
+creates four separate chord positions.
+The final F will never add beats to the first F.
 
 </p>
 
@@ -819,31 +813,24 @@ id="progression"
 class="progression">
 
 <div class="empty">
-
 Choose your first chord.
-
 </div>
 
 </div>
 
 <div class="tap-message">
 
-<strong>
-Example:
-</strong>
+Use <strong>+</strong> and <strong>−</strong> to change
+the beats for that particular chord occurrence.
 
-F → Dm → C → F
-
-creates four separate chord cards.
+Use the <strong>×</strong> to delete a mistake.
 
 </div>
 
 </section>
 
 
-<!-- =========================
-     SONG DETAILS
-========================= -->
+<!-- SONG DETAILS -->
 
 <section class="panel">
 
@@ -883,9 +870,7 @@ max="240">
 </section>
 
 
-<!-- =========================
-     LYRICS
-========================= -->
+<!-- LYRICS -->
 
 <section class="panel">
 
@@ -895,9 +880,10 @@ Chords & Lyrics
 
 <p class="description">
 
-Each beat has its own lyric space. Split a beat into
-2, 3 or 4 subdivisions when the lyric needs to move
-faster than one word per beat.
+Each beat belongs to its exact chord occurrence.
+Add the words being sung at that point.
+
+Split individual beats when required.
 
 </p>
 
@@ -905,9 +891,7 @@ faster than one word per beat.
 id="lyrics">
 
 <div class="empty">
-
 Choose chords first.
-
 </div>
 
 </div>
@@ -915,9 +899,7 @@ Choose chords first.
 </section>
 
 
-<!-- =========================
-     SAVE / EXPORT
-========================= -->
+<!-- SAVE -->
 
 <section class="panel">
 
@@ -928,7 +910,8 @@ Save & Export
 <p class="description">
 
 Save stores the current song on this device.
-Export creates a Word-compatible document.
+Export creates a Word-compatible document containing
+the chord progression and lyrics.
 
 </p>
 
@@ -953,9 +936,7 @@ Export Chords + Lyrics
 </main>
 
 
-<!-- =========================
-     STICKY CHORD BAR
-========================= -->
+<!-- STICKY CHORD BAR -->
 
 <div class="sticky">
 
@@ -979,9 +960,7 @@ class="quick-chords">
 </div>
 
 
-<!-- =========================
-     CHORD OPTIONS
-========================= -->
+<!-- VARIATIONS MODAL -->
 
 <div
 id="modal"
@@ -1029,1729 +1008,1987 @@ class="toast">
 <script>
 
 
-/* =====================================================
-   CORRECT MUSICAL KEY SPELLINGS
+/* =========================================================
+   KEY DATA
+========================================================= */
 
-   IMPORTANT:
-   These are deliberately spelled according to
-   the selected key.
+const majorScales = {
 
-   F major = F G A Bb C D E
-   NOT F G A A# C D E
+    C:[
+        "C","D","E","F","G","A","B"
+    ],
 
-   Eb major = Eb F G Ab Bb C D
-   NOT D# F G G# A# C D
+    G:[
+        "G","A","B","C","D","E","F#"
+    ],
 
-   D major = D E F# G A B C#
-===================================================== */
+    D:[
+        "D","E","F#","G","A","B","C#"
+    ],
 
-const majorScales={
+    A:[
+        "A","B","C#","D","E","F#","G#"
+    ],
 
-C:[
-"C","D","E","F","G","A","B"
-],
+    E:[
+        "E","F#","G#","A","B","C#","D#"
+    ],
 
-G:[
-"G","A","B","C","D","E","F#"
-],
+    B:[
+        "B","C#","D#","E","F#","G#","A#"
+    ],
 
-D:[
-"D","E","F#","G","A","B","C#"
-],
+    "F#":[
+        "F#","G#","A#","B","C#","D#","E#"
+    ],
 
-A:[
-"A","B","C#","D","E","F#","G#"
-],
+    "C#":[
+        "C#","D#","E#","F#","G#","A#","B#"
+    ],
 
-E:[
-"E","F#","G#","A","B","C#","D#"
-],
+    F:[
+        "F","G","A","Bb","C","D","E"
+    ],
 
-B:[
-"B","C#","D#","E","F#","G#","A#"
-],
+    Bb:[
+        "Bb","C","D","Eb","F","G","A"
+    ],
 
-"F#":[
-"F#","G#","A#","B","C#","D#","E#"
-],
+    Eb:[
+        "Eb","F","G","Ab","Bb","C","D"
+    ],
 
-"C#":[
-"C#","D#","E#","F#","G#","A#","B#"
-],
+    Ab:[
+        "Ab","Bb","C","Db","Eb","F","G"
+    ],
 
-F:[
-"F","G","A","Bb","C","D","E"
-],
+    Db:[
+        "Db","Eb","F","Gb","Ab","Bb","C"
+    ],
 
-Bb:[
-"Bb","C","D","Eb","F","G","A"
-],
-
-Eb:[
-"Eb","F","G","Ab","Bb","C","D"
-],
-
-Ab:[
-"Ab","Bb","C","Db","Eb","F","G"
-],
-
-Db:[
-"Db","Eb","F","Gb","Ab","Bb","C"
-],
-
-Gb:[
-"Gb","Ab","Bb","Cb","Db","Eb","F"
-]
+    Gb:[
+        "Gb","Ab","Bb","Cb","Db","Eb","F"
+    ]
 
 };
 
 
-/* =====================================================
-   KEY ORDER
-===================================================== */
+const keyOrder = [
 
-const keyOrder=[
+    "C",
+    "G",
+    "D",
+    "A",
+    "E",
+    "B",
+    "F#",
+    "C#",
 
-"C",
-"G",
-"D",
-"A",
-"E",
-"B",
-"F#",
-"C#",
-
-"F",
-"Bb",
-"Eb",
-"Ab",
-"Db",
-"Gb"
+    "F",
+    "Bb",
+    "Eb",
+    "Ab",
+    "Db",
+    "Gb"
 
 ];
 
 
-/* =====================================================
-   DIATONIC QUALITIES
+const qualities = [
 
-   I       major
-   ii      minor
-   iii     minor
-   IV      major
-   V       major
-   vi      minor
-   vii     diminished
-===================================================== */
-
-const qualities=[
-
-"major",
-"minor",
-"minor",
-"major",
-"major",
-"minor",
-"diminished"
+    "major",
+    "minor",
+    "minor",
+    "major",
+    "major",
+    "minor",
+    "diminished"
 
 ];
 
 
-/* =====================================================
-   STATE
-===================================================== */
+/* =========================================================
+   APP STATE
+========================================================= */
 
-let selectedKey="C";
+let selectedKey = "C";
 
-let selectedChord=null;
+let selectedChord = null;
 
 
 /*
-Every chord occurrence is independent.
+IMPORTANT:
+
+Every item in progression is a completely separate
+occurrence.
+
+There is NO lookup by chord name.
+
+Therefore:
 
 F → Dm → C → F
 
-is FOUR objects.
+creates:
 
-The last F must NEVER be merged
-with the first F.
+[
+    {
+        id: "...",
+        chord: "F",
+        beats: 1
+    },
+
+    {
+        id: "...",
+        chord: "Dm",
+        beats: 1
+    },
+
+    {
+        id: "...",
+        chord: "C",
+        beats: 1
+    },
+
+    {
+        id: "...",
+        chord: "F",
+        beats: 1
+    }
+]
+
+The two F chords are completely independent.
 */
 
-let progression=[];
+let progression = [];
 
 
 /*
-Each beat gets its own lyric data.
+Lyrics are attached to individual chord occurrences
+rather than chord names.
+
+Each occurrence has:
+
+beats
+lyrics
+subdivisions
 */
 
-let lyricBeats=[];
+let holdTimer = null;
+
+let suppressClick = false;
 
 
-/*
-Long press timer.
-*/
+/* =========================================================
+   UNIQUE ID
+========================================================= */
 
-let holdTimer=null;
+function makeID(){
 
-let suppressClick=false;
+    if(
+        window.crypto &&
+        crypto.randomUUID
+    ){
+
+        return crypto.randomUUID();
+
+    }
+
+    return Date.now() +
+        "-" +
+        Math.random()
+            .toString(36)
+            .substring(2);
+
+}
 
 
-/* =====================================================
+/* =========================================================
    GET DIATONIC CHORDS
-===================================================== */
+========================================================= */
 
 function getDiatonicChords(key){
 
-const scale=
-majorScales[key];
+    const scale =
+        majorScales[key];
 
-return scale.map(
-(root,index)=>{
+    return scale.map(
+        (root,index)=>{
 
-let quality=
-qualities[index];
+            const quality =
+                qualities[index];
 
-let suffix="";
+            let suffix = "";
 
-if(quality==="minor"){
+            if(
+                quality === "minor"
+            ){
 
-suffix="m";
+                suffix = "m";
+
+            }
+
+            if(
+                quality === "diminished"
+            ){
+
+                suffix = "dim";
+
+            }
+
+            return {
+
+                degree:index + 1,
+
+                root:root,
+
+                quality:quality,
+
+                chord:root + suffix
+
+            };
+
+        }
+    );
 
 }
 
-if(quality==="diminished"){
 
-suffix="dim";
-
-}
-
-return{
-
-degree:index+1,
-
-root:root,
-
-quality:quality,
-
-chord:root+suffix
-
-};
-
-});
-
-}
-
-
-/* =====================================================
+/* =========================================================
    KEY BUTTONS
-===================================================== */
+========================================================= */
 
 function renderKeyButtons(){
 
-const box=
-document.getElementById(
-"keyButtons"
-);
+    const box =
+        document.getElementById(
+            "keyButtons"
+        );
 
-box.innerHTML="";
+    box.innerHTML = "";
 
-keyOrder.forEach(
-key=>{
 
-const button=
-document.createElement(
-"button"
-);
+    keyOrder.forEach(
+        key=>{
 
-button.textContent=
-key;
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-if(
-key===selectedKey
-){
+            button.textContent = key;
 
-button.classList.add(
-"selected"
-);
+
+            if(
+                key === selectedKey
+            ){
+
+                button.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            button.onclick = ()=>{
+
+                selectedKey = key;
+
+                selectedChord = null;
+
+                document.getElementById(
+                    "centreKey"
+                ).textContent = key;
+
+                document.getElementById(
+                    "stickyKey"
+                ).textContent =
+                    key + " Major";
+
+                renderKeyButtons();
+
+                drawCircle();
+
+                renderQuickChords();
+
+            };
+
+
+            box.appendChild(
+                button
+            );
+
+        }
+    );
 
 }
 
-button.onclick=()=>{
 
-selectedKey=key;
-
-selectedChord=null;
-
-document.getElementById(
-"centreKey"
-).textContent=
-key;
-
-document.getElementById(
-"stickyKey"
-).textContent=
-key+
-" Major";
-
-renderKeyButtons();
-
-drawCircle();
-
-renderQuickChords();
-
-};
-
-box.appendChild(
-button
-);
-
-});
-
-}
-
-
-/* =====================================================
+/* =========================================================
    DRAW CIRCLE
-===================================================== */
+========================================================= */
 
 function drawCircle(){
 
-const circle=
-document.getElementById(
-"circle"
-);
+    const circle =
+        document.getElementById(
+            "circle"
+        );
 
 
-/*
-Remove old nodes.
-*/
-
-circle
-.querySelectorAll(
-".circle-node"
-)
-.forEach(
-node=>node.remove()
-);
+    circle
+        .querySelectorAll(
+            ".circle-node"
+        )
+        .forEach(
+            node=>node.remove()
+        );
 
 
-const chords=
-getDiatonicChords(
-selectedKey
-);
+    const chords =
+        getDiatonicChords(
+            selectedKey
+        );
 
 
-/*
-Seven positions.
+    /*
+    Positions around the circle.
+    The centre tells us the selected key.
 
-The chords are displayed in
-their scale order so the selected
-key's actual chord family is clear.
+    The seven diatonic chords are shown
+    around it.
+    */
 
-The centre identifies the key.
-*/
+    const positions = [
 
-const positions=[
+        {x:50,y:10},
 
-{x:50,y:10},
+        {x:79,y:24},
 
-{x:79,y:24},
+        {x:91,y:50},
 
-{x:91,y:50},
+        {x:79,y:76},
 
-{x:79,y:76},
+        {x:50,y:90},
 
-{x:50,y:90},
+        {x:21,y:76},
 
-{x:21,y:76},
+        {x:9,y:50}
 
-{x:9,y:50}
-
-];
+    ];
 
 
-chords.forEach(
-(item,index)=>{
+    chords.forEach(
+        (item,index)=>{
 
-let type=
-item.quality;
+            createCircleNode(
 
-createCircleNode(
+                circle,
 
-circle,
+                item.chord,
 
-item.chord,
+                positions[index].x,
 
-positions[index].x,
+                positions[index].y,
 
-positions[index].y,
+                item.quality,
 
-type,
+                item.degree
 
-item.degree
+            );
 
-);
-
-});
+        }
+    );
 
 }
 
 
-/* =====================================================
-   CREATE CIRCLE NODE
-===================================================== */
+/* =========================================================
+   CIRCLE NODE
+========================================================= */
 
 function createCircleNode(
-circle,
-chord,
-x,
-y,
-type,
-degree
+    circle,
+    chord,
+    x,
+    y,
+    type,
+    degree
 ){
 
-const button=
-document.createElement(
-"button"
-);
+    const button =
+        document.createElement(
+            "button"
+        );
 
-button.className=
-"circle-node "+
-type;
 
-if(
-selectedChord===chord
-){
+    button.className =
+        "circle-node " +
+        type;
 
-button.classList.add(
-"active"
-);
+
+    /*
+    Only highlight the chord selected
+    from the circle.
+
+    This does NOT affect progression.
+    */
+
+    if(
+        selectedChord === chord
+    ){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    button.style.left =
+        x + "%";
+
+    button.style.top =
+        y + "%";
+
+
+    let label = "Major";
+
+
+    if(
+        type === "minor"
+    ){
+
+        label = "Minor";
+
+    }
+
+    else if(
+        type === "diminished"
+    ){
+
+        label = "Diminished";
+
+    }
+
+
+    button.innerHTML = `
+
+        <div>
+
+            ${escapeHTML(chord)}
+
+            <small>
+                ${label}
+            </small>
+
+        </div>
+
+    `;
+
+
+    attachChordEvents(
+        button,
+        chord
+    );
+
+
+    circle.appendChild(
+        button
+    );
 
 }
 
-button.style.left=
-x+"%";
 
-button.style.top=
-y+"%";
-
-
-let label="";
-
-if(
-type==="major"
-){
-
-label="Major";
-
-}
-
-else if(
-type==="minor"
-){
-
-label="Minor";
-
-}
-
-else{
-
-label="Diminished";
-
-}
-
-
-button.innerHTML=`
-
-<div>
-
-${escapeHTML(chord)}
-
-<small>
-${label}
-</small>
-
-</div>
-
-`;
-
-
-attachChordEvents(
-button,
-chord
-);
-
-circle.appendChild(
-button
-);
-
-}
-
-
-/* =====================================================
+/* =========================================================
    TAP / LONG PRESS
-===================================================== */
+========================================================= */
 
 function attachChordEvents(
-button,
-chord
+    button,
+    chord
 ){
 
-button.addEventListener(
-"pointerdown",
-()=>{
+    button.addEventListener(
+        "pointerdown",
+        ()=>{
 
-suppressClick=false;
-
-holdTimer=
-setTimeout(
-()=>{
-
-suppressClick=true;
-
-openChordOptions(
-chord
-);
-
-},
-2000
-);
-
-});
+            suppressClick = false;
 
 
-[
-"pointerup",
-"pointercancel",
-"pointerleave"
-]
-.forEach(
-event=>{
-
-button.addEventListener(
-event,
-()=>{
-
-clearTimeout(
-holdTimer
-);
-
-});
-
-});
+            clearTimeout(
+                holdTimer
+            );
 
 
-button.addEventListener(
-"click",
-()=>{
+            holdTimer =
+                setTimeout(
+                    ()=>{
 
-if(
-!suppressClick
-){
+                        suppressClick = true;
 
-addChord(
-chord
-);
+                        openChordOptions(
+                            chord
+                        );
+
+                    },
+                    2000
+                );
+
+        }
+    );
+
+
+    [
+        "pointerup",
+        "pointercancel",
+        "pointerleave"
+    ]
+    .forEach(
+        event=>{
+
+            button.addEventListener(
+                event,
+                ()=>{
+
+                    clearTimeout(
+                        holdTimer
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            if(
+                !suppressClick
+            ){
+
+                addChord(
+                    chord
+                );
+
+            }
+
+            suppressClick = false;
+
+        }
+    );
 
 }
 
-suppressClick=false;
 
-});
-
-}
-
-
-/* =====================================================
-   ADD CHORD
-
-   CRITICAL FIX:
-
-   NO SEARCH FOR EXISTING CHORD.
-
-   ALWAYS PUSH A NEW OBJECT.
-
-===================================================== */
+/* =========================================================
+   ADD CHORD — CRITICAL FIX
+========================================================= */
 
 function addChord(chord){
 
-selectedChord=
-chord;
+    selectedChord = chord;
 
 
-/*
-This ALWAYS creates a NEW occurrence.
-*/
+    /*
+    NEVER search for an existing chord.
 
-const newChord={
+    NEVER merge identical chord names.
 
-id:
-Date.now()+
-"-"+
-Math.random()
-.toString(36)
-.substring(2),
+    NEVER increase an existing chord's beats.
 
-chord:chord,
+    ALWAYS create a completely new occurrence.
+    */
 
-beats:1
+    const occurrence = {
 
-};
+        id:makeID(),
+
+        chord:chord,
+
+        beats:1,
+
+        /*
+        Each beat can contain its own lyric.
+        */
+
+        lyrics:[
+            ""
+        ],
+
+        /*
+        Each beat starts as one subdivision.
+        */
+
+        subdivisions:[
+            1
+        ]
+
+    };
 
 
-progression.push(
-newChord
-);
+    progression.push(
+        occurrence
+    );
 
 
-syncLyrics();
+    renderProgression();
 
-renderProgression();
+    renderLyrics();
 
-renderLyrics();
+    drawCircle();
 
-drawCircle();
+    renderQuickChords();
 
-renderQuickChords();
 
-showToast(
-chord+
-" · 1 beat"
-);
+    showToast(
+        chord +
+        " added as new chord"
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CHORD VARIATIONS
-===================================================== */
+========================================================= */
 
 function chordVariations(
-chord
+    chord
 ){
 
-const root=
-chord
-.replace(
-"dim",
-""
-)
-.replace(
-/m$/,
-""
-);
+    const root =
+        chord
+            .replace(
+                "dim",
+                ""
+            )
+            .replace(
+                /m$/,
+                ""
+            );
 
 
-if(
-chord.includes("dim")
-){
+    if(
+        chord.includes(
+            "dim"
+        )
+    ){
 
-return[
+        return [
 
-chord,
+            chord,
 
-root+"dim7",
+            root + "dim7",
 
-root+"m7b5"
+            root + "m7b5"
 
-];
+        ];
+
+    }
+
+
+    if(
+        chord.endsWith("m")
+    ){
+
+        return [
+
+            chord,
+
+            root + "m7",
+
+            root + "m9",
+
+            root + "m11",
+
+            root + "m6",
+
+            root + "mMaj7",
+
+            root + "msus2",
+
+            root + "msus4"
+
+        ];
+
+    }
+
+
+    return [
+
+        chord,
+
+        root + "7",
+
+        root + "9",
+
+        root + "11",
+
+        root + "13",
+
+        root + "maj7",
+
+        root + "6",
+
+        root + "sus2",
+
+        root + "sus4",
+
+        root + "add9",
+
+        root + "aug",
+
+        root + "dim"
+
+    ];
 
 }
 
 
-if(
-chord.endsWith("m")
-){
-
-return[
-
-chord,
-
-root+"m7",
-
-root+"m9",
-
-root+"m11",
-
-root+"m6",
-
-root+"mMaj7",
-
-root+"msus2",
-
-root+"msus4"
-
-];
-
-}
-
-
-return[
-
-chord,
-
-root+"7",
-
-root+"9",
-
-root+"11",
-
-root+"13",
-
-root+"maj7",
-
-root+"6",
-
-root+"sus2",
-
-root+"sus4",
-
-root+"add9",
-
-root+"aug",
-
-root+"dim"
-
-];
-
-}
-
-
-/* =====================================================
-   OPEN OPTIONS
-===================================================== */
+/* =========================================================
+   OPEN CHORD OPTIONS
+========================================================= */
 
 function openChordOptions(
-chord
+    chord
 ){
 
-document.getElementById(
-"modalChord"
-).textContent=
-chord;
-
-const grid=
-document.getElementById(
-"optionGrid"
-);
-
-grid.innerHTML="";
+    document.getElementById(
+        "modalChord"
+    ).textContent =
+        chord;
 
 
-chordVariations(
-chord
-)
-.forEach(
-variation=>{
-
-const button=
-document.createElement(
-"button"
-);
-
-button.textContent=
-variation;
-
-button.onclick=()=>{
-
-closeModal();
-
-addChord(
-variation
-);
-
-};
-
-grid.appendChild(
-button
-);
-
-});
+    const grid =
+        document.getElementById(
+            "optionGrid"
+        );
 
 
-document
-.getElementById("modal")
-.classList.add(
-"show"
-);
+    grid.innerHTML = "";
+
+
+    chordVariations(
+        chord
+    )
+    .forEach(
+        variation=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.textContent =
+                variation;
+
+
+            button.onclick = ()=>{
+
+                closeModal();
+
+                /*
+                Variation is ALSO a new occurrence.
+                */
+
+                addChord(
+                    variation
+                );
+
+            };
+
+
+            grid.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            "modal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }
 
 
-function closeModal(){
-
-document
-.getElementById("modal")
-.classList.remove(
-"show"
-);
-
-}
-
-
-/* =====================================================
+/* =========================================================
    RENDER PROGRESSION
-===================================================== */
+========================================================= */
 
 function renderProgression(){
 
-const box=
-document.getElementById(
-"progression"
-);
+    const box =
+        document.getElementById(
+            "progression"
+        );
 
-if(
-progression.length===0
-){
 
-box.innerHTML=`
+    if(
+        progression.length === 0
+    ){
 
-<div class="empty">
+        box.innerHTML = `
 
-Choose your first chord.
+            <div class="empty">
 
-</div>
+                Choose your first chord.
 
-`;
+            </div>
 
-return;
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    progression.forEach(
+        (item,index)=>{
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "chord-card";
+
+
+            card.innerHTML = `
+
+                <button
+                    class="delete-chord"
+                    onclick="deleteChord(${index})">
+
+                    ×
+
+                </button>
+
+
+                <strong>
+
+                    ${escapeHTML(
+                        item.chord
+                    )}
+
+                </strong>
+
+
+                <div class="chord-position">
+
+                    Position ${index + 1}
+
+                </div>
+
+
+                <div class="beat-controls">
+
+                    <button
+                        onclick="removeBeat(${index})">
+
+                        −
+
+                    </button>
+
+
+                    <span class="beat-number">
+
+                        ${item.beats}
+
+                    </span>
+
+
+                    <button
+                        onclick="addBeat(${index})">
+
+                        +
+
+                    </button>
+
+                </div>
+
+
+                <div class="chord-position">
+
+                    ${item.beats}
+                    beat${item.beats === 1 ? "" : "s"}
+
+                </div>
+
+            `;
+
+
+            box.appendChild(
+                card
+            );
+
+        }
+    );
 
 }
 
 
-box.innerHTML="";
-
-
-progression.forEach(
-(item,index)=>{
-
-const card=
-document.createElement(
-"div"
-);
-
-card.className=
-"chord-card";
-
-
-card.innerHTML=`
-
-<button
-class="delete-chord"
-onclick="deleteChord(${index})">
-
-×
-</button>
-
-<strong>
-
-${escapeHTML(
-item.chord
-)}
-
-</strong>
-
-<div class="chord-position">
-
-Chord ${index+1}
-
-</div>
-
-<div class="beat-controls">
-
-<button
-onclick="removeBeat(${index})">
-
-−
-
-</button>
-
-<span class="beat-number">
-
-${item.beats}
-
-</span>
-
-<button
-onclick="addBeat(${index})">
-
-+
-
-</button>
-
-</div>
-
-<div class="chord-position">
-
-${item.beats}
-
-beat${item.beats===1?"":"s"}
-
-</div>
-
-`;
-
-
-box.appendChild(
-card
-);
-
-});
-
-}
-
-
-/* =====================================================
-   ADD BEAT TO EXACT OCCURRENCE
-===================================================== */
+/* =========================================================
+   ADD BEAT TO EXACT CHORD OCCURRENCE
+========================================================= */
 
 function addBeat(index){
 
-progression[index].beats++;
+    const item =
+        progression[index];
 
-syncLyrics();
 
-renderProgression();
+    if(
+        !item
+    ){
 
-renderLyrics();
+        return;
+
+    }
+
+
+    /*
+    Add ONE beat to this exact object.
+
+    We do NOT search by chord name.
+    */
+
+    item.beats++;
+
+
+    item.lyrics.push(
+        ""
+    );
+
+
+    item.subdivisions.push(
+        1
+    );
+
+
+    renderProgression();
+
+    renderLyrics();
 
 }
 
 
-/* =====================================================
+/* =========================================================
    REMOVE BEAT
-===================================================== */
+========================================================= */
 
 function removeBeat(index){
 
-if(
-progression[index].beats<=1
-){
+    const item =
+        progression[index];
 
-deleteChord(
-index
-);
 
-return;
+    if(
+        !item
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        item.beats <= 1
+    ){
+
+        deleteChord(
+            index
+        );
+
+        return;
+
+    }
+
+
+    item.beats--;
+
+
+    item.lyrics.pop();
+
+    item.subdivisions.pop();
+
+
+    renderProgression();
+
+    renderLyrics();
 
 }
 
-progression[index].beats--;
 
-syncLyrics();
-
-renderProgression();
-
-renderLyrics();
-
-}
-
-
-/* =====================================================
+/* =========================================================
    DELETE CHORD
-===================================================== */
+========================================================= */
 
 function deleteChord(index){
 
-const chord=
-progression[index].chord;
+    if(
+        !progression[index]
+    ){
 
-if(
-!confirm(
-"Delete "+
-chord+
-" from this position?"
-)
-){
+        return;
 
-return;
-
-}
+    }
 
 
-progression.splice(
-index,
-1
-);
+    const chord =
+        progression[index].chord;
 
 
-syncLyrics();
+    if(
+        !confirm(
+            "Delete " +
+            chord +
+            " from this position?"
+        )
+    ){
 
-renderProgression();
+        return;
 
-renderLyrics();
-
-showToast(
-"Chord deleted"
-);
-
-}
-
-
-/* =====================================================
-   SYNC LYRICS
-
-   Preserve existing lyrics where possible,
-   but ensure there is one data object per beat.
-===================================================== */
-
-function syncLyrics(){
-
-let total=0;
-
-progression.forEach(
-item=>{
-
-total+=item.beats;
-
-});
+    }
 
 
-while(
-lyricBeats.length<
-total
-){
+    /*
+    Delete by array position.
 
-lyricBeats.push({
+    Because every occurrence is independent,
+    deleting one F cannot affect another F.
+    */
 
-lyrics:"",
+    progression.splice(
+        index,
+        1
+    );
 
-split:1
 
-});
+    renderProgression();
+
+    renderLyrics();
+
+
+    showToast(
+        "Chord deleted"
+    );
 
 }
 
 
-lyricBeats.length=
-total;
-
-}
-
-
-/* =====================================================
+/* =========================================================
    RENDER LYRICS
-===================================================== */
+========================================================= */
 
 function renderLyrics(){
 
-const box=
-document.getElementById(
-"lyrics"
-);
+    const box =
+        document.getElementById(
+            "lyrics"
+        );
 
 
-if(
-progression.length===0
-){
+    if(
+        progression.length === 0
+    ){
 
-box.innerHTML=`
+        box.innerHTML = `
 
-<div class="empty">
+            <div class="empty">
 
-Choose chords first.
+                Choose chords first.
 
-</div>
+            </div>
 
-`;
+        `;
 
-return;
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    progression.forEach(
+        (item,chordIndex)=>{
+
+            const section =
+                document.createElement(
+                    "div"
+                );
+
+
+            section.className =
+                "lyric-chord";
+
+
+            const header =
+                document.createElement(
+                    "div"
+                );
+
+
+            header.className =
+                "lyric-header";
+
+
+            header.innerHTML = `
+
+                <strong>
+
+                    ${escapeHTML(
+                        item.chord
+                    )}
+
+                </strong>
+
+
+                <span>
+
+                    Position ${chordIndex + 1}
+
+                    ·
+
+                    ${item.beats}
+                    beat${item.beats === 1 ? "" : "s"}
+
+                </span>
+
+            `;
+
+
+            section.appendChild(
+                header
+            );
+
+
+            const grid =
+                document.createElement(
+                    "div"
+                );
+
+
+            grid.className =
+                "beat-grid";
+
+
+            for(
+                let beat=0;
+                beat<item.beats;
+                beat++
+            ){
+
+                /*
+                Make sure the arrays exist.
+                */
+
+                if(
+                    !Array.isArray(
+                        item.lyrics
+                    )
+                ){
+
+                    item.lyrics = [];
+
+                }
+
+
+                if(
+                    !Array.isArray(
+                        item.subdivisions
+                    )
+                ){
+
+                    item.subdivisions = [];
+
+                }
+
+
+                if(
+                    item.lyrics[beat] === undefined
+                ){
+
+                    item.lyrics[beat] = "";
+
+                }
+
+
+                if(
+                    item.subdivisions[beat] === undefined
+                ){
+
+                    item.subdivisions[beat] = 1;
+
+                }
+
+
+                const beatBox =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                beatBox.className =
+                    "beat-box";
+
+
+                beatBox.innerHTML = `
+
+                    <div class="beat-title">
+
+                        BEAT ${beat + 1}
+
+                    </div>
+
+
+                    <textarea
+                        placeholder="Lyrics sung here..."
+                    ></textarea>
+
+
+                    <div class="subdivision">
+
+                        <select>
+
+                            <option value="1">
+                                1 beat
+                            </option>
+
+                            <option value="2">
+                                Split ×2
+                            </option>
+
+                            <option value="3">
+                                Split ×3
+                            </option>
+
+                            <option value="4">
+                                Split ×4
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                `;
+
+
+                const textarea =
+                    beatBox.querySelector(
+                        "textarea"
+                    );
+
+
+                textarea.value =
+                    item.lyrics[beat];
+
+
+                textarea.addEventListener(
+                    "input",
+                    ()=>{
+
+                        item.lyrics[beat] =
+                            textarea.value;
+
+                    }
+                );
+
+
+                const select =
+                    beatBox.querySelector(
+                        "select"
+                    );
+
+
+                select.value =
+                    item.subdivisions[beat];
+
+
+                select.addEventListener(
+                    "change",
+                    ()=>{
+
+                        item.subdivisions[beat] =
+                            parseInt(
+                                select.value
+                            );
+
+                    }
+                );
+
+
+                grid.appendChild(
+                    beatBox
+                );
+
+            }
+
+
+            section.appendChild(
+                grid
+            );
+
+
+            box.appendChild(
+                section
+            );
+
+        }
+    );
 
 }
 
 
-box.innerHTML="";
-
-
-let globalBeat=0;
-
-
-progression.forEach(
-(item,chordIndex)=>{
-
-const section=
-document.createElement(
-"div"
-);
-
-section.className=
-"lyric-chord";
-
-
-const header=
-document.createElement(
-"div"
-);
-
-header.className=
-"lyric-header";
-
-
-header.innerHTML=`
-
-<strong>
-
-${escapeHTML(
-item.chord
-)}
-
-</strong>
-
-<span>
-
-Chord ${chordIndex+1}
-
-·
-
-${item.beats}
-
-beat${item.beats===1?"":"s"}
-
-</span>
-
-`;
-
-
-section.appendChild(
-header
-);
-
-
-const grid=
-document.createElement(
-"div"
-);
-
-grid.className=
-"beat-grid";
-
-
-for(
-let localBeat=0;
-localBeat<item.beats;
-localBeat++
-){
-
-const data=
-lyricBeats[
-globalBeat
-];
-
-
-const beatBox=
-document.createElement(
-"div"
-);
-
-beatBox.className=
-"beat-box";
-
-
-beatBox.innerHTML=`
-
-<div class="beat-title">
-
-BEAT ${globalBeat+1}
-
-</div>
-
-<textarea
-placeholder="Lyrics sung here..."
-></textarea>
-
-<div class="subdivision">
-
-<select>
-
-<option value="1">
-1 beat
-</option>
-
-<option value="2">
-Split ×2
-</option>
-
-<option value="3">
-Split ×3
-</option>
-
-<option value="4">
-Split ×4
-</option>
-
-</select>
-
-</div>
-
-`;
-
-
-const textarea=
-beatBox.querySelector(
-"textarea"
-);
-
-textarea.value=
-data.lyrics||
-"";
-
-
-textarea.addEventListener(
-"input",
-()=>{
-
-data.lyrics=
-textarea.value;
-
-});
-
-
-const select=
-beatBox.querySelector(
-"select"
-);
-
-select.value=
-data.split||
-1;
-
-
-select.addEventListener(
-"change",
-()=>{
-
-data.split=
-parseInt(
-select.value
-);
-
-});
-
-
-grid.appendChild(
-beatBox
-);
-
-globalBeat++;
-
-}
-
-
-section.appendChild(
-grid
-);
-
-box.appendChild(
-section
-);
-
-});
-
-}
-
-
-/* =====================================================
+/* =========================================================
    STICKY CHORD BAR
-===================================================== */
+========================================================= */
 
 function renderQuickChords(){
 
-const box=
-document.getElementById(
-"quickChords"
-);
-
-box.innerHTML="";
+    const box =
+        document.getElementById(
+            "quickChords"
+        );
 
 
-const chords=
-getDiatonicChords(
-selectedKey
-);
+    box.innerHTML = "";
 
 
-chords.forEach(
-item=>{
-
-const button=
-document.createElement(
-"button"
-);
-
-button.className=
-"quick";
+    const chords =
+        getDiatonicChords(
+            selectedKey
+        );
 
 
-button.innerHTML=`
+    chords.forEach(
+        item=>{
 
-<strong>
-
-${escapeHTML(
-item.chord
-)}
-
-</strong>
-
-<small>
-
-${romanNumeral(
-item.degree
-)}
-
-</small>
-
-`;
+            const button =
+                document.createElement(
+                    "button"
+                );
 
 
-attachChordEvents(
-button,
-item.chord
-);
+            button.className =
+                "quick";
 
 
-box.appendChild(
-button
-);
+            button.innerHTML = `
 
-});
+                <strong>
+
+                    ${escapeHTML(
+                        item.chord
+                    )}
+
+                </strong>
+
+                <small>
+
+                    ${romanNumeral(
+                        item.degree
+                    )}
+
+                </small>
+
+            `;
+
+
+            attachChordEvents(
+                button,
+                item.chord
+            );
+
+
+            box.appendChild(
+                button
+            );
+
+        }
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    ROMAN NUMERALS
-===================================================== */
+========================================================= */
 
 function romanNumeral(
-degree
+    degree
 ){
 
-const romans=[
+    const romans = [
 
-"I",
+        "I",
 
-"ii",
+        "ii",
 
-"iii",
+        "iii",
 
-"IV",
+        "IV",
 
-"V",
+        "V",
 
-"vi",
+        "vi",
 
-"vii dim"
+        "vii dim"
 
-];
+    ];
 
-return romans[
-degree-1
-];
+
+    return romans[
+        degree - 1
+    ];
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SAVE
-===================================================== */
+========================================================= */
 
 function saveSong(){
 
-const song={
+    const song = {
 
-title:
-document.getElementById(
-"songTitle"
-).value,
+        version:2,
 
-bpm:
-document.getElementById(
-"bpm"
-).value,
+        title:
+            document.getElementById(
+                "songTitle"
+            ).value,
 
-key:selectedKey,
+        bpm:
+            document.getElementById(
+                "bpm"
+            ).value,
 
-progression:
+        key:
+            selectedKey,
 
-progression,
+        progression:
+            progression
 
-lyrics:
-
-lyricBeats
-
-};
+    };
 
 
-localStorage.setItem(
+    localStorage.setItem(
 
-"ML6CMG_song",
+        "ML6CMG_song",
 
-JSON.stringify(
-song
-)
+        JSON.stringify(
+            song
+        )
 
-);
+    );
 
 
-showToast(
-"Song saved on this device"
-);
+    showToast(
+        "Song saved on this device"
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   LOAD SAVED SONG
+========================================================= */
+
+function loadSong(){
+
+    const saved =
+        localStorage.getItem(
+            "ML6CMG_song"
+        );
+
+
+    if(
+        !saved
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const song =
+            JSON.parse(
+                saved
+            );
+
+
+        document.getElementById(
+            "songTitle"
+        ).value =
+            song.title || "";
+
+
+        document.getElementById(
+            "bpm"
+        ).value =
+            song.bpm || 90;
+
+
+        if(
+            majorScales[
+                song.key
+            ]
+        ){
+
+            selectedKey =
+                song.key;
+
+        }
+
+
+        /*
+        Convert older saved data into
+        the new independent-occurrence format.
+        */
+
+        progression =
+            Array.isArray(
+                song.progression
+            )
+            ? song.progression.map(
+                item=>({
+
+                    id:
+                        item.id ||
+                        makeID(),
+
+                    chord:
+                        item.chord,
+
+                    beats:
+                        item.beats ||
+                        1,
+
+                    lyrics:
+                        Array.isArray(
+                            item.lyrics
+                        )
+                        ? item.lyrics
+                        : Array(
+                            item.beats || 1
+                          ).fill(""),
+
+                    subdivisions:
+                        Array.isArray(
+                            item.subdivisions
+                        )
+                        ? item.subdivisions
+                        : Array(
+                            item.beats || 1
+                          ).fill(1)
+
+                })
+            )
+            : [];
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Could not load song:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
    EXPORT
-===================================================== */
+========================================================= */
 
 function exportDocument(){
 
-const title=
-document.getElementById(
-"songTitle"
-).value||
-"ML6CMG Song";
+    const title =
+        document.getElementById(
+            "songTitle"
+        ).value ||
+        "ML6CMG Song";
 
 
-let html=`
+    let html = `
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
 
-<html>
+        <html>
 
-<head>
+        <head>
 
-<meta charset="UTF-8">
+            <meta charset="UTF-8">
 
-<title>
+            <title>
+                ${escapeHTML(title)}
+            </title>
 
-${escapeHTML(title)}
+        </head>
 
-</title>
+        <body>
 
-</head>
+            <h1>
+                ${escapeHTML(title)}
+            </h1>
 
-<body>
+            <p>
+                <strong>
+                    Key:
+                </strong>
 
-<h1>
+                ${escapeHTML(
+                    selectedKey
+                )}
+                Major
+            </p>
 
-${escapeHTML(title)}
+            <p>
+                <strong>
+                    BPM:
+                </strong>
 
-</h1>
+                ${escapeHTML(
+                    document.getElementById(
+                        "bpm"
+                    ).value
+                )}
+            </p>
 
-<p>
+            <hr>
 
-Key:
+    `;
 
-<strong>
 
-${escapeHTML(
-selectedKey
-)}
-Major
+    progression.forEach(
+        (item,index)=>{
 
-</strong>
+            html += `
 
-</p>
+                <h2>
 
-<p>
+                    ${index + 1}.
+                    ${escapeHTML(
+                        item.chord
+                    )}
 
-BPM:
+                    —
+                    ${item.beats}
+                    beat${item.beats === 1 ? "" : "s"}
 
-${escapeHTML(
-document.getElementById(
-"bpm"
-).value
-)}
+                </h2>
 
-</p>
+            `;
 
-<hr>
 
-`;
+            for(
+                let beat=0;
+                beat<item.beats;
+                beat++
+            ){
 
+                const lyric =
+                    item.lyrics &&
+                    item.lyrics[beat]
+                    ? item.lyrics[beat]
+                    : "";
 
-let beat=0;
 
+                const split =
+                    item.subdivisions &&
+                    item.subdivisions[beat]
+                    ? item.subdivisions[beat]
+                    : 1;
 
-progression.forEach(
-(item,index)=>{
 
-html+=`
+                html += `
 
-<h2>
+                    <p>
 
-${index+1}.
+                        <strong>
+                            Beat ${beat + 1}
+                        </strong>
 
-${escapeHTML(
-item.chord
-)}
+                        <br>
 
-—
+                        ${escapeHTML(
+                            lyric
+                        )}
 
-${item.beats}
+                        <br>
 
-beat${item.beats===1?"":"s"}
+                        <small>
 
-</h2>
+                            Subdivision:
+                            ${split}
 
-`;
+                        </small>
 
+                    </p>
 
-for(
-let i=0;
-i<item.beats;
-i++
-){
+                `;
 
-const data=
-lyricBeats[
-beat
-]||
-{};
+            }
 
+        }
+    );
 
-html+=`
 
-<p>
+    html += `
 
-<strong>
+        </body>
 
-Beat ${beat+1}
+        </html>
 
-</strong>
+    `;
 
-<br>
 
-${escapeHTML(
-data.lyrics||
-""
-)}
+    const blob =
+        new Blob(
+            [html],
+            {
+                type:
+                    "application/msword"
+            }
+        );
 
-<br>
 
-<small>
+    const url =
+        URL.createObjectURL(
+            blob
+        );
 
-Subdivision:
 
-${data.split||1}
+    const link =
+        document.createElement(
+            "a"
+        );
 
-</small>
 
-</p>
+    link.href =
+        url;
 
-`;
 
+    link.download =
+        title
+            .replace(
+                /[^a-z0-9]/gi,
+                "_"
+            ) +
+        ".doc";
 
-beat++;
 
-}
+    document.body.appendChild(
+        link
+    );
 
-});
 
+    link.click();
 
-html+=`
 
-</body>
+    document.body.removeChild(
+        link
+    );
 
-</html>
 
-`;
+    URL.revokeObjectURL(
+        url
+    );
 
 
-const blob=
-new Blob(
-[html],
-{
-type:
-"application/msword"
-}
-);
-
-
-const url=
-URL.createObjectURL(
-blob
-);
-
-
-const link=
-document.createElement(
-"a"
-);
-
-
-link.href=url;
-
-
-link.download=
-title
-.replace(
-/[^a-z0-9]/gi,
-"_"
-)+
-".doc";
-
-
-document.body.appendChild(
-link
-);
-
-link.click();
-
-document.body.removeChild(
-link
-);
-
-URL.revokeObjectURL(
-url
-);
-
-
-showToast(
-"Document exported"
-);
+    showToast(
+        "Document exported"
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    NEW SONG
-===================================================== */
+========================================================= */
 
 function newSong(){
 
-if(
-progression.length>0&&
-!confirm(
-"Start a new song? Unsaved changes will be lost."
-)
-){
+    if(
+        progression.length > 0 &&
+        !confirm(
+            "Start a new song? Unsaved changes will be lost."
+        )
+    ){
 
-return;
+        return;
 
-}
-
-
-selectedKey="C";
-
-selectedChord=null;
-
-progression=[];
-
-lyricBeats=[];
+    }
 
 
-document.getElementById(
-"songTitle"
-).value="";
+    selectedKey = "C";
+
+    selectedChord = null;
+
+    progression = [];
 
 
-document.getElementById(
-"bpm"
-).value=90;
+    document.getElementById(
+        "songTitle"
+    ).value = "";
 
 
-document.getElementById(
-"centreKey"
-).textContent=
-"C";
+    document.getElementById(
+        "bpm"
+    ).value = 90;
 
 
-document.getElementById(
-"stickyKey"
-).textContent=
-"C Major";
+    document.getElementById(
+        "centreKey"
+    ).textContent = "C";
 
 
-renderKeyButtons();
+    document.getElementById(
+        "stickyKey"
+    ).textContent =
+        "C Major";
 
-drawCircle();
 
-renderQuickChords();
+    renderKeyButtons();
 
-renderProgression();
+    drawCircle();
 
-renderLyrics();
+    renderQuickChords();
+
+    renderProgression();
+
+    renderLyrics();
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   CLOSE MODAL WHEN BACKGROUND IS TAPPED
+========================================================= */
+
+document
+    .getElementById(
+        "modal"
+    )
+    .addEventListener(
+        "click",
+        event=>{
+
+            if(
+                event.target.id ===
+                "modal"
+            ){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
    HTML SAFETY
-===================================================== */
+========================================================= */
 
 function escapeHTML(
-value
+    value
 ){
 
-return String(value)
-.replace(
-/[&<>"']/g,
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            character=>({
 
-character=>({
+                "&":"&amp;",
 
-"&":"&amp;",
+                "<":"&lt;",
 
-"<":"&lt;",
+                ">":"&gt;",
 
-">":"&gt;",
+                '"':"&quot;",
 
-'"':"&quot;",
+                "'":"&#039;"
 
-"'":"&#039;"
-
-}[character])
-
-);
+            }[character])
+        );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    TOAST
-===================================================== */
+========================================================= */
 
-let toastTimer=null;
+let toastTimer = null;
 
 
 function showToast(
-message
+    message
 ){
 
-const toast=
-document.getElementById(
-"toast"
-);
-
-toast.textContent=
-message;
-
-toast.classList.add(
-"show"
-);
+    const toast =
+        document.getElementById(
+            "toast"
+        );
 
 
-clearTimeout(
-toastTimer
-);
+    toast.textContent =
+        message;
 
 
-toastTimer=
-setTimeout(
-()=>{
-
-toast.classList.remove(
-"show"
-);
-
-},
-1800
-);
+    toast.classList.add(
+        "show"
+    );
 
 
-/* =====================================================
-   INITIALISE
-===================================================== */
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            ()=>{
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadSong();
 
 renderKeyButtons();
 
