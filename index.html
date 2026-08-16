@@ -3,485 +3,651 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b0b0b">
+<meta name="theme-color" content="#090909">
 
 <title>ML6CMG Song Builder</title>
 
 <style>
 
 *{
-  box-sizing:border-box;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
 }
 
 body{
-  margin:0;
-  background:#080808;
-  color:#eee;
-  font-family:Georgia,serif;
+margin:0;
+background:
+radial-gradient(circle at top,#24211b 0,#0c0c0c 42%,#050505 100%);
+color:#eee;
+font-family:Georgia,serif;
+padding-bottom:150px;
 }
 
 header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:#0b0b0b;
-  border-bottom:1px solid #514735;
-  padding:14px;
+position:sticky;
+top:0;
+z-index:100;
+background:rgba(8,8,8,.97);
+border-bottom:1px solid #514632;
+padding:14px;
+backdrop-filter:blur(12px);
 }
 
 .header-inner{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 .logo{
-  font-family:Arial,sans-serif;
-  letter-spacing:2px;
-  font-weight:bold;
+font-family:Arial,sans-serif;
+font-weight:bold;
+letter-spacing:2px;
 }
 
 .logo small{
-  display:block;
-  font-family:Georgia,serif;
-  color:#aaa;
-  font-size:11px;
-  letter-spacing:0;
-  margin-top:3px;
+display:block;
+font-family:Georgia,serif;
+font-size:11px;
+font-weight:normal;
+letter-spacing:0;
+color:#999;
+margin-top:3px;
 }
 
 button{
-  cursor:pointer;
-  color:#eee;
-  background:#151515;
-  border:1px solid #403b32;
-  border-radius:5px;
-  padding:10px 14px;
+font:inherit;
+cursor:pointer;
+color:#eee;
+background:#151515;
+border:1px solid #403a30;
+border-radius:5px;
+padding:9px 13px;
 }
 
 button:hover{
-  border-color:#b99658;
+border-color:#c09a5a;
 }
 
 .gold{
-  color:#d6b477;
-  border-color:#9b7a45;
+color:#d9b878;
+border-color:#a68148;
 }
 
 main{
-  max-width:1100px;
-  margin:auto;
-  padding:20px 14px 180px;
+max-width:1100px;
+margin:auto;
+padding:20px 14px 50px;
 }
 
 .panel{
-  background:#111;
-  border:1px solid #302e2a;
-  padding:20px;
-  margin-bottom:18px;
+background:rgba(15,15,15,.96);
+border:1px solid #302e2a;
+padding:20px;
+margin-bottom:18px;
 }
 
 h1,h2{
-  font-family:Arial,sans-serif;
-  letter-spacing:2px;
-  text-transform:uppercase;
+font-family:Arial,sans-serif;
+text-transform:uppercase;
+letter-spacing:2px;
 }
 
 h1{
-  font-size:20px;
+font-size:19px;
+margin:0 0 7px;
 }
 
 h2{
-  font-size:17px;
+font-size:16px;
 }
 
 .description{
-  color:#999;
-  font-size:13px;
-  line-height:1.5;
+font-size:13px;
+line-height:1.5;
+color:#999;
+margin-top:0;
+margin-bottom:16px;
 }
 
 /* KEY SELECTOR */
 
 .key-buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
+display:flex;
+flex-wrap:wrap;
+gap:7px;
 }
 
 .key-buttons button{
-  min-width:48px;
+min-width:47px;
 }
 
 .key-buttons .selected{
-  background:#2a2114;
-  border-color:#c09a5a;
-  color:#e0c18a;
+background:#302416;
+border-color:#c19a57;
+color:#e1c184;
 }
 
 /* CIRCLE */
 
-.circle-container{
-  display:flex;
-  justify-content:center;
-  overflow:hidden;
+.circle-area{
+display:flex;
+justify-content:center;
+overflow:hidden;
 }
 
 .circle{
-  position:relative;
-  width:min(90vw,560px);
-  height:min(90vw,560px);
-  border-radius:50%;
-  background:
-    radial-gradient(
-      circle,
-      #29251e 0%,
-      #171512 27%,
-      #101010 28%,
-      #101010 59%,
-      #080808 60%
-    );
-  border:1px solid #554a38;
+width:min(92vw,600px);
+height:min(92vw,600px);
+position:relative;
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+#2b261e 0 22%,
+#181613 23% 42%,
+#242018 43% 44%,
+#101010 45% 66%,
+#080808 67%
+);
+
+border:1px solid #62543d;
 }
 
-.circle:before{
-  content:"";
-  position:absolute;
-  inset:13%;
-  border:1px solid #4a4337;
-  border-radius:50%;
+.circle-ring{
+position:absolute;
+border-radius:50%;
+pointer-events:none;
 }
 
-.circle:after{
-  content:"";
-  position:absolute;
-  inset:28%;
-  border:1px solid #423b31;
-  border-radius:50%;
+.outer-ring{
+inset:8%;
+border:1px solid #413a30;
 }
 
-.center{
-  position:absolute;
-  z-index:5;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  border:1px solid #b08a4f;
-  background:#090909;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
+.middle-ring{
+inset:26%;
+border:1px solid #413a30;
 }
 
-.center strong{
-  font-family:Arial,sans-serif;
-  font-size:25px;
-  color:#d8b779;
+.inner-ring{
+inset:43%;
+border:1px solid #4d4435;
 }
 
-.center span{
-  font-size:10px;
-  color:#999;
-  letter-spacing:1px;
+.circle-node{
+position:absolute;
+transform:translate(-50%,-50%);
+z-index:10;
+width:82px;
+height:82px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-family:Arial,sans-serif;
+font-weight:bold;
+background:#151515;
+border:1px solid #4b4437;
+user-select:none;
+touch-action:manipulation;
 }
 
-.center small{
-  margin-top:6px;
-  color:#777;
+.circle-node small{
+display:block;
+font-size:9px;
+color:#777;
+margin-top:4px;
+font-weight:normal;
 }
 
-.circle-chord{
-  position:absolute;
-  width:82px;
-  height:82px;
-  margin:-41px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  z-index:10;
-  font-family:Arial,sans-serif;
-  font-weight:bold;
-  background:#171717;
-  border:1px solid #4b4438;
-  user-select:none;
-  touch-action:manipulation;
+.circle-node.major{
+background:#191817;
 }
 
-.circle-chord small{
-  display:block;
-  color:#777;
-  font-size:9px;
-  margin-top:4px;
+.circle-node.minor{
+width:68px;
+height:68px;
+font-size:12px;
+background:#121212;
 }
 
-.circle-chord.active{
-  background:#302719;
-  color:#e0c18a;
-  border-color:#c09a5a;
-  box-shadow:0 0 18px rgba(190,150,80,.25);
+.circle-node.diminished{
+width:56px;
+height:56px;
+font-size:11px;
+background:#0d0d0d;
+border-style:dashed;
+}
+
+.circle-node.active{
+color:#e2c285;
+border-color:#c39a55;
+box-shadow:0 0 20px rgba(190,150,80,.3);
+background:#302619;
+}
+
+.circle-centre{
+position:absolute;
+z-index:20;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:125px;
+height:125px;
+border-radius:50%;
+background:#080808;
+border:1px solid #b18a4f;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.circle-centre strong{
+font-family:Arial,sans-serif;
+font-size:26px;
+color:#dfbe7e;
+}
+
+.circle-centre span{
+font-size:10px;
+letter-spacing:2px;
+color:#999;
+}
+
+.circle-centre small{
+font-size:9px;
+color:#666;
+margin-top:6px;
+}
+
+.circle-legend{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:15px;
+font-family:Arial,sans-serif;
+font-size:10px;
+color:#888;
 }
 
 .circle-help{
-  text-align:center;
-  color:#777;
-  font-size:11px;
-  margin-top:12px;
+text-align:center;
+font-size:11px;
+color:#777;
+margin-top:12px;
 }
 
 /* PROGRESSION */
 
 .progression{
-  min-height:90px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  padding:12px;
-  background:#090909;
-  border:1px solid #2b2926;
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+padding:12px;
+min-height:100px;
+background:#080808;
+border:1px solid #2b2926;
 }
 
 .empty{
-  color:#666;
-  font-style:italic;
-  padding:20px;
+padding:20px;
+color:#666;
+font-style:italic;
 }
 
 .chord-card{
-  min-width:95px;
-  background:#1a1713;
-  border:1px solid #a27f48;
-  border-radius:5px;
-  padding:9px;
-  text-align:center;
+position:relative;
+min-width:105px;
+background:#1b1712;
+border:1px solid #a27e46;
+border-radius:6px;
+padding:9px;
+text-align:center;
+}
+
+.chord-card.active{
+box-shadow:0 0 15px rgba(185,145,75,.2);
 }
 
 .chord-card strong{
-  display:block;
-  font-family:Arial,sans-serif;
-  font-size:18px;
+font-family:Arial,sans-serif;
+font-size:19px;
+display:block;
+color:#e0bf80;
 }
 
-.chord-card small{
-  display:block;
-  color:#999;
-  font-size:10px;
-  margin-top:3px;
+.beat-count{
+margin-top:4px;
+font-size:11px;
+color:#999;
 }
 
-.card-buttons{
-  display:flex;
-  justify-content:center;
-  gap:5px;
-  margin-top:7px;
+.beat-controls{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:5px;
+margin-top:8px;
 }
 
-.small-button{
-  padding:5px 8px;
-}
-
-/* LYRICS */
-
-.beat-row{
-  display:grid;
-  grid-template-columns:55px 80px 1fr 120px;
-  gap:7px;
-  align-items:center;
-  border-bottom:1px solid #292724;
-  padding:7px 0;
+.beat-controls button{
+width:28px;
+height:28px;
+padding:0;
 }
 
 .beat-number{
-  text-align:center;
-  font-family:Arial,sans-serif;
-  color:#cba968;
+min-width:25px;
+font-family:Arial,sans-serif;
+color:#d4b171;
+font-weight:bold;
 }
 
-.beat-chord{
-  font-family:Arial,sans-serif;
-  font-weight:bold;
+.delete-chord{
+position:absolute;
+right:4px;
+top:4px;
+width:20px;
+height:20px;
+padding:0;
+border:0;
+background:transparent;
+color:#777;
 }
 
-.beat-row input,
-.beat-row select,
+.delete-chord:hover{
+color:#e08b80;
+}
+
+/* TAP EXPLANATION */
+
+.tap-message{
+margin-top:12px;
+padding:11px;
+background:#14120f;
+border-left:3px solid #a27e46;
+color:#999;
+font-size:12px;
+}
+
+/* SONG DETAILS */
+
+.field{
+margin-bottom:14px;
+}
+
+.field label{
+display:block;
+font-family:Arial,sans-serif;
+font-size:10px;
+text-transform:uppercase;
+letter-spacing:1px;
+color:#888;
+margin-bottom:5px;
+}
+
 input{
-  width:100%;
-  background:#090909;
-  color:#eee;
-  border:1px solid #38342e;
-  border-radius:4px;
-  padding:10px;
+width:100%;
+background:#080808;
+border:1px solid #3a3731;
+border-radius:4px;
+padding:11px;
+color:#eee;
+font:inherit;
 }
 
-/* OPTIONS MODAL */
+/* LYRIC GRID */
 
-.modal{
-  position:fixed;
-  z-index:500;
-  inset:0;
-  background:rgba(0,0,0,.9);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
+.lyric-chord{
+margin-bottom:20px;
+border:1px solid #302e2a;
+background:#0b0b0b;
 }
 
-.modal.show{
-  display:flex;
+.lyric-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px;
+background:#171410;
+border-bottom:1px solid #39332a;
 }
 
-.modal-box{
-  width:min(94vw,520px);
-  max-height:90vh;
-  overflow:auto;
-  background:#111;
-  border:1px solid #b08a4f;
-  padding:20px;
+.lyric-header strong{
+font-family:Arial,sans-serif;
+color:#d7b675;
 }
 
-.modal-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.lyric-header span{
+font-size:10px;
+color:#888;
 }
 
-.modal-header h2{
-  color:#d8b779;
+.beat-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:7px;
+padding:9px;
 }
 
-.option-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
+.beat-box{
+border:1px solid #34312b;
+background:#111;
+padding:7px;
 }
 
-.option-grid button{
-  padding:13px 5px;
+.beat-title{
+font-family:Arial,sans-serif;
+font-size:9px;
+color:#b48b4e;
+margin-bottom:6px;
+}
+
+.beat-box textarea{
+width:100%;
+min-height:55px;
+resize:vertical;
+background:#080808;
+border:1px solid #2f2c27;
+color:#eee;
+padding:7px;
+font:13px Georgia,serif;
+}
+
+.subdivision{
+margin-top:6px;
+}
+
+.subdivision select{
+width:100%;
+background:#090909;
+color:#aaa;
+border:1px solid #302e2a;
+padding:5px;
+font-size:10px;
 }
 
 /* STICKY CHORD BAR */
 
-.sticky-chords{
-  position:fixed;
-  z-index:200;
-  bottom:0;
-  left:0;
-  right:0;
-  background:rgba(8,8,8,.97);
-  border-top:1px solid #a27f48;
-  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
-  box-shadow:0 -8px 25px rgba(0,0,0,.7);
+.sticky{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+z-index:200;
+background:rgba(7,7,7,.98);
+border-top:1px solid #a27e46;
+box-shadow:0 -8px 25px rgba(0,0,0,.7);
+padding:9px 8px calc(9px + env(safe-area-inset-bottom));
 }
 
 .sticky-title{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  color:#888;
-  font-family:Arial,sans-serif;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:1px;
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+font-family:Arial,sans-serif;
+font-size:10px;
+text-transform:uppercase;
+letter-spacing:1px;
+color:#888;
 }
 
 .quick-chords{
-  max-width:1100px;
-  margin:7px auto 0;
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  gap:5px;
+max-width:1100px;
+margin:7px auto 0;
+display:grid;
+grid-template-columns:repeat(8,1fr);
+gap:5px;
 }
 
-.quick-chord{
-  min-height:48px;
-  padding:5px;
+.quick{
+min-height:48px;
+padding:5px;
 }
 
-.quick-chord strong{
-  display:block;
-  font-family:Arial,sans-serif;
-  font-size:15px;
+.quick strong{
+display:block;
+font-family:Arial,sans-serif;
+font-size:14px;
 }
 
-.quick-chord small{
-  display:block;
-  font-size:8px;
-  color:#777;
+.quick small{
+display:block;
+font-size:8px;
+color:#777;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+z-index:500;
+inset:0;
+background:rgba(0,0,0,.91);
+display:none;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-box{
+width:min(94vw,520px);
+max-height:90vh;
+overflow:auto;
+background:#111;
+border:1px solid #b18a4f;
+padding:20px;
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.modal-header h2{
+color:#dfbd7d;
+}
+
+.option-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+}
+
+.option-grid button{
+padding:13px 5px;
 }
 
 /* TOAST */
 
 .toast{
-  position:fixed;
-  z-index:1000;
-  left:50%;
-  bottom:100px;
-  transform:translateX(-50%);
-  background:#211c15;
-  border:1px solid #b08a4f;
-  padding:10px 16px;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
+position:fixed;
+z-index:1000;
+left:50%;
+bottom:105px;
+transform:translateX(-50%);
+background:#211c15;
+border:1px solid #b18a4f;
+padding:10px 16px;
+opacity:0;
+pointer-events:none;
+transition:.2s;
 }
 
 .toast.show{
-  opacity:1;
+opacity:1;
 }
+
+/* MOBILE */
 
 @media(max-width:650px){
 
-  .circle{
-    width:94vw;
-    height:94vw;
-  }
+.circle{
+width:96vw;
+height:96vw;
+}
 
-  .circle-chord{
-    width:68px;
-    height:68px;
-    margin:-34px;
-    font-size:12px;
-  }
+.circle-node{
+width:67px;
+height:67px;
+font-size:12px;
+}
 
-  .center{
-    width:90px;
-    height:90px;
-  }
+.circle-node.minor{
+width:57px;
+height:57px;
+font-size:10px;
+}
 
-  .center strong{
-    font-size:19px;
-  }
+.circle-node.diminished{
+width:48px;
+height:48px;
+font-size:9px;
+}
 
-  .quick-chords{
-    grid-template-columns:repeat(4,1fr);
-  }
+.circle-centre{
+width:91px;
+height:91px;
+}
 
-  .beat-row{
-    grid-template-columns:40px 65px 1fr;
-  }
+.circle-centre strong{
+font-size:19px;
+}
 
-  .beat-row select{
-    grid-column:1 / -1;
-  }
+.beat-grid{
+grid-template-columns:repeat(2,1fr);
+}
 
-  .option-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+.quick-chords{
+grid-template-columns:repeat(4,1fr);
+}
+
+.option-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -492,7 +658,9 @@ ML6CMG SONG BUILDER
 <small>Circle of Fifths · Chords · Lyrics</small>
 </div>
 
-<button class="gold" onclick="newSong()">
+<button
+class="gold"
+onclick="newSong()">
 + New Song
 </button>
 
@@ -503,6 +671,7 @@ ML6CMG SONG BUILDER
 
 <main>
 
+
 <!-- KEY -->
 
 <section class="panel">
@@ -510,10 +679,13 @@ ML6CMG SONG BUILDER
 <h1>Choose Your Key</h1>
 
 <p class="description">
-The song builder starts in C Major. Select another key and the Circle of Fifths will update.
+Start in C Major or select another key. The Circle will rebuild using the chords belonging to that key.
 </p>
 
-<div id="keyButtons" class="key-buttons"></div>
+<div
+id="keyButtons"
+class="key-buttons">
+</div>
 
 </section>
 
@@ -525,31 +697,52 @@ The song builder starts in C Major. Select another key and the Circle of Fifths 
 <h1>Circle of Fifths</h1>
 
 <p class="description">
-Tap a chord once to add it to your progression.
-Press and hold a chord for 2 seconds to see its chord variations.
+Major chords are on the outer ring. Relative minor chords are inside them. The diminished chord for the selected key is shown in the inner ring.
 </p>
 
-<div class="circle-container">
+<div class="circle-area">
 
-<div id="circle" class="circle">
+<div
+id="circle"
+class="circle">
 
-<div class="center">
+<div class="outer-ring circle-ring"></div>
 
-<strong id="centreKey">C</strong>
+<div class="middle-ring circle-ring"></div>
+
+<div class="inner-ring circle-ring"></div>
+
+<div class="circle-centre">
+
+<strong id="centreKey">
+C
+</strong>
 
 <span>MAJOR</span>
 
-<small>Choose a chord</small>
+<small>
+Select a chord
+</small>
 
 </div>
 
 </div>
+
+</div>
+
+<div class="circle-legend">
+
+<span>● Major</span>
+
+<span>● Relative Minor</span>
+
+<span>◌ Diminished</span>
 
 </div>
 
 <div class="circle-help">
 
-Tap = select chord · Hold for 2 seconds = chord options
+Tap a chord to add it · Hold for 2 seconds for chord variations
 
 </div>
 
@@ -563,49 +756,64 @@ Tap = select chord · Hold for 2 seconds = chord options
 <h1>Your Chord Progression</h1>
 
 <p class="description">
-Each tap adds a chord. You can edit the number of beats or delete a mistake.
+Tap a chord below to add one beat. Keep tapping the same chord to make it last longer.
 </p>
 
-<div id="progression" class="progression">
+<div
+id="progression"
+class="progression">
 
 <div class="empty">
-Your first chord will appear here.
+Your chosen chords will appear here.
 </div>
+
+</div>
+
+<div class="tap-message">
+
+<strong>Beat counting:</strong>
+Tap the chosen chord again to add another full beat.
+Use − to remove a beat. Use × to delete the chord completely.
 
 </div>
 
 </section>
 
 
-<!-- SONG -->
+<!-- DETAILS -->
 
 <section class="panel">
 
 <h1>Song Details</h1>
 
-<p class="description">
-These details can be edited at any time.
-</p>
+<div class="field">
 
-<label>Song Title</label>
+<label>
+Song Title
+</label>
 
 <input
 id="songTitle"
 type="text"
-placeholder="Untitled Song"
->
+placeholder="Untitled Song">
 
-<br><br>
+</div>
 
-<label>BPM</label>
+
+<div class="field">
+
+<label>
+BPM
+</label>
 
 <input
 id="bpm"
 type="number"
 value="90"
 min="40"
-max="240"
->
+max="240">
+
+</div>
 
 </section>
 
@@ -614,17 +822,16 @@ max="240"
 
 <section class="panel">
 
-<h1>Lyrics & Beat Map</h1>
+<h1>Chords & Lyrics</h1>
 
 <p class="description">
-Each chord can last one or more full beats.
-Each beat can later be split into 2, 3 or 4 shorter parts.
+The number of beats you've assigned to each chord automatically creates the lyric boxes below. Type the words being sung at each point in the song.
 </p>
 
-<div id="beats">
+<div id="lyrics">
 
 <div class="empty">
-Build a chord progression first.
+Choose some chords first.
 </div>
 
 </div>
@@ -636,28 +843,38 @@ Build a chord progression first.
 
 <section class="panel">
 
-<h1>Save / Export</h1>
+<h1>Save & Export</h1>
 
-<button class="gold" onclick="saveSong()">
+<p class="description">
+Save keeps the current song on this device. Export creates a Word-compatible document containing the chord and lyric map.
+</p>
+
+<button
+class="gold"
+onclick="saveSong()">
 Save Song
 </button>
 
-<button onclick="exportDocument()">
+<button
+onclick="exportDocument()">
 Export Chords + Lyrics
 </button>
 
 </section>
+
 
 </main>
 
 
 <!-- STICKY CHORDS -->
 
-<div class="sticky-chords">
+<div class="sticky">
 
 <div class="sticky-title">
 
-<span>Chords Ready To Play</span>
+<span>
+Chords Ready To Play
+</span>
 
 <span id="stickyKey">
 C Major
@@ -677,8 +894,7 @@ class="quick-chords">
 
 <div
 id="modal"
-class="modal"
->
+class="modal">
 
 <div class="modal-box">
 
@@ -695,7 +911,7 @@ C
 </div>
 
 <p class="description">
-Choose a variation.
+Choose a variation of this chord.
 </p>
 
 <div
@@ -708,16 +924,19 @@ class="option-grid">
 </div>
 
 
-<div id="toast" class="toast"></div>
+<div
+id="toast"
+class="toast">
+</div>
 
 
 <script>
 
-/* =========================
-   CIRCLE OF FIFTHS
-========================= */
+/* =========================================
+   MUSIC THEORY
+========================================= */
 
-const circleKeys = [
+const fifths = [
 "C",
 "G",
 "D",
@@ -732,7 +951,312 @@ const circleKeys = [
 "F"
 ];
 
-const relativeMinors = {
+const keyData = {
+
+"C":{
+major:["C","F","G"],
+minor:["Am","Dm","Em"],
+diminished:"B°"
+},
+
+"G":{
+major:["G","C","D"],
+minor:["Em","Am","Bm"],
+diminished:"F#°"
+},
+
+"D":{
+major:["D","G","A"],
+minor:["Bm","Em","F#m"],
+diminished:"C#°"
+},
+
+"A":{
+major:["A","D","E"],
+minor:["F#m","Bm","C#m"],
+diminished:"G#°"
+},
+
+"E":{
+major:["E","A","B"],
+minor:["C#m","F#m","G#m"],
+diminished:"D#°"
+},
+
+"B":{
+major:["B","E","F#"],
+minor:["G#m","C#m","D#m"],
+diminished:"A#°"
+},
+
+"F#":{
+major:["F#","B","C#"],
+minor:["D#m","G#m","A#m"],
+diminished:"E#°"
+},
+
+"C#":{
+major:["C#","F#","G#"],
+minor:["A#m","D#m","Fm"],
+diminished:"B#°"
+},
+
+"G#":{
+major:["G#","C#","D#"],
+minor:["Fm","A#m","Cm"],
+diminished:"G°"
+},
+
+"D#":{
+major:["D#","G#","A#"],
+minor:["Cm","Fm","Gm"],
+diminished:"C°"
+},
+
+"A#":{
+major:["A#","D#","F"],
+minor:["Dm","Gm","Am"],
+diminished:"G#°"
+},
+
+"F":{
+major:["F","A#","C"],
+minor:["Dm","Gm","Am"],
+diminished:"E°"
+}
+
+};
+
+
+/* =========================================
+   STATE
+========================================= */
+
+let selectedKey = "C";
+
+let selectedChord = null;
+
+let progression = [];
+
+let lyricBeats = [];
+
+let holdTimer = null;
+
+let suppressClick = false;
+
+
+/* =========================================
+   KEY BUTTONS
+========================================= */
+
+function renderKeyButtons(){
+
+const box =
+document.getElementById("keyButtons");
+
+box.innerHTML="";
+
+fifths.forEach(key=>{
+
+const button =
+document.createElement("button");
+
+button.textContent=key;
+
+if(key===selectedKey){
+
+button.classList.add("selected");
+
+}
+
+button.onclick=()=>{
+
+selectedKey=key;
+
+selectedChord=null;
+
+document.getElementById(
+"centreKey"
+).textContent=key;
+
+document.getElementById(
+"stickyKey"
+).textContent=key+" Major";
+
+renderKeyButtons();
+
+drawCircle();
+
+renderQuickChords();
+
+};
+
+box.appendChild(button);
+
+});
+
+}
+
+
+/* =========================================
+   DRAW CIRCLE
+========================================= */
+
+function drawCircle(){
+
+const circle =
+document.getElementById("circle");
+
+circle
+.querySelectorAll(".circle-node")
+.forEach(node=>node.remove());
+
+const start =
+fifths.indexOf(selectedKey);
+
+const data =
+keyData[selectedKey];
+
+
+/* MAJOR RING */
+
+fifths.forEach((unused,index)=>{
+
+const key =
+fifths[
+(start+index)%12
+];
+
+const angle =
+(index/12)*Math.PI*2-Math.PI/2;
+
+const radius=42;
+
+const x =
+50+Math.cos(angle)*radius;
+
+const y =
+50+Math.sin(angle)*radius;
+
+createNode(
+circle,
+key,
+x,
+y,
+"major"
+);
+
+});
+
+
+/* RELATIVE MINORS */
+
+fifths.forEach((unused,index)=>{
+
+const key =
+fifths[
+(start+index)%12
+];
+
+const minor =
+relativeMinor(key);
+
+const angle =
+(index/12)*Math.PI*2-Math.PI/2;
+
+const radius=27;
+
+const x =
+50+Math.cos(angle)*radius;
+
+const y =
+50+Math.sin(angle)*radius;
+
+createNode(
+circle,
+minor,
+x,
+y,
+"minor"
+);
+
+});
+
+
+/* DIMINISHED */
+
+const diminished =
+data.diminished;
+
+createNode(
+circle,
+diminished,
+50,
+14,
+"diminished"
+);
+
+}
+
+
+/* =========================================
+   CREATE CIRCLE NODE
+========================================= */
+
+function createNode(
+circle,
+chord,
+x,
+y,
+type
+){
+
+const button =
+document.createElement("button");
+
+button.className =
+"circle-node "+type;
+
+if(selectedChord===chord){
+
+button.classList.add("active");
+
+}
+
+button.style.left=x+"%";
+
+button.style.top=y+"%";
+
+button.innerHTML=`
+<div>
+${escapeHTML(chord)}
+${type==="major" ?
+"<small>Major</small>" :
+type==="minor" ?
+"<small>Minor</small>" :
+"<small>Diminished</small>"
+}
+</div>
+`;
+
+attachChordEvents(
+button,
+chord
+);
+
+circle.appendChild(button);
+
+}
+
+
+/* =========================================
+   RELATIVE MINOR
+========================================= */
+
+function relativeMinor(key){
+
+const map={
+
 "C":"Am",
 "G":"Em",
 "D":"Bm",
@@ -745,781 +1269,703 @@ const relativeMinors = {
 "D#":"Cm",
 "A#":"Dm",
 "F":"Dm"
+
 };
 
-let selectedKey = "C";
-
-let selectedChord = null;
-
-let progression = [];
-
-let beatData = [];
-
-let holdTimer = null;
-
-let suppressClick = false;
-
-
-/* =========================
-   KEY BUTTONS
-========================= */
-
-function renderKeyButtons(){
-
-  const box = document.getElementById("keyButtons");
-
-  box.innerHTML = "";
-
-  circleKeys.forEach(key => {
-
-    const button = document.createElement("button");
-
-    button.textContent = key;
-
-    if(key === selectedKey){
-
-      button.classList.add("selected");
-
-    }
-
-    button.onclick = () => {
-
-      selectedKey = key;
-
-      selectedChord = null;
-
-      document.getElementById("centreKey").textContent = key;
-
-      document.getElementById("stickyKey").textContent =
-        key + " Major";
-
-      renderKeyButtons();
-
-      drawCircle();
-
-      renderQuickChords();
-
-    };
-
-    box.appendChild(button);
-
-  });
+return map[key];
 
 }
 
 
-/* =========================
-   DRAW CIRCLE
-========================= */
+/* =========================================
+   TAP / HOLD
+========================================= */
 
-function drawCircle(){
+function attachChordEvents(
+button,
+chord
+){
 
-  const circle = document.getElementById("circle");
+button.addEventListener(
+"pointerdown",
+()=>{
 
-  circle.querySelectorAll(".circle-chord").forEach(
-    element => element.remove()
-  );
+suppressClick=false;
 
-  const start =
-    circleKeys.indexOf(selectedKey);
+holdTimer=setTimeout(()=>{
 
-  circleKeys.forEach((unused,index) => {
+suppressClick=true;
 
-    const key =
-      circleKeys[(start + index) % 12];
+openChordOptions(chord);
 
-    const angle =
-      (index / 12) *
-      Math.PI * 2 -
-      Math.PI / 2;
+},2000);
 
-    const radius = 38;
+});
 
-    const x =
-      50 + Math.cos(angle) * radius;
 
-    const y =
-      50 + Math.sin(angle) * radius;
+["pointerup",
+"pointercancel",
+"pointerleave"]
+.forEach(event=>{
 
-    const button =
-      document.createElement("button");
+button.addEventListener(
+event,
+()=>clearTimeout(holdTimer)
+);
 
-    button.className = "circle-chord";
+});
 
-    if(selectedChord === key){
 
-      button.classList.add("active");
+button.addEventListener(
+"click",
+()=>{
 
-    }
+if(!suppressClick){
 
-    button.style.left = x + "%";
+addChord(chord);
 
-    button.style.top = y + "%";
+}
 
-    button.innerHTML = `
-      <div>
-        ${key}
-        <small>${relativeMinors[key]}</small>
-      </div>
-    `;
+suppressClick=false;
 
-    attachChordEvents(button,key);
-
-    circle.appendChild(button);
-
-  });
+});
 
 }
 
 
-/* =========================
-   TAP / LONG PRESS
-========================= */
-
-function attachChordEvents(button,chord){
-
-  button.addEventListener(
-    "pointerdown",
-    () => {
-
-      suppressClick = false;
-
-      holdTimer =
-        setTimeout(() => {
-
-          suppressClick = true;
-
-          openChordOptions(chord);
-
-        },2000);
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointerup",
-    () => {
-
-      clearTimeout(holdTimer);
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointercancel",
-    () => {
-
-      clearTimeout(holdTimer);
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointerleave",
-    () => {
-
-      clearTimeout(holdTimer);
-
-    }
-  );
-
-
-  button.addEventListener(
-    "click",
-    () => {
-
-      if(!suppressClick){
-
-        addChord(chord);
-
-      }
-
-      suppressClick = false;
-
-    }
-  );
-
-}
-
-
-/* =========================
+/* =========================================
    ADD CHORD
-========================= */
+========================================= */
 
 function addChord(chord){
 
-  selectedChord = chord;
+selectedChord=chord;
 
-  progression.push({
+const existing =
+progression.find(
+item=>item.chord===chord
+);
 
-    chord:chord,
 
-    beats:1
+/*
+If the chord already exists,
+tap it again to add another beat.
+Otherwise create it with one beat.
+*/
 
-  });
+if(existing){
 
-  syncBeatData();
+existing.beats++;
 
-  renderProgression();
+showToast(
+chord+" → "+existing.beats+" beats"
+);
 
-  renderBeats();
+}else{
 
-  drawCircle();
+progression.push({
 
-  renderQuickChords();
+chord:chord,
 
-  showToast(chord + " added");
+beats:1
+
+});
+
+showToast(
+chord+" → 1 beat"
+);
+
+}
+
+syncLyrics();
+
+renderProgression();
+
+renderLyrics();
+
+drawCircle();
+
+renderQuickChords();
 
 }
 
 
-/* =========================
+/* =========================================
    CHORD OPTIONS
-========================= */
+========================================= */
 
-function getVariations(chord){
+function chordVariations(chord){
 
-  return [
+const root =
+chord
+.replace("°","")
+.replace(/m$/,"");
 
-    chord,
+const minor =
+chord.includes("m");
 
-    chord + "7",
+let options;
 
-    chord + "9",
+if(minor){
 
-    chord + "maj7",
+options=[
+chord,
+root+"m7",
+root+"m9",
+root+"m11",
+root+"m6",
+root+"mMaj7",
+root+"m7b5",
+root+"msus2",
+root+"msus4"
+];
 
-    chord + "6",
+}else if(chord.includes("°")){
 
-    chord + "sus2",
+options=[
+chord,
+root+"°7",
+root+"m7b5"
+];
 
-    chord + "sus4",
+}else{
 
-    chord + "dim",
+options=[
+chord,
+root+"7",
+root+"9",
+root+"11",
+root+"13",
+root+"maj7",
+root+"6",
+root+"sus2",
+root+"sus4",
+root+"add9",
+root+"aug",
+root+"dim"
+];
 
-    chord + "aug"
+}
 
-  ];
+return [...new Set(options)];
 
 }
 
 
 function openChordOptions(chord){
 
-  document.getElementById(
-    "modalChord"
-  ).textContent = chord;
+document.getElementById(
+"modalChord"
+).textContent=chord;
 
-  const grid =
-    document.getElementById("optionGrid");
+const grid =
+document.getElementById(
+"optionGrid"
+);
 
-  grid.innerHTML = "";
+grid.innerHTML="";
 
-  getVariations(chord).forEach(
-    variation => {
+chordVariations(chord)
+.forEach(variation=>{
 
-      const button =
-        document.createElement("button");
+const button =
+document.createElement("button");
 
-      button.textContent = variation;
+button.textContent=variation;
 
-      button.onclick = () => {
+button.onclick=()=>{
 
-        closeModal();
+closeModal();
 
-        addChord(variation);
+addChord(variation);
 
-      };
+};
 
-      grid.appendChild(button);
+grid.appendChild(button);
 
-    }
-  );
+});
 
-  document
-    .getElementById("modal")
-    .classList.add("show");
+document
+.getElementById("modal")
+.classList.add("show");
 
 }
 
 
 function closeModal(){
 
-  document
-    .getElementById("modal")
-    .classList.remove("show");
+document
+.getElementById("modal")
+.classList.remove("show");
 
 }
 
 
-/* =========================
-   QUICK CHORD BAR
-========================= */
-
-function renderQuickChords(){
-
-  const box =
-    document.getElementById("quickChords");
-
-  const index =
-    circleKeys.indexOf(selectedKey);
-
-  const choices = [
-
-    selectedKey,
-
-    relativeMinors[selectedKey],
-
-    circleKeys[(index + 1) % 12],
-
-    circleKeys[(index + 11) % 12],
-
-    circleKeys[(index + 2) % 12],
-
-    circleKeys[(index + 10) % 12],
-
-    circleKeys[(index + 3) % 12],
-
-    circleKeys[(index + 9) % 12]
-
-  ];
-
-  box.innerHTML = "";
-
-  [...new Set(choices)].forEach(chord => {
-
-    const button =
-      document.createElement("button");
-
-    button.className = "quick-chord";
-
-    button.innerHTML = `
-      <strong>${escapeHTML(chord)}</strong>
-      <small>tap · hold 2s</small>
-    `;
-
-    attachChordEvents(button,chord);
-
-    box.appendChild(button);
-
-  });
-
-}
-
-
-/* =========================
-   PROGRESSION
-========================= */
+/* =========================================
+   PROGRESSION DISPLAY
+========================================= */
 
 function renderProgression(){
 
-  const box =
-    document.getElementById("progression");
+const box =
+document.getElementById(
+"progression"
+);
 
-  if(progression.length === 0){
+if(progression.length===0){
 
-    box.innerHTML =
-      `<div class="empty">
-        Your first chord will appear here.
-      </div>`;
+box.innerHTML=`
+<div class="empty">
+Your chosen chords will appear here.
+</div>
+`;
 
-    return;
+return;
 
-  }
+}
 
-  box.innerHTML = "";
+box.innerHTML="";
 
-  progression.forEach((item,index) => {
+progression.forEach(
+(item,index)=>{
 
-    const card =
-      document.createElement("div");
+const card =
+document.createElement("div");
 
-    card.className = "chord-card";
+card.className="chord-card";
 
-    card.innerHTML = `
+card.innerHTML=`
 
-      <strong>
-        ${escapeHTML(item.chord)}
-      </strong>
+<button
+class="delete-chord"
+onclick="deleteChord(${index})">
+×
+</button>
 
-      <small>
-        ${item.beats}
-        beat${item.beats === 1 ? "" : "s"}
-      </small>
+<strong>
+${escapeHTML(item.chord)}
+</strong>
 
-      <div class="card-buttons">
+<div class="beat-count">
 
-        <button
-          class="small-button"
-          onclick="editChord(${index})">
-          ✎
-        </button>
+<span>
+${item.beats}
+beat${item.beats===1?"":"s"}
+</span>
 
-        <button
-          class="small-button"
-          onclick="deleteChord(${index})">
-          ×
-        </button>
+</div>
 
-      </div>
+<div class="beat-controls">
 
-    `;
+<button
+onclick="removeBeat(${index})">
+−
+</button>
 
-    box.appendChild(card);
+<span class="beat-number">
+${item.beats}
+</span>
 
-  });
+<button
+onclick="addBeat(${index})">
++
+</button>
+
+</div>
+
+`;
+
+box.appendChild(card);
+
+});
 
 }
 
 
-/* =========================
-   EDIT CHORD
-========================= */
+/* =========================================
+   ADD / REMOVE BEAT
+========================================= */
 
-function editChord(index){
+function addBeat(index){
 
-  const answer =
-    prompt(
-      "How many full beats should " +
-      progression[index].chord +
-      " last?",
-      progression[index].beats
-    );
+progression[index].beats++;
 
-  if(answer === null){
+syncLyrics();
 
-    return;
+renderProgression();
 
-  }
-
-  const beats =
-    parseInt(answer);
-
-  if(
-    Number.isInteger(beats) &&
-    beats > 0 &&
-    beats <= 64
-  ){
-
-    progression[index].beats = beats;
-
-    syncBeatData();
-
-    renderProgression();
-
-    renderBeats();
-
-  }
+renderLyrics();
 
 }
 
 
-/* =========================
-   DELETE CHORD
-========================= */
+function removeBeat(index){
+
+if(
+progression[index].beats<=1
+){
+
+deleteChord(index);
+
+return;
+
+}
+
+progression[index].beats--;
+
+syncLyrics();
+
+renderProgression();
+
+renderLyrics();
+
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
 
 function deleteChord(index){
 
-  if(
-    !confirm(
-      "Delete " +
-      progression[index].chord +
-      "?"
-    )
-  ){
+if(
+!confirm(
+"Delete "+
+progression[index].chord+
+"?"
+)
+){
 
-    return;
+return;
 
-  }
+}
 
-  progression.splice(index,1);
+progression.splice(
+index,
+1
+);
 
-  syncBeatData();
+syncLyrics();
 
-  renderProgression();
+renderProgression();
 
-  renderBeats();
+renderLyrics();
 
 }
 
 
-/* =========================
-   BEAT DATA
-========================= */
+/* =========================================
+   SYNC LYRICS
+========================================= */
 
-function syncBeatData(){
+function syncLyrics(){
 
-  let total = 0;
+let total=0;
 
-  progression.forEach(item => {
+progression.forEach(
+item=>{
+total+=item.beats;
+}
+);
 
-    total += item.beats;
+while(
+lyricBeats.length<total
+){
 
-  });
+lyricBeats.push({
 
-  while(beatData.length < total){
+lyrics:"",
+split:1
 
-    beatData.push({
+});
 
-      lyrics:"",
+}
 
-      split:1,
-
-      parts:[""]
-
-    });
-
-  }
-
-  beatData.length = total;
+lyricBeats.length=total;
 
 }
 
 
-/* =========================
-   LYRICS / BEATS
-========================= */
+/* =========================================
+   LYRIC DISPLAY
+========================================= */
 
-function renderBeats(){
+function renderLyrics(){
 
-  const box =
-    document.getElementById("beats");
+const box =
+document.getElementById(
+"lyrics"
+);
 
-  if(progression.length === 0){
+if(progression.length===0){
 
-    box.innerHTML =
-      `<div class="empty">
-        Build a chord progression first.
-      </div>`;
+box.innerHTML=`
+<div class="empty">
+Choose some chords first.
+</div>
+`;
 
-    return;
+return;
 
-  }
+}
 
-  const chordList = [];
+box.innerHTML="";
 
-  progression.forEach(item => {
+let globalBeat=0;
 
-    for(
-      let i = 0;
-      i < item.beats;
-      i++
-    ){
+progression.forEach(
+(item,chordIndex)=>{
 
-      chordList.push(item.chord);
+const section =
+document.createElement("div");
 
-    }
+section.className=
+"lyric-chord";
 
-  });
+const header =
+document.createElement("div");
 
-  box.innerHTML = "";
+header.className=
+"lyric-header";
 
-  chordList.forEach((chord,index) => {
+header.innerHTML=`
 
-    if(!beatData[index]){
+<strong>
+${escapeHTML(item.chord)}
+</strong>
 
-      beatData[index] = {
-        lyrics:"",
-        split:1,
-        parts:[""]
-      };
+<span>
+${item.beats}
+beat${item.beats===1?"":"s"}
+</span>
 
-    }
+`;
 
-    const row =
-      document.createElement("div");
+section.appendChild(header);
 
-    row.className = "beat-row";
+const grid =
+document.createElement("div");
 
-    row.innerHTML = `
-
-      <div class="beat-number">
-        ${index + 1}
-      </div>
-
-      <div class="beat-chord">
-        ${escapeHTML(chord)}
-      </div>
-
-      <input
-        type="text"
-        placeholder="Lyrics"
-        value="${escapeAttribute(
-          beatData[index].lyrics
-        )}"
-      >
-
-      <select>
-
-        <option value="1">
-          1 full beat
-        </option>
-
-        <option value="2">
-          2 parts
-        </option>
-
-        <option value="3">
-          3 parts
-        </option>
-
-        <option value="4">
-          4 parts
-        </option>
-
-      </select>
-
-    `;
-
-    const input =
-      row.querySelector("input");
-
-    input.addEventListener(
-      "input",
-      () => {
-
-        beatData[index].lyrics =
-          input.value;
-
-      }
-    );
+grid.className="beat-grid";
 
 
-    const select =
-      row.querySelector("select");
+for(
+let localBeat=0;
+localBeat<item.beats;
+localBeat++
+){
 
-    select.value =
-      beatData[index].split || 1;
+const data =
+lyricBeats[globalBeat];
 
-    select.addEventListener(
-      "change",
-      () => {
+const beatBox =
+document.createElement("div");
 
-        beatData[index].split =
-          parseInt(select.value);
+beatBox.className=
+"beat-box";
 
-        showToast(
-          "Beat divided into " +
-          select.value +
-          " parts"
-        );
+beatBox.innerHTML=`
 
-      }
-    );
+<div class="beat-title">
 
-    box.appendChild(row);
+BEAT ${globalBeat+1}
 
-  });
+</div>
+
+<textarea
+placeholder="Lyrics sung here..."
+></textarea>
+
+<div class="subdivision">
+
+<select>
+
+<option value="1">
+1 beat
+</option>
+
+<option value="2">
+Split into 2
+</option>
+
+<option value="3">
+Split into 3
+</option>
+
+<option value="4">
+Split into 4
+</option>
+
+</select>
+
+</div>
+
+`;
+
+const textarea =
+beatBox.querySelector(
+"textarea"
+);
+
+textarea.value =
+data.lyrics || "";
+
+textarea.addEventListener(
+"input",
+()=>{
+
+data.lyrics=
+textarea.value;
+
+});
+
+
+const select =
+beatBox.querySelector(
+"select"
+);
+
+select.value=
+data.split || 1;
+
+select.addEventListener(
+"change",
+()=>{
+
+data.split=
+parseInt(select.value);
+
+showToast(
+"Beat "+(globalBeat+1)+
+" divided into "+
+select.value+
+" parts"
+);
+
+});
+
+grid.appendChild(
+beatBox
+);
+
+globalBeat++;
+
+}
+
+section.appendChild(grid);
+
+box.appendChild(section);
+
+});
 
 }
 
 
-/* =========================
+/* =========================================
+   QUICK CHORDS
+========================================= */
+
+function renderQuickChords(){
+
+const box =
+document.getElementById(
+"quickChords"
+);
+
+const data =
+keyData[selectedKey];
+
+const choices=[
+...data.major,
+...data.minor,
+data.diminished
+];
+
+box.innerHTML="";
+
+[...new Set(choices)]
+.forEach(chord=>{
+
+const button =
+document.createElement("button");
+
+button.className="quick";
+
+button.innerHTML=`
+
+<strong>
+${escapeHTML(chord)}
+</strong>
+
+<small>
+tap · hold 2s
+</small>
+
+`;
+
+attachChordEvents(
+button,
+chord
+);
+
+box.appendChild(button);
+
+});
+
+}
+
+
+/* =========================================
    SAVE
-========================= */
+========================================= */
 
 function saveSong(){
 
-  const song = {
+const song={
 
-    title:
-      document.getElementById(
-        "songTitle"
-      ).value,
+title:
+document.getElementById(
+"songTitle"
+).value,
 
-    bpm:
-      document.getElementById(
-        "bpm"
-      ).value,
+bpm:
+document.getElementById(
+"bpm"
+).value,
 
-    key:selectedKey,
+key:selectedKey,
 
-    progression:progression,
+progression:progression,
 
-    beats:beatData
+lyrics:lyricBeats
 
-  };
+};
 
-  localStorage.setItem(
-    "ML6CMG_song",
-    JSON.stringify(song)
-  );
+localStorage.setItem(
+"ML6CMG_song",
+JSON.stringify(song)
+);
 
-  showToast(
-    "Song saved on this device"
-  );
+showToast(
+"Song saved on this device"
+);
 
 }
 
 
-/* =========================
-   EXPORT
-========================= */
+/* =========================================
+   EXPORT DOCUMENT
+========================================= */
 
 function exportDocument(){
 
-  const title =
-    document.getElementById(
-      "songTitle"
-    ).value ||
-    "ML6CMG Song";
+const title =
+document.getElementById(
+"songTitle"
+).value ||
+"ML6CMG Song";
 
-  let rows = "";
-
-  const chordList = [];
-
-  progression.forEach(item => {
-
-    for(
-      let i=0;
-      i<item.beats;
-      i++
-    ){
-
-      chordList.push(item.chord);
-
-    }
-
-  });
-
-
-  chordList.forEach((chord,index) => {
-
-    rows += `
-
-      <tr>
-
-        <td>
-          ${index + 1}
-        </td>
-
-        <td>
-          <strong>
-            ${escapeHTML(chord)}
-          </strong>
-        </td>
-
-        <td>
-          ${escapeHTML(
-            beatData[index]?.lyrics || ""
-          )}
-        </td>
-
-        <td>
-          ${beatData[index]?.split || 1}
-        </td>
-
-      </tr>
-
-    `;
-
-  });
-
-
-  const html = `
+let html=`
 
 <!DOCTYPE html>
 
@@ -1551,188 +1997,151 @@ ${escapeHTML(selectedKey)} Major
 <p>
 BPM:
 ${escapeHTML(
-  document.getElementById("bpm").value
+document.getElementById("bpm").value
 )}
 </p>
 
-<table
-border="1"
-cellpadding="8"
-cellspacing="0"
->
+<hr>
 
-<tr>
+`;
 
-<th>
-Beat
-</th>
+let beat=0;
 
-<th>
-Chord
-</th>
+progression.forEach(item=>{
 
-<th>
-Lyrics
-</th>
+html+=`
 
-<th>
-Subdivision
-</th>
+<h2>
+${escapeHTML(item.chord)}
+—
+${item.beats} beat${item.beats===1?"":"s"}
+</h2>
 
-</tr>
+`;
 
-${rows}
+for(
+let i=0;
+i<item.beats;
+i++
+){
 
-</table>
+const lyric =
+lyricBeats[beat];
+
+html+=`
+
+<p>
+
+<strong>
+Beat ${beat+1}:
+</strong>
+
+${escapeHTML(
+lyric?.lyrics || ""
+)}
+
+<br>
+
+<small>
+Subdivision:
+${lyric?.split || 1}
+</small>
+
+</p>
+
+`;
+
+beat++;
+
+}
+
+});
+
+html+=`
 
 </body>
 
 </html>
-
 `;
 
 
-  const blob =
-    new Blob(
-      [html],
-      {
-        type:"application/msword"
-      }
-    );
+const blob =
+new Blob(
+[html],
+{
+type:"application/msword"
+}
+);
 
-  const url =
-    URL.createObjectURL(blob);
+const url =
+URL.createObjectURL(blob);
 
-  const link =
-    document.createElement("a");
+const link =
+document.createElement("a");
 
-  link.href = url;
+link.href=url;
 
-  link.download =
-    title.replace(
-      /[^a-z0-9]/gi,
-      "_"
-    ) + ".doc";
+link.download=
+title.replace(
+/[^a-z0-9]/gi,
+"_"
+)+".doc";
 
-  link.click();
+document.body.appendChild(link);
 
-  URL.revokeObjectURL(url);
+link.click();
+
+document.body.removeChild(link);
+
+URL.revokeObjectURL(url);
+
+showToast(
+"Document exported"
+);
 
 }
 
 
-/* =========================
+/* =========================================
    NEW SONG
-========================= */
+========================================= */
 
 function newSong(){
 
-  if(
-    progression.length > 0 &&
-    !confirm(
-      "Start a new song? Unsaved changes will be lost."
-    )
-  ){
+if(
+progression.length &&
+!confirm(
+"Start a new song? Unsaved changes will be lost."
+)
+){
 
-    return;
-
-  }
-
-  selectedKey = "C";
-
-  selectedChord = null;
-
-  progression = [];
-
-  beatData = [];
-
-  document.getElementById(
-    "songTitle"
-  ).value = "";
-
-  document.getElementById(
-    "bpm"
-  ).value = 90;
-
-  document.getElementById(
-    "centreKey"
-  ).textContent = "C";
-
-  document.getElementById(
-    "stickyKey"
-  ).textContent = "C Major";
-
-  renderKeyButtons();
-
-  drawCircle();
-
-  renderProgression();
-
-  renderBeats();
-
-  renderQuickChords();
+return;
 
 }
 
+selectedKey="C";
 
-/* =========================
-   HELPERS
-========================= */
+selectedChord=null;
 
-function escapeHTML(value){
+progression=[];
 
-  return String(value)
-    .replace(
-      /[&<>"']/g,
-      function(character){
+lyricBeats=[];
 
-        return {
+document.getElementById(
+"songTitle"
+).value="";
 
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
+document.getElementById(
+"bpm"
+).value=90;
 
-        }[character];
+document.getElementById(
+"centreKey"
+).textContent="C";
 
-      }
-    );
-
-}
-
-
-function escapeAttribute(value){
-
-  return escapeHTML(value);
-
-}
-
-
-function showToast(message){
-
-  const toast =
-    document.getElementById(
-      "toast"
-    );
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  setTimeout(
-    () => {
-      toast.classList.remove("show");
-    },
-    1800
-  );
-
-}
-
-
-/* =========================
-   START APP
-========================= */
+document.getElementById(
+"stickyKey"
+).textContent="C Major";
 
 renderKeyButtons();
 
@@ -1742,7 +2151,68 @@ renderQuickChords();
 
 renderProgression();
 
-renderBeats();
+renderLyrics();
+
+}
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(
+/[&<>"']/g,
+character=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[character])
+);
+
+}
+
+
+function showToast(message){
+
+const toast =
+document.getElementById(
+"toast"
+);
+
+toast.textContent=message;
+
+toast.classList.add("show");
+
+setTimeout(
+()=>{
+toast.classList.remove("show");
+},
+1800
+);
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+renderKeyButtons();
+
+drawCircle();
+
+renderQuickChords();
+
+renderProgression();
+
+renderLyrics();
 
 </script>
 
