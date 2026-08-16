@@ -10,1416 +10,1103 @@
 <title>ML6CMG Song Builder</title>
 
 <style>
-
-/* =========================================================
-   ML6CMG SONG BUILDER
-   FIRST WORKING PROTOTYPE
-   ========================================================= */
-
-:root {
-    --black: #070707;
-    --charcoal: #101010;
-    --charcoal-2: #171717;
-    --charcoal-3: #202020;
-    --border: #3b3833;
-    --gold: #b08b54;
-    --gold-light: #d1b27a;
-    --cream: #eee8dc;
-    --muted: #aaa49a;
-    --danger: #8d4b45;
-    --greenless-dark: #0b0b0b;
+:root{
+    --black:#070707;
+    --charcoal:#101010;
+    --charcoal2:#171717;
+    --charcoal3:#202020;
+    --border:#3b3833;
+    --gold:#b08b54;
+    --goldLight:#d1b27a;
+    --cream:#eee8dc;
+    --muted:#aaa49a;
+    --danger:#8d4b45;
 }
 
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    margin: 0;
-    padding: 0;
+body{
+    margin:0;
     background:
-        radial-gradient(
-            circle at top,
-            #202020 0%,
-            #0d0d0d 38%,
-            #050505 100%
-        );
-    color: var(--cream);
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-    min-height: 100vh;
-    line-height: 1.5;
+        radial-gradient(circle at top,#202020 0%,#0d0d0d 38%,#050505 100%);
+    color:var(--cream);
+    font-family:Georgia,"Times New Roman",serif;
+    min-height:100vh;
+    line-height:1.5;
 }
 
-button,
-input,
-select {
-    font: inherit;
+button,input,select,textarea{
+    font:inherit;
 }
 
-/* =========================================================
-   APP HEADER
-   ========================================================= */
-
-.app-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    background: rgba(7, 7, 7, 0.96);
-    backdrop-filter: blur(12px);
-
-    border-bottom: 1px solid var(--border);
-
-    padding:
-        max(12px, env(safe-area-inset-top))
-        16px
-        12px;
+button{
+    cursor:pointer;
 }
 
-.header-inner {
-    max-width: 1100px;
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+.app-header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,7,7,.97);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:max(12px,env(safe-area-inset-top)) 16px 12px;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
 }
 
-.brand-mark {
-    width: 42px;
-    height: 42px;
-
-    border: 1px solid var(--gold);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--gold-light);
-
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    letter-spacing: 1px;
-
-    background: #0d0d0d;
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.brand-text {
-    line-height: 1.1;
+.brand-mark{
+    width:42px;
+    height:42px;
+    border:1px solid var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--goldLight);
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    letter-spacing:1px;
 }
 
-.brand-name {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    letter-spacing: 2px;
-    color: var(--cream);
+.brand-name{
+    font-family:Arial,sans-serif;
+    font-size:16px;
+    letter-spacing:2px;
 }
 
-.brand-subtitle {
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 3px;
+.brand-subtitle{
+    color:var(--muted);
+    font-size:11px;
 }
 
-.header-actions {
-    display: flex;
-    gap: 7px;
+.header-actions{
+    display:flex;
+    gap:7px;
 }
 
-/* =========================================================
-   GENERAL BUTTONS
-   ========================================================= */
-
-.btn {
-    border: 1px solid var(--border);
-    background: #121212;
-    color: var(--cream);
-
-    padding: 10px 14px;
-
-    border-radius: 4px;
-
-    cursor: pointer;
-
-    transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        transform 0.08s ease;
+.btn{
+    border:1px solid var(--border);
+    background:#121212;
+    color:var(--cream);
+    padding:10px 14px;
+    border-radius:4px;
+    transition:.15s;
 }
 
-.btn:hover {
-    border-color: var(--gold);
-    background: #1c1a17;
+.btn:hover{
+    border-color:var(--gold);
+    background:#1c1a17;
 }
 
-.btn:active {
-    transform: scale(0.97);
+.btn:active{
+    transform:scale(.97);
 }
 
-.btn-primary {
-    border-color: var(--gold);
-    color: var(--gold-light);
+.btn-primary{
+    border-color:var(--gold);
+    color:var(--goldLight);
 }
 
-.btn-danger {
-    border-color: #6c3b37;
-    color: #d58f87;
+.btn-danger{
+    border-color:#6c3b37;
+    color:#d58f87;
 }
 
-.btn-large {
-    min-height: 52px;
-    padding: 12px 22px;
+.btn-large{
+    min-height:52px;
+    padding:12px 20px;
 }
 
-.btn-wide {
-    width: 100%;
+.btn-wide{
+    width:100%;
 }
 
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px 15px 70px;
+main{
+    max-width:1100px;
+    margin:auto;
+    padding:20px 15px 70px;
 }
 
-.panel {
-    background: rgba(14, 14, 14, 0.92);
-    border: 1px solid var(--border);
-
-    margin-bottom: 18px;
-    padding: 20px;
-
-    position: relative;
+.panel{
+    background:rgba(14,14,14,.94);
+    border:1px solid var(--border);
+    margin-bottom:18px;
+    padding:20px;
+    position:relative;
 }
 
-.panel::before {
-    content: "";
-    position: absolute;
-
-    top: -1px;
-    left: 22px;
-
-    width: 65px;
-    height: 1px;
-
-    background: var(--gold);
+.panel::before{
+    content:"";
+    position:absolute;
+    top:-1px;
+    left:22px;
+    width:65px;
+    height:1px;
+    background:var(--gold);
 }
 
-.panel-title {
-    margin: 0 0 5px;
-
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+.panel-title{
+    margin:0 0 5px;
+    font-family:Arial,sans-serif;
+    font-size:20px;
+    letter-spacing:2px;
+    text-transform:uppercase;
 }
 
-.panel-description {
-    margin: 0 0 18px;
-
-    color: var(--muted);
-    font-size: 14px;
+.panel-description{
+    margin:0 0 18px;
+    color:var(--muted);
+    font-size:14px;
 }
 
-/* =========================================================
-   SONG DETAILS
-   ========================================================= */
-
-.song-details {
-    display: grid;
-    grid-template-columns: 1fr 160px 160px;
-    gap: 12px;
+.song-details{
+    display:grid;
+    grid-template-columns:1fr 160px 160px;
+    gap:12px;
 }
 
-.field label {
-    display: block;
-
-    color: var(--muted);
-
-    font-family: Arial, sans-serif;
-    font-size: 11px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-
-    margin-bottom: 6px;
+.field label{
+    display:block;
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    margin-bottom:6px;
 }
 
 .field input,
-.field select {
-    width: 100%;
-
-    background: #090909;
-
-    border: 1px solid var(--border);
-
-    color: var(--cream);
-
-    padding: 12px;
-
-    border-radius: 4px;
-
-    outline: none;
+.field select,
+.field textarea{
+    width:100%;
+    background:#090909;
+    border:1px solid var(--border);
+    color:var(--cream);
+    padding:12px;
+    border-radius:4px;
+    outline:none;
 }
 
 .field input:focus,
-.field select:focus {
-    border-color: var(--gold);
+.field select:focus,
+.field textarea:focus{
+    border-color:var(--gold);
 }
 
-/* =========================================================
-   CHORD PROGRESSION
-   ========================================================= */
-
-.progression-area {
-    min-height: 120px;
-
-    background: #080808;
-
-    border: 1px solid #292724;
-
-    padding: 14px;
-
-    overflow-x: auto;
+.progression-area{
+    min-height:120px;
+    background:#080808;
+    border:1px solid #292724;
+    padding:14px;
+    overflow-x:auto;
 }
 
-.progression {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
-    align-items: center;
+.progression{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
 }
 
-.empty-progression {
-    color: #666159;
-    font-style: italic;
-    padding: 25px 5px;
+.empty-progression{
+    color:#666159;
+    font-style:italic;
+    padding:25px 5px;
 }
 
-.progression-chord {
-    min-width: 65px;
-    min-height: 65px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #252525,
-            #111111
-        );
-
-    border: 1px solid var(--gold);
-
-    color: var(--cream);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-
-    position: relative;
+.progression-card{
+    min-width:100px;
+    min-height:82px;
+    background:linear-gradient(145deg,#252525,#111111);
+    border:1px solid var(--gold);
+    color:var(--cream);
+    border-radius:6px;
+    padding:8px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
-.progression-chord strong {
-    font-family: Arial, sans-serif;
-    font-size: 19px;
+.progression-card strong{
+    font-family:Arial,sans-serif;
+    font-size:19px;
 }
 
-.progression-chord small {
-    color: var(--gold-light);
-    font-size: 10px;
-    margin-top: 2px;
+.progression-card small{
+    color:var(--goldLight);
+    font-size:10px;
 }
 
-.progression-chord:hover {
-    background: #29251f;
+.progression-actions{
+    display:flex;
+    gap:4px;
+    margin-top:6px;
 }
 
-.progression-arrow {
-    color: #655d52;
-    font-size: 18px;
+.tiny-btn{
+    min-width:30px;
+    min-height:28px;
+    padding:4px 7px;
+    background:#111;
+    color:var(--cream);
+    border:1px solid var(--border);
+    border-radius:3px;
 }
 
-/* =========================================================
-   CHORD RECOMMENDATIONS
-   ========================================================= */
-
-.recommendation-group {
-    margin-top: 18px;
+.tiny-btn:hover{
+    border-color:var(--gold);
 }
 
-.group-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 9px;
+.tiny-danger{
+    color:#d58f87;
+    border-color:#6c3b37;
 }
 
-.group-heading h3 {
-    margin: 0;
-
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+.progression-arrow{
+    color:#655d52;
+    font-size:18px;
 }
 
-.group-heading span {
-    color: var(--muted);
-    font-size: 11px;
+.beat-info{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:12px;
 }
 
-.chord-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(105px, 1fr));
-
-    gap: 9px;
+.beat-counter{
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    color:var(--muted);
 }
 
-.chord-button {
-    min-height: 70px;
-
-    border: 1px solid var(--border);
-
-    background:
-        linear-gradient(
-            145deg,
-            #1d1d1d,
-            #101010
-        );
-
-    color: var(--cream);
-
-    border-radius: 6px;
-
-    cursor: pointer;
-
-    padding: 8px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    transition:
-        transform 0.08s ease,
-        border-color 0.15s ease,
-        background 0.15s ease;
+.beat-counter strong{
+    color:var(--goldLight);
+    font-size:18px;
 }
 
-.chord-button:hover {
-    border-color: var(--gold);
-    background: #25221e;
+.strum-note{
+    color:#8f8a82;
+    font-size:12px;
 }
 
-.chord-button:active {
-    transform: scale(0.95);
+.current-beat{
+    padding:14px;
+    margin-top:15px;
+    border:1px solid #312d28;
+    background:#0a0a0a;
+    text-align:center;
 }
 
-.chord-name {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
+.current-beat-label{
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
 }
 
-.chord-reason {
-    color: var(--muted);
-    font-size: 9px;
-    margin-top: 3px;
-    text-align: center;
+.current-beat-chord{
+    font-family:Arial,sans-serif;
+    color:var(--goldLight);
+    font-size:30px;
+    margin-top:3px;
 }
 
-.common .chord-button {
-    border-color: #766044;
+.chord-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
+    gap:9px;
 }
 
-.alternative .chord-button {
-    border-color: #504c45;
+.recommendation-group{
+    margin-top:18px;
 }
 
-.unusual .chord-button {
-    border-color: #423d38;
+.group-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:9px;
 }
 
-/* =========================================================
-   MANUAL CHORD SEARCH
-   ========================================================= */
-
-.manual-row {
-    display: flex;
-    gap: 9px;
+.group-heading h3{
+    margin:0;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
 }
 
-.manual-row input {
-    flex: 1;
-
-    min-width: 0;
-
-    background: #090909;
-
-    border: 1px solid var(--border);
-
-    color: var(--cream);
-
-    padding: 13px;
-
-    border-radius: 4px;
-
-    outline: none;
+.group-heading span{
+    color:var(--muted);
+    font-size:11px;
 }
 
-.manual-row input:focus {
-    border-color: var(--gold);
+.chord-button{
+    min-height:80px;
+    border:1px solid var(--border);
+    background:linear-gradient(145deg,#1d1d1d,#101010);
+    color:var(--cream);
+    border-radius:6px;
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
-/* =========================================================
-   BEAT / STRUM CONTROLS
-   ========================================================= */
-
-.beat-info {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    flex-wrap: wrap;
+.chord-button:hover{
+    border-color:var(--gold);
 }
 
-.beat-counter {
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    color: var(--muted);
+.chord-name{
+    font-family:Arial,sans-serif;
+    font-size:20px;
+    font-weight:bold;
 }
 
-.beat-counter strong {
-    color: var(--gold-light);
-    font-size: 18px;
+.chord-reason{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:3px;
 }
 
-.strum-note {
-    color: #8f8a82;
-    font-size: 12px;
+.chord-tools{
+    display:flex;
+    gap:4px;
+    margin-top:5px;
 }
 
-.current-beat {
-    padding: 14px;
-
-    margin-top: 15px;
-
-    border: 1px solid #312d28;
-
-    background: #0a0a0a;
-
-    text-align: center;
+.common .chord-button{
+    border-color:#766044;
 }
 
-.current-beat-label {
-    color: var(--muted);
-
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: 1.5px;
-
-    text-transform: uppercase;
+.alternative .chord-button{
+    border-color:#504c45;
 }
 
-.current-beat-chord {
-    font-family: Arial, sans-serif;
-
-    color: var(--gold-light);
-
-    font-size: 30px;
-
-    margin-top: 3px;
+.unusual .chord-button{
+    border-color:#423d38;
 }
 
-/* =========================================================
-   PLAYBACK
-   ========================================================= */
-
-.playback-controls {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 9px;
-
-    margin-top: 15px;
+.manual-row{
+    display:flex;
+    gap:9px;
 }
 
-.playback-status {
-    margin-top: 15px;
-
-    padding: 13px;
-
-    border: 1px solid var(--border);
-
-    text-align: center;
-
-    background: #090909;
-
-    color: var(--muted);
-
-    font-size: 13px;
+.manual-row input{
+    flex:1;
+    min-width:0;
+    background:#090909;
+    border:1px solid var(--border);
+    color:var(--cream);
+    padding:13px;
+    border-radius:4px;
+    outline:none;
 }
 
-.playback-status.playing {
-    border-color: var(--gold);
-    color: var(--gold-light);
+.manual-row input:focus{
+    border-color:var(--gold);
 }
 
-/* =========================================================
-   COUNTDOWN
-   ========================================================= */
-
-.countdown-overlay {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 1000;
-
-    background: rgba(0, 0, 0, 0.94);
-
-    display: none;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 20px;
+.playback-controls{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+    margin-top:15px;
 }
 
-.countdown-overlay.visible {
-    display: flex;
+.playback-status{
+    margin-top:15px;
+    padding:13px;
+    border:1px solid var(--border);
+    text-align:center;
+    background:#090909;
+    color:var(--muted);
+    font-size:13px;
 }
 
-.countdown-inner {
-    border: 1px solid var(--gold);
-
-    width: min(90vw, 500px);
-
-    padding: 45px 25px;
-
-    background:
-        radial-gradient(
-            circle,
-            #24211d,
-            #090909 70%
-        );
+.playback-status.playing{
+    border-color:var(--gold);
+    color:var(--goldLight);
 }
 
-.countdown-title {
-    color: var(--muted);
-
-    font-family: Arial, sans-serif;
-
-    font-size: 12px;
-
-    letter-spacing: 3px;
-
-    text-transform: uppercase;
+.countdown-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,0,0,.94);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
 }
 
-.countdown-number {
-    font-family: Arial, sans-serif;
-
-    font-size: clamp(100px, 30vw, 190px);
-
-    line-height: 1;
-
-    color: var(--gold-light);
-
-    margin: 25px 0;
+.countdown-overlay.visible{
+    display:flex;
 }
 
-.countdown-beat {
-    color: var(--muted);
-    font-size: 14px;
+.countdown-inner{
+    border:1px solid var(--gold);
+    width:min(90vw,500px);
+    padding:45px 25px;
+    background:radial-gradient(circle,#24211d,#090909 70%);
 }
 
-/* =========================================================
-   SAVED SONGS
-   ========================================================= */
-
-.saved-song {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 13px 0;
-
-    border-bottom: 1px solid #292724;
+.countdown-title{
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
 }
 
-.saved-song:last-child {
-    border-bottom: none;
+.countdown-number{
+    font-family:Arial,sans-serif;
+    font-size:clamp(100px,30vw,190px);
+    line-height:1;
+    color:var(--goldLight);
+    margin:25px 0;
 }
 
-.saved-song-name {
-    font-family: Arial, sans-serif;
-    color: var(--cream);
+.countdown-beat{
+    color:var(--muted);
 }
 
-.saved-song-meta {
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 3px;
+.lyrics-toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
 }
 
-.saved-song-actions {
-    display: flex;
-    gap: 6px;
-    flex-shrink: 0;
+.beat-map{
+    overflow-x:auto;
 }
 
-/* =========================================================
-   HELP / PHILOSOPHY
-   ========================================================= */
-
-.philosophy {
-    border-left: 2px solid var(--gold);
-
-    padding-left: 17px;
-
-    color: #c7c0b4;
-
-    font-size: 14px;
+.beat-row{
+    display:grid;
+    grid-template-columns:60px 100px minmax(150px,1fr) 130px;
+    gap:8px;
+    align-items:center;
+    border-bottom:1px solid #292724;
+    padding:8px 0;
 }
 
-.philosophy strong {
-    color: var(--gold-light);
+.beat-number{
+    font-family:Arial,sans-serif;
+    color:var(--goldLight);
+    text-align:center;
 }
 
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-.toast {
-    position: fixed;
-
-    left: 50%;
-
-    bottom:
-        calc(20px + env(safe-area-inset-bottom));
-
-    transform: translateX(-50%) translateY(30px);
-
-    background: #1b1916;
-
-    border: 1px solid var(--gold);
-
-    color: var(--cream);
-
-    padding: 12px 18px;
-
-    border-radius: 4px;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-
-    z-index: 2000;
-
-    max-width: 90vw;
-
-    text-align: center;
-
-    font-size: 13px;
+.beat-chord{
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    text-align:center;
+    padding:10px;
+    background:#111;
+    border:1px solid #38342f;
+    border-radius:4px;
 }
 
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+.lyrics-input{
+    width:100%;
+    background:#090909;
+    color:var(--cream);
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:4px;
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer {
-    text-align: center;
-
-    padding:
-        25px
-        20px
-        calc(35px + env(safe-area-inset-bottom));
-
-    color: #625e57;
-
-    border-top: 1px solid #282623;
-
-    font-size: 11px;
+.subdivision{
+    width:100%;
+    background:#090909;
+    color:var(--cream);
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:4px;
 }
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+.subbeat-row{
+    grid-column:3 / 5;
+    display:grid;
+    gap:5px;
+    margin-top:4px;
+}
 
-@media (max-width: 700px) {
+.subbeat-input{
+    background:#111;
+    border:1px solid #36322d;
+    color:var(--cream);
+    padding:8px;
+    border-radius:3px;
+    width:100%;
+}
 
-    main {
-        padding: 14px 10px 55px;
+.saved-song{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:13px 0;
+    border-bottom:1px solid #292724;
+}
+
+.saved-song:last-child{
+    border-bottom:none;
+}
+
+.saved-song-name{
+    font-family:Arial,sans-serif;
+}
+
+.saved-song-meta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.saved-song-actions{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.88);
+    padding:15px;
+}
+
+.modal.visible{
+    display:flex;
+}
+
+.modal-box{
+    width:min(95vw,700px);
+    max-height:90vh;
+    overflow:auto;
+    background:#111;
+    border:1px solid var(--gold);
+    padding:20px;
+    position:relative;
+}
+
+.modal-close{
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
+.modal-title{
+    font-family:Arial,sans-serif;
+    color:var(--goldLight);
+    font-size:25px;
+    margin:0 40px 20px 0;
+}
+
+.instrument-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.instrument-panel{
+    background:#090909;
+    border:1px solid var(--border);
+    padding:15px;
+}
+
+.instrument-panel h3{
+    margin-top:0;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+}
+
+.guitar-svg{
+    width:100%;
+    max-width:300px;
+    height:auto;
+    display:block;
+    margin:auto;
+}
+
+.piano-notes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.piano-note{
+    border:1px solid var(--gold);
+    padding:8px 10px;
+    color:var(--goldLight);
+    font-family:Arial,sans-serif;
+    background:#151515;
+}
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:calc(20px + env(safe-area-inset-bottom));
+    transform:translateX(-50%) translateY(30px);
+    background:#1b1916;
+    border:1px solid var(--gold);
+    color:var(--cream);
+    padding:12px 18px;
+    border-radius:4px;
+    opacity:0;
+    pointer-events:none;
+    transition:.2s;
+    z-index:3000;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+.philosophy{
+    border-left:2px solid var(--gold);
+    padding-left:17px;
+    color:#c7c0b4;
+    font-size:14px;
+}
+
+footer{
+    text-align:center;
+    color:#68645d;
+    font-size:11px;
+    padding:10px 20px 30px;
+}
+
+@media(max-width:700px){
+    .song-details{
+        grid-template-columns:1fr;
     }
 
-    .panel {
-        padding: 15px;
+    .playback-controls{
+        grid-template-columns:1fr 1fr;
     }
 
-    .song-details {
-        grid-template-columns: 1fr 1fr;
+    .instrument-grid{
+        grid-template-columns:1fr;
     }
 
-    .song-details .field:first-child {
-        grid-column: 1 / -1;
+    .beat-row{
+        grid-template-columns:45px 75px 1fr;
     }
 
-    .playback-controls {
-        grid-template-columns: 1fr 1fr;
+    .beat-row > :last-child{
+        grid-column:1 / -1;
     }
 
-    .header-actions .btn {
-        padding: 8px 9px;
-        font-size: 11px;
+    .subbeat-row{
+        grid-column:1 / -1;
     }
 
-    .brand-mark {
-        width: 36px;
-        height: 36px;
+    .manual-row{
+        flex-direction:column;
     }
 
-    .brand-name {
-        font-size: 13px;
+    .saved-song{
+        align-items:flex-start;
+        flex-direction:column;
     }
 
-    .brand-subtitle {
-        display: none;
+    .saved-song-actions{
+        width:100%;
     }
 
-    .chord-button {
-        min-height: 72px;
-    }
-
-    .progression-chord {
-        min-width: 58px;
-        min-height: 58px;
-    }
-
-    .saved-song {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .saved-song-actions {
-        width: 100%;
-    }
-
-    .saved-song-actions .btn {
-        flex: 1;
+    .saved-song-actions .btn{
+        flex:1;
     }
 }
-
-@media (max-width: 430px) {
-
-    .song-details {
-        grid-template-columns: 1fr;
-    }
-
-    .song-details .field:first-child {
-        grid-column: auto;
-    }
-
-    .manual-row {
-        flex-direction: column;
-    }
-
-    .chord-grid {
-        grid-template-columns:
-            repeat(3, 1fr);
-    }
-
-    .chord-button {
-        min-height: 68px;
-    }
-
-    .chord-name {
-        font-size: 17px;
-    }
-
-    .chord-reason {
-        font-size: 8px;
-    }
-}
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
-
 <header class="app-header">
-
     <div class="header-inner">
 
         <div class="brand">
+            <div class="brand-mark">ML6</div>
 
-            <div class="brand-mark">
-                ML6
-            </div>
-
-            <div class="brand-text">
-
-                <div class="brand-name">
-                    ML6CMG SONG BUILDER
-                </div>
-
+            <div>
+                <div class="brand-name">ML6CMG SONG BUILDER</div>
                 <div class="brand-subtitle">
                     Build it · Play it · Save it
                 </div>
-
             </div>
-
         </div>
 
-
         <div class="header-actions">
-
-            <button
-                class="btn btn-primary"
-                onclick="newSong()">
-
+            <button class="btn btn-primary" onclick="newSong()">
                 + New Song
-
             </button>
+        </div>
 
+    </div>
+</header>
+
+<main>
+
+<section class="panel">
+
+    <h2 class="panel-title">Song</h2>
+
+    <p class="panel-description">
+        Build the song one complete beat at a time.
+    </p>
+
+    <div class="song-details">
+
+        <div class="field">
+            <label for="songTitle">Song title</label>
+            <input id="songTitle"
+                   type="text"
+                   placeholder="Untitled Song"
+                   autocomplete="off">
+        </div>
+
+        <div class="field">
+            <label for="bpm">BPM</label>
+            <input id="bpm"
+                   type="number"
+                   min="40"
+                   max="240"
+                   value="90">
+        </div>
+
+        <div class="field">
+            <label for="key">Key</label>
+
+            <select id="key">
+                <option value="auto">Auto</option>
+                <option>C</option>
+                <option>C#</option>
+                <option>D</option>
+                <option>D#</option>
+                <option>E</option>
+                <option>F</option>
+                <option>F#</option>
+                <option>G</option>
+                <option>G#</option>
+                <option>A</option>
+                <option>A#</option>
+                <option>B</option>
+            </select>
         </div>
 
     </div>
 
-</header>
+</section>
 
 
-<!-- =========================================================
-     MAIN
-     ========================================================= -->
+<section class="panel">
 
-<main>
+    <h2 class="panel-title">Your Progression</h2>
 
+    <p class="panel-description">
+        Every chord press is one complete beat / down-strum.
+        Tap a chord's edit button to change how many beats it lasts.
+    </p>
 
-    <!-- =====================================================
-         SONG INFORMATION
-         ===================================================== -->
+    <div id="progression" class="progression-area">
+        <div class="empty-progression">
+            Choose your first chord below.
+        </div>
+    </div>
 
-    <section class="panel">
+    <div class="beat-info">
 
-        <h2 class="panel-title">
-            Song
-        </h2>
-
-        <p class="panel-description">
-            Start a song and build the progression one beat at a time.
-        </p>
-
-
-        <div class="song-details">
-
-
-            <div class="field">
-
-                <label for="songTitle">
-                    Song title
-                </label>
-
-                <input
-                    id="songTitle"
-                    type="text"
-                    placeholder="Untitled Song"
-                    autocomplete="off">
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="bpm">
-                    BPM
-                </label>
-
-                <input
-                    id="bpm"
-                    type="number"
-                    min="40"
-                    max="240"
-                    value="90">
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="key">
-                    Key
-                </label>
-
-                <select id="key">
-
-                    <option value="auto">
-                        Auto
-                    </option>
-
-                    <option>C</option>
-                    <option>C#</option>
-                    <option>D</option>
-                    <option>D#</option>
-                    <option>E</option>
-                    <option>F</option>
-                    <option>F#</option>
-                    <option>G</option>
-                    <option>G#</option>
-                    <option>A</option>
-                    <option>A#</option>
-                    <option>B</option>
-
-                </select>
-
-            </div>
-
+        <div class="beat-counter">
+            Beats recorded:
+            <strong id="beatCount">0</strong>
         </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         CURRENT PROGRESSION
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            Your Progression
-        </h2>
-
-        <p class="panel-description">
-            Every chord press represents one beat or one down-strum.
-        </p>
-
-
-        <div
-            id="progression"
-            class="progression-area">
-
-            <div class="empty-progression">
-                Choose your first chord below.
-            </div>
-
+        <div class="strum-note">
+            One tap = one full beat
         </div>
 
+    </div>
 
-        <div class="beat-info">
+    <div class="current-beat">
 
-            <div class="beat-counter">
-
-                Beats recorded:
-
-                <strong id="beatCount">
-                    0
-                </strong>
-
-            </div>
-
-            <div class="strum-note">
-                One tap = one beat / down-strum
-            </div>
-
+        <div class="current-beat-label">
+            Last chord
         </div>
 
-
-        <div class="current-beat">
-
-            <div class="current-beat-label">
-                Last chord
-            </div>
-
-            <div
-                id="currentChord"
-                class="current-beat-chord">
-
-                —
-
-            </div>
-
+        <div id="currentChord"
+             class="current-beat-chord">
+            —
         </div>
 
+    </div>
 
-        <div
-            class="playback-controls">
+    <div class="playback-controls">
 
-            <button
-                class="btn btn-primary btn-large"
+        <button class="btn btn-primary btn-large"
                 onclick="startPlayback()">
-
-                ▶ Play
-
-            </button>
-
-            <button
-                class="btn btn-large"
-                onclick="pausePlayback()">
-
-                ❚❚ Pause
-
-            </button>
-
-            <button
-                class="btn btn-large"
-                onclick="resumePlayback()">
-
-                ▶ Resume
-
-            </button>
-
-            <button
-                class="btn btn-danger btn-large"
-                onclick="stopPlayback()">
-
-                ■ Stop
-
-            </button>
-
-        </div>
-
-
-        <div
-            id="playbackStatus"
-            class="playback-status">
-
-            Ready
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         RECOMMENDED CHORDS
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            Choose Next Chord
-        </h2>
-
-        <p class="panel-description">
-            The app ranks likely choices first, but unusual chords are
-            never considered "wrong".
-        </p>
-
-
-        <!-- COMMON -->
-
-        <div class="recommendation-group common">
-
-            <div class="group-heading">
-
-                <h3>
-                    Most likely / common
-                </h3>
-
-                <span>
-                    Start here
-                </span>
-
-            </div>
-
-
-            <div
-                id="commonChords"
-                class="chord-grid">
-
-            </div>
-
-        </div>
-
-
-        <!-- ALTERNATIVE -->
-
-        <div class="recommendation-group alternative">
-
-            <div class="group-heading">
-
-                <h3>
-                    Alternative
-                </h3>
-
-                <span>
-                    Different colour
-                </span>
-
-            </div>
-
-
-            <div
-                id="alternativeChords"
-                class="chord-grid">
-
-            </div>
-
-        </div>
-
-
-        <!-- UNUSUAL -->
-
-        <div class="recommendation-group unusual">
-
-            <div class="group-heading">
-
-                <h3>
-                    Outside key / unusual
-                </h3>
-
-                <span>
-                    Experiment
-                </span>
-
-            </div>
-
-
-            <div
-                id="unusualChords"
-                class="chord-grid">
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         MANUAL CHORD
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            Choose Any Chord
-        </h2>
-
-        <p class="panel-description">
-            Don't like the suggestions? You are always free to choose
-            whatever chord you want.
-        </p>
-
-
-        <div class="manual-row">
-
-            <input
-                id="manualChord"
-                type="text"
-                placeholder="Type a chord e.g. D, F#m, G7, D/F#"
-                autocomplete="off">
-
-            <button
-                class="btn btn-primary btn-large"
-                onclick="addManualChord()">
-
-                Add Chord
-
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         EDITING
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            Edit Progression
-        </h2>
-
-        <p class="panel-description">
-            Tap a chord in the progression to change its beat count.
-            Select the chord to remove it or insert a chord after it.
-        </p>
-
-
-        <div class="manual-row">
-
-            <button
-                class="btn btn-large"
-                onclick="undoLast()">
-
-                ↶ Undo
-
-            </button>
-
-            <button
-                class="btn btn-large"
-                onclick="redoLast()">
-
-                ↷ Redo
-
-            </button>
-
-            <button
-                class="btn btn-danger btn-large"
-                onclick="clearProgression()">
-
-                Clear
-
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         SAVING
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            Save Song
-        </h2>
-
-        <p class="panel-description">
-            Songs are currently stored locally on this device/browser.
-            Cloud accounts and group sharing will come later.
-        </p>
-
-
-        <button
-            class="btn btn-primary btn-wide btn-large"
-            onclick="saveSong()">
-
-            Save Song
-
+            ▶ Play
         </button>
 
-    </section>
+        <button class="btn btn-large"
+                onclick="pausePlayback()">
+            ❚❚ Pause
+        </button>
+
+        <button class="btn btn-large"
+                onclick="resumePlayback()">
+            ▶ Resume
+        </button>
+
+        <button class="btn btn-danger btn-large"
+                onclick="stopPlayback()">
+            ■ Stop
+        </button>
+
+    </div>
+
+    <div id="playbackStatus"
+         class="playback-status">
+        Ready
+    </div>
+
+</section>
 
 
-    <!-- =====================================================
-         SAVED SONGS
-         ===================================================== -->
+<section class="panel">
 
-    <section class="panel">
+    <h2 class="panel-title">Choose Next Chord</h2>
 
-        <h2 class="panel-title">
-            My Songs
-        </h2>
+    <p class="panel-description">
+        Tap the main chord area to add it.
+        Use the small guitar/piano button to inspect the chord.
+    </p>
 
-        <p class="panel-description">
-            Saved songs on this device.
+    <div class="recommendation-group common">
+
+        <div class="group-heading">
+            <h3>Most likely / common</h3>
+            <span>Start here</span>
+        </div>
+
+        <div id="commonChords" class="chord-grid"></div>
+
+    </div>
+
+    <div class="recommendation-group alternative">
+
+        <div class="group-heading">
+            <h3>Alternative</h3>
+            <span>Different colour</span>
+        </div>
+
+        <div id="alternativeChords" class="chord-grid"></div>
+
+    </div>
+
+    <div class="recommendation-group unusual">
+
+        <div class="group-heading">
+            <h3>Outside key / unusual</h3>
+            <span>Experiment</span>
+        </div>
+
+        <div id="unusualChords" class="chord-grid"></div>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">Choose Any Chord</h2>
+
+    <p class="panel-description">
+        Enter any chord you want.
+    </p>
+
+    <div class="manual-row">
+
+        <input id="manualChord"
+               type="text"
+               placeholder="D, F#m, G7, D/F#"
+               autocomplete="off">
+
+        <button class="btn btn-primary btn-large"
+                onclick="addManualChord()">
+            Add Chord
+        </button>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">Edit Progression</h2>
+
+    <p class="panel-description">
+        Edit beats, insert chords or delete mistakes.
+    </p>
+
+    <div class="manual-row">
+
+        <button class="btn btn-large"
+                onclick="undoLast()">
+            ↶ Undo
+        </button>
+
+        <button class="btn btn-large"
+                onclick="redoLast()">
+            ↷ Redo
+        </button>
+
+        <button class="btn btn-danger btn-large"
+                onclick="clearProgression()">
+            Clear
+        </button>
+
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">Lyrics & Beat Map</h2>
+
+    <p class="panel-description">
+        Each row is one full beat. Add lyrics to the beat where they occur.
+        If a word or phrase needs to be faster, split that beat into
+        2, 3 or 4 shorter parts.
+    </p>
+
+    <div class="lyrics-toolbar">
+
+        <button class="btn btn-primary"
+                onclick="syncLyrics()">
+            Refresh Beat Map
+        </button>
+
+        <button class="btn"
+                onclick="clearLyrics()">
+            Clear Lyrics
+        </button>
+
+        <button class="btn btn-primary"
+                onclick="exportSongDoc()">
+            Export Chords + Lyrics
+        </button>
+
+    </div>
+
+    <div id="beatMap" class="beat-map"></div>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">Save Song</h2>
+
+    <p class="panel-description">
+        Songs are currently stored locally on this device/browser.
+        Member login remains paused.
+    </p>
+
+    <button class="btn btn-primary btn-wide btn-large"
+            onclick="saveSong()">
+        Save Song
+    </button>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">My Songs</h2>
+
+    <p class="panel-description">
+        Saved songs on this device.
+    </p>
+
+    <div id="savedSongs">
+        <div class="empty-progression">
+            No songs saved yet.
+        </div>
+    </div>
+
+</section>
+
+
+<section class="panel">
+
+    <h2 class="panel-title">ML6CMG Music Philosophy</h2>
+
+    <div class="philosophy">
+
+        <p>
+            Music should never be locked behind a pay wall.
         </p>
 
+        <p>
+            Learn music, share music and keep the tradition alive.
+        </p>
 
-        <div id="savedSongs">
+        <p>
+            A chord outside the obvious key isn't "wrong".
+            Sometimes it is exactly what gives a song its character.
+        </p>
 
-            <div class="empty-progression">
-                No songs saved yet.
-            </div>
+    </div>
 
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         PHILOSOPHY
-         ===================================================== -->
-
-    <section class="panel">
-
-        <h2 class="panel-title">
-            ML6CMG Music Philosophy
-        </h2>
-
-
-        <div class="philosophy">
-
-            <p>
-                Music should never be locked behind a pay wall.
-            </p>
-
-            <p>
-                This application is being built around the same
-                principle as ML6 Community Music Group:
-                <strong>learn music, share music and keep the
-                tradition alive.</strong>
-            </p>
-
-            <p>
-                A chord outside the obvious key isn't "wrong".
-                Sometimes it is exactly what gives a song its character.
-            </p>
-
-        </div>
-
-    </section>
-
+</section>
 
 </main>
 
 
-<!-- =========================================================
-     COUNTDOWN
-     ========================================================= -->
-
-<div
-    id="countdownOverlay"
-    class="countdown-overlay">
+<div id="countdownOverlay"
+     class="countdown-overlay">
 
     <div class="countdown-inner">
 
@@ -1427,19 +1114,58 @@ footer {
             Get Ready
         </div>
 
-        <div
-            id="countdownNumber"
-            class="countdown-number">
-
+        <div id="countdownNumber"
+             class="countdown-number">
             4
-
         </div>
 
-        <div
-            id="countdownBeat"
-            class="countdown-beat">
-
+        <div id="countdownBeat"
+             class="countdown-beat">
             Beat 4
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="chordModal" class="modal">
+
+    <div class="modal-box">
+
+        <button class="btn modal-close"
+                onclick="closeChordModal()">
+            ✕
+        </button>
+
+        <h2 id="modalChordTitle"
+            class="modal-title">
+            Chord
+        </h2>
+
+        <div class="instrument-grid">
+
+            <div class="instrument-panel">
+
+                <h3>Guitar chord</h3>
+
+                <div id="guitarDiagram"></div>
+
+                <div id="guitarText"
+                     style="text-align:center;color:#aaa;margin-top:8px">
+                </div>
+
+            </div>
+
+            <div class="instrument-panel">
+
+                <h3>Piano notes</h3>
+
+                <div id="pianoNotes"
+                     class="piano-notes">
+                </div>
+
+            </div>
 
         </div>
 
@@ -1448,45 +1174,22 @@ footer {
 </div>
 
 
-<!-- =========================================================
-     TOAST
-     ========================================================= -->
-
-<div
-    id="toast"
-    class="toast">
-
-</div>
-
-
-<!-- =========================================================
-     FOOTER
-     ========================================================= -->
+<div id="toast" class="toast"></div>
 
 <footer>
-
-    ML6CMG Song Builder · Prototype
-
-    <br>
-
-    Built for musicians
-
+    ML6CMG Song Builder · Built for musicians
 </footer>
 
 
 <script>
 
 /* =========================================================
-   ML6CMG SONG BUILDER
-   JAVASCRIPT
-   ========================================================= */
-
-
-/* =========================================================
-   APPLICATION STATE
+   STATE
    ========================================================= */
 
 let progression = [];
+
+let beatMap = [];
 
 let history = [];
 
@@ -1496,11 +1199,13 @@ let isPlaying = false;
 
 let isPaused = false;
 
-let playbackIndex = 0;
+let playbackBeatIndex = 0;
 
 let playbackTimer = null;
 
 let countdownTimer = null;
+
+let toastTimeout = null;
 
 
 /* =========================================================
@@ -1508,266 +1213,339 @@ let countdownTimer = null;
    ========================================================= */
 
 const chordNames = [
+    "C","C#","D","D#","E","F","F#","G","G#","A","A#","B",
+    "Cm","C#m","Dm","D#m","Em","Fm","F#m","Gm","G#m","Am","A#m","Bm",
+    "C7","D7","E7","F7","G7","A7","B7",
+    "Cmaj7","Dmaj7","Emaj7","Fmaj7","Gmaj7","Amaj7","Bmaj7",
+    "Dm7","Em7","F#m7","Am7","Bm7",
+    "Dsus2","Dsus4","Asus2","Asus4","Esus4","Gsus4",
+    "D/F#","G/B","C/E","A/C#"
+];
 
-    "C",
-    "C#",
-    "D",
-    "D#",
-    "E",
-    "F",
-    "F#",
-    "G",
-    "G#",
-    "A",
-    "A#",
-    "B",
+const noteIndex = {
+    C:0,C#:1,D:2,D#:3,E:4,F:5,
+    F#:6,G:7,G#:8,A:9,A#:10,B:11
+};
 
-    "Cm",
-    "C#m",
-    "Dm",
-    "D#m",
-    "Em",
-    "Fm",
-    "F#m",
-    "Gm",
-    "G#m",
-    "Am",
-    "A#m",
-    "Bm",
+const noteNames = [
+    "C","C#","D","D#","E","F",
+    "F#","G","G#","A","A#","B"
+];
 
-    "C7",
-    "D7",
-    "E7",
-    "F7",
-    "G7",
-    "A7",
-    "B7",
+const majorScale = [0,2,4,5,7,9,11];
 
-    "Cmaj7",
-    "Dmaj7",
-    "Emaj7",
-    "Fmaj7",
-    "Gmaj7",
-    "Amaj7",
-    "Bmaj7",
+const majorQualities = ["","m","m","","","m","dim"];
 
-    "Dm7",
-    "Em7",
-    "F#m7",
-    "Am7",
-    "Bm7",
-
-    "Dsus2",
-    "Dsus4",
-    "Asus2",
-    "Asus4",
-    "Esus4",
-    "Gsus4",
-
-    "D/F#",
-    "G/B",
-    "C/E",
-    "A/C#",
-
-    "F",
-    "G",
-    "Am",
-    "Em",
-    "Bm"
+const commonProgressions = [
+    ["C","G","Am","F"],
+    ["G","D","Em","C"],
+    ["D","A","Bm","G"],
+    ["A","E","F#m","D"],
+    ["E","B","C#m","A"],
+    ["Am","F","C","G"],
+    ["Em","C","G","D"],
+    ["Bm","G","D","A"],
+    ["C","F","G","C"],
+    ["G","C","D","G"],
+    ["D","G","A","D"],
+    ["C","Am","F","G"],
+    ["G","Em","C","D"],
+    ["D","Bm","G","A"]
 ];
 
 
 /* =========================================================
-   CHORD ROOT
+   GUITAR SHAPES
    ========================================================= */
 
-function getRoot(chord) {
+const guitarShapes = {
 
-    if (!chord) {
-        return "";
-    }
+    "C":    ["x",3,2,0,1,0],
+    "Cm":   ["x",3,5,5,4,3],
+    "C7":   ["x",3,2,3,1,0],
+    "Cmaj7":["x",3,2,0,0,0],
 
-    let clean = chord
-        .replace("maj7", "")
-        .replace("min7", "")
-        .replace("m7", "")
-        .replace("m", "")
-        .replace("sus2", "")
-        .replace("sus4", "")
-        .replace("7", "")
-        .replace("9", "")
-        .replace("dim", "")
-        .replace("aug", "");
+    "D":    ["x","x",0,2,3,2],
+    "Dm":   ["x","x",0,2,3,1],
+    "D7":   ["x","x",0,2,1,2],
+    "Dmaj7":["x","x",0,2,2,2],
+    "Dm7":  ["x","x",0,2,1,1],
+    "Dsus2":["x","x",0,2,3,0],
+    "Dsus4":["x","x",0,2,3,3],
 
-    clean = clean.split("/")[0];
+    "E":    [0,2,2,1,0,0],
+    "Em":   [0,2,2,0,0,0],
+    "E7":   [0,2,0,1,0,0],
+    "Emaj7":[0,2,1,1,0,0],
+    "Esus4":[0,2,2,2,0,0],
 
-    return clean;
-}
+    "F":    [1,3,3,2,1,1],
+    "Fm":   [1,3,3,1,1,1],
+    "F7":   [1,3,1,2,1,1],
 
+    "G":    [3,2,0,0,0,3],
+    "Gm":   [3,5,5,3,3,3],
+    "G7":   [3,2,0,0,0,1],
+    "Gmaj7":[3,2,0,0,0,2],
+    "Gsus4":[3,3,0,0,1,3],
 
-/* =========================================================
-   NOTE INDEX
-   ========================================================= */
+    "A":    ["x",0,2,2,2,0],
+    "Am":   ["x",0,2,2,1,0],
+    "A7":   ["x",0,2,0,2,0],
+    "Amaj7":["x",0,2,1,2,0],
+    "Asus2":["x",0,2,2,0,0],
+    "Asus4":["x",0,2,2,3,0],
 
-const noteIndex = {
-
-    "C": 0,
-    "C#": 1,
-    "D": 2,
-    "D#": 3,
-    "E": 4,
-    "F": 5,
-    "F#": 6,
-    "G": 7,
-    "G#": 8,
-    "A": 9,
-    "A#": 10,
-    "B": 11
-
+    "B":    ["x",2,4,4,4,2],
+    "Bm":   ["x",2,4,4,3,2],
+    "B7":   ["x",2,1,2,0,2]
 };
 
 
 /* =========================================================
-   COMMON PROGRESSIONS
+   CHORD HELPERS
    ========================================================= */
 
-const commonProgressions = [
+function getRoot(chord){
 
-    ["C", "G", "Am", "F"],
-    ["G", "D", "Em", "C"],
-    ["D", "A", "Bm", "G"],
-    ["A", "E", "F#m", "D"],
-    ["E", "B", "C#m", "A"],
+    if(!chord) return "";
 
-    ["Am", "F", "C", "G"],
-    ["Em", "C", "G", "D"],
-    ["Bm", "G", "D", "A"],
+    let clean = chord
+        .replace("maj7","")
+        .replace("m7","")
+        .replace("m","")
+        .replace("sus2","")
+        .replace("sus4","")
+        .replace("7","")
+        .replace("dim","")
+        .replace("aug","");
 
-    ["C", "F", "G", "C"],
-    ["G", "C", "D", "G"],
-    ["D", "G", "A", "D"],
-
-    ["C", "Am", "F", "G"],
-    ["G", "Em", "C", "D"],
-    ["D", "Bm", "G", "A"]
-
-];
+    return clean.split("/")[0];
+}
 
 
-/* =========================================================
-   DIATONIC CHORDS
-   ========================================================= */
+function getChordIntervals(chord){
 
-const majorScale = [
-    0,
-    2,
-    4,
-    5,
-    7,
-    9,
-    11
-];
+    const lower = chord.toLowerCase();
 
-const majorQualities = [
-    "",
-    "m",
-    "m",
-    "",
-    "",
-    "m",
-    "dim"
-];
+    if(lower.includes("maj7"))
+        return [0,4,7,11];
+
+    if(lower.includes("m7"))
+        return [0,3,7,10];
+
+    if(lower.includes("7"))
+        return [0,4,7,10];
+
+    if(lower.includes("sus2"))
+        return [0,2,7];
+
+    if(lower.includes("sus4"))
+        return [0,5,7];
+
+    if(lower.includes("dim"))
+        return [0,3,6];
+
+    if(lower.includes("m"))
+        return [0,3,7];
+
+    return [0,4,7];
+}
 
 
-/* =========================================================
-   GET DIATONIC CHORDS
-   ========================================================= */
+function getChordNotes(chord){
 
-function getDiatonicChords(key) {
+    const root = getRoot(chord);
 
-    if (!noteIndex.hasOwnProperty(key)) {
+    if(noteIndex[root] === undefined)
         return [];
-    }
 
-    let root = noteIndex[key];
+    const intervals = getChordIntervals(chord);
 
-    return majorScale.map(
-        (interval, index) => {
-
-            let noteNumber =
-                (root + interval) % 12;
-
-            let note =
-                Object.keys(noteIndex)
-                .find(
-                    n => noteIndex[n] === noteNumber
-                );
-
-            return note + majorQualities[index];
-
-        }
+    const notes = intervals.map(interval =>
+        noteNames[
+            (noteIndex[root] + interval) % 12
+        ]
     );
 
+    if(chord.includes("/")){
+
+        const bass = chord.split("/")[1];
+
+        if(noteIndex[bass] !== undefined){
+            return [bass,...notes.filter(n => n !== bass)];
+        }
+    }
+
+    return notes;
 }
 
 
 /* =========================================================
-   DETECT LIKELY KEY
+   GUITAR DIAGRAM
    ========================================================= */
 
-function detectLikelyKey() {
+function guitarDiagram(chord){
 
-    if (progression.length === 0) {
-        return null;
+    const shape = guitarShapes[chord];
+
+    if(!shape){
+
+        return `
+            <div style="padding:30px;text-align:center;color:#aaa">
+                No standard stored guitar shape for
+                <strong>${escapeHTML(chord)}</strong>.
+                <br><br>
+                The piano notes are still available.
+            </div>
+        `;
     }
 
-    const roots =
-        progression.map(
-            item => getRoot(item.chord)
-        );
+    const width = 280;
+    const height = 260;
 
-    let scores = {};
+    let svg = `
+        <svg class="guitar-svg"
+             viewBox="0 0 ${width} ${height}"
+             xmlns="http://www.w3.org/2000/svg">
 
-    Object.keys(noteIndex).forEach(
-        key => {
+            <text x="140"
+                  y="22"
+                  text-anchor="middle"
+                  fill="#d1b27a"
+                  font-size="16">
+                ${escapeHTML(chord)}
+            </text>
 
-            let diatonic =
-                getDiatonicChords(key);
+            <line x1="65" y1="55"
+                  x2="215" y2="55"
+                  stroke="#d1b27a"
+                  stroke-width="5"/>
+    `;
 
-            let score = 0;
+    for(let stringNo=0;stringNo<6;stringNo++){
 
-            roots.forEach(
-                root => {
+        const x = 65 + stringNo*30;
 
-                    if (
-                        diatonic.includes(root)
-                    ) {
-                        score += 2;
-                    }
+        svg += `
+            <line x1="${x}" y1="55"
+                  x2="${x}" y2="225"
+                  stroke="#aaa"
+                  stroke-width="1"/>
+        `;
+    }
 
-                }
-            );
+    for(let fret=0;fret<=5;fret++){
 
-            if (
-                roots[roots.length - 1] === key
-            ) {
-                score += 1;
+        const y = 55 + fret*34;
+
+        svg += `
+            <line x1="65" y1="${y}"
+                  x2="215" y2="${y}"
+                  stroke="#777"
+                  stroke-width="1"/>
+
+            <text x="42"
+                  y="${y+5}"
+                  fill="#888"
+                  font-size="10">
+                ${fret === 0 ? "" : fret}
+            </text>
+        `;
+    }
+
+    shape.forEach((value,stringNo)=>{
+
+        const x = 65 + stringNo*30;
+
+        if(value === "x"){
+
+            svg += `
+                <text x="${x}"
+                      y="43"
+                      text-anchor="middle"
+                      fill="#d58f87"
+                      font-size="18">
+                    ×
+                </text>
+            `;
+
+        }else{
+
+            const fret = Number(value);
+
+            if(fret === 0){
+
+                svg += `
+                    <circle cx="${x}"
+                            cy="42"
+                            r="7"
+                            fill="none"
+                            stroke="#d1b27a"
+                            stroke-width="2"/>
+                `;
+
+            }else{
+
+                const y = 55 + (fret-.5)*34;
+
+                svg += `
+                    <circle cx="${x}"
+                            cy="${y}"
+                            r="9"
+                            fill="#b08b54"/>
+
+                    <text x="${x}"
+                          y="${y+4}"
+                          text-anchor="middle"
+                          fill="#070707"
+                          font-size="10">
+                        ${fret}
+                    </text>
+                `;
             }
-
-            scores[key] = score;
-
         }
-    );
+    });
 
-    let bestKey =
-        Object.keys(scores)
-        .sort(
-            (a, b) =>
-                scores[b] - scores[a]
-        )[0];
+    svg += `</svg>`;
 
-    return bestKey;
+    return svg;
+}
 
+
+function openChordInfo(chord){
+
+    document.getElementById("modalChordTitle").textContent =
+        chord;
+
+    document.getElementById("guitarDiagram").innerHTML =
+        guitarDiagram(chord);
+
+    const shape = guitarShapes[chord];
+
+    document.getElementById("guitarText").textContent =
+        shape
+            ? "Strings low E → high e"
+            : "Shape not stored";
+
+    const notes = getChordNotes(chord);
+
+    document.getElementById("pianoNotes").innerHTML =
+        notes.length
+            ? notes.map(note =>
+                `<span class="piano-note">${escapeHTML(note)}</span>`
+              ).join("")
+            : `<span style="color:#aaa">Notes unavailable</span>`;
+
+    document.getElementById("chordModal")
+        .classList.add("visible");
+}
+
+
+function closeChordModal(){
+
+    document.getElementById("chordModal")
+        .classList.remove("visible");
 }
 
 
@@ -1775,380 +1553,181 @@ function detectLikelyKey() {
    RECOMMENDATION ENGINE
    ========================================================= */
 
-function getRecommendations() {
+function getDiatonicChords(key){
 
-    if (progression.length === 0) {
+    if(noteIndex[key] === undefined)
+        return [];
 
-        return {
+    return majorScale.map((interval,index)=>{
 
-            common: [
-                "D",
-                "G",
-                "A",
-                "C",
-                "E",
-                "Am",
-                "Em",
-                "F"
-            ],
+        const note =
+            noteNames[
+                (noteIndex[key] + interval) % 12
+            ];
 
-            alternative: [
-                "Bm",
-                "F#m",
-                "Dm",
-                "B7",
-                "E7"
-            ],
+        return note + majorQualities[index];
 
-            unusual: [
-                "Bb",
-                "Eb",
-                "F#",
-                "C#7",
-                "Ab"
-            ]
-
-        };
-
-    }
-
-
-    let current =
-        getRoot(
-            progression[
-                progression.length - 1
-            ].chord
-        );
-
-
-    let likelyKey =
-        document.getElementById("key").value;
-
-
-    if (likelyKey === "auto") {
-        likelyKey = detectLikelyKey();
-    }
-
-
-    if (!likelyKey) {
-        likelyKey = current;
-    }
-
-
-    let diatonic =
-        getDiatonicChords(likelyKey);
-
-
-    let common = [];
-
-    let alternative = [];
-
-    let unusual = [];
-
-
-    /*
-       First use familiar musical movement.
-    */
-
-    const fifth =
-        (noteIndex[current] + 7) % 12;
-
-    const fourth =
-        (noteIndex[current] + 5) % 12;
-
-    const relativeMinor =
-        (noteIndex[current] + 9) % 12;
-
-
-    Object.keys(noteIndex).forEach(
-        note => {
-
-            let distance =
-                (noteIndex[note] -
-                    noteIndex[current] +
-                    12) % 12;
-
-
-            let chord = note;
-
-
-            if (
-                distance === 7 &&
-                !common.includes(chord)
-            ) {
-                common.push(chord);
-            }
-
-            if (
-                distance === 5 &&
-                !common.includes(chord)
-            ) {
-                common.push(chord);
-            }
-
-        }
-    );
-
-
-    /*
-       Look at known progression patterns.
-    */
-
-    commonProgressions.forEach(
-        pattern => {
-
-            for (
-                let i = 0;
-                i < pattern.length - 1;
-                i++
-            ) {
-
-                if (
-                    getRoot(pattern[i]) === current
-                ) {
-
-                    const next =
-                        pattern[i + 1];
-
-                    if (
-                        !common.includes(next)
-                    ) {
-
-                        common.push(next);
-
-                    }
-
-                }
-
-            }
-
-        }
-    );
-
-
-    /*
-       Add diatonic choices.
-    */
-
-    diatonic.forEach(
-        chord => {
-
-            if (
-                chord !== current &&
-                !common.includes(chord)
-            ) {
-
-                alternative.push(chord);
-
-            }
-
-        }
-    );
-
-
-    /*
-       Useful common seventh chords.
-    */
-
-    [
-        current + "7",
-        "7",
-        "maj7"
-    ].forEach(
-        suffix => {
-
-            let chord;
-
-            if (suffix === "7") {
-                chord = current + "7";
-            }
-
-            if (suffix === "maj7") {
-                chord = current + "maj7";
-            }
-
-            if (
-                chord &&
-                chord !== current &&
-                !alternative.includes(chord)
-            ) {
-
-                alternative.push(chord);
-
-            }
-
-        }
-    );
-
-
-    /*
-       Relative minor / major movement.
-    */
-
-    Object.keys(noteIndex).forEach(
-        note => {
-
-            if (
-                noteIndex[note] === relativeMinor
-            ) {
-
-                const minor =
-                    note + "m";
-
-                if (
-                    !alternative.includes(minor)
-                ) {
-
-                    alternative.push(minor);
-
-                }
-
-            }
-
-        }
-    );
-
-
-    /*
-       Borrowed / outside-key choices.
-    */
-
-    const borrowedOffsets = [
-        1,
-        3,
-        6,
-        8,
-        10
-    ];
-
-
-    borrowedOffsets.forEach(
-        offset => {
-
-            const number =
-                (noteIndex[current] +
-                    offset) % 12;
-
-            const note =
-                Object.keys(noteIndex)
-                .find(
-                    n =>
-                        noteIndex[n] === number
-                );
-
-            if (
-                note &&
-                note !== current
-            ) {
-
-                unusual.push(note);
-
-                unusual.push(note + "m");
-
-            }
-
-        }
-    );
-
-
-    /*
-       Ensure useful minimum numbers.
-    */
-
-    chordNames.forEach(
-        chord => {
-
-            if (
-                common.length < 8 &&
-                chord !== current &&
-                !common.includes(chord)
-            ) {
-
-                if (
-                    getRoot(chord) !== current
-                ) {
-
-                    common.push(chord);
-
-                }
-
-            }
-
-        }
-    );
-
-
-    chordNames.forEach(
-        chord => {
-
-            if (
-                alternative.length < 7 &&
-                chord !== current &&
-                !common.includes(chord) &&
-                !alternative.includes(chord)
-            ) {
-
-                alternative.push(chord);
-
-            }
-
-        }
-    );
-
-
-    chordNames.forEach(
-        chord => {
-
-            if (
-                unusual.length < 7 &&
-                chord !== current &&
-                !common.includes(chord) &&
-                !alternative.includes(chord) &&
-                !unusual.includes(chord)
-            ) {
-
-                unusual.push(chord);
-
-            }
-
-        }
-    );
-
-
-    return {
-
-        common: common.slice(0, 8),
-
-        alternative:
-            alternative.slice(0, 7),
-
-        unusual:
-            unusual.slice(0, 7)
-
-    };
-
+    });
 }
 
 
-/* =========================================================
-   CREATE CHORD BUTTON
-   ========================================================= */
+function detectLikelyKey(){
 
-function createChordButton(
-    chord,
-    reason
-) {
+    if(!progression.length)
+        return null;
+
+    const roots =
+        progression.map(item => getRoot(item.chord));
+
+    let scores = {};
+
+    Object.keys(noteIndex).forEach(key=>{
+
+        const diatonic = getDiatonicChords(key);
+
+        let score = 0;
+
+        roots.forEach(root=>{
+            if(diatonic.includes(root))
+                score += 2;
+        });
+
+        if(roots[roots.length-1] === key)
+            score++;
+
+        scores[key] = score;
+    });
+
+    return Object.keys(scores)
+        .sort((a,b)=>scores[b]-scores[a])[0];
+}
+
+
+function getRecommendations(){
+
+    if(!progression.length){
+
+        return {
+            common:["D","G","A","C","E","Am","Em","F"],
+            alternative:["Bm","F#m","Dm","B7","E7"],
+            unusual:["A#","D#","F#","C#7","G#"]
+        };
+    }
+
+    const current =
+        getRoot(
+            progression[progression.length-1].chord
+        );
+
+    let key =
+        document.getElementById("key").value;
+
+    if(key === "auto")
+        key = detectLikelyKey();
+
+    if(!key)
+        key = current;
+
+    const common = [];
+    const alternative = [];
+    const unusual = [];
+
+    const currentNumber =
+        noteIndex[current] ?? 0;
+
+    Object.keys(noteIndex).forEach(note=>{
+
+        const distance =
+            (noteIndex[note]-currentNumber+12)%12;
+
+        if(distance === 7 || distance === 5)
+            common.push(note);
+    });
+
+    commonProgressions.forEach(pattern=>{
+
+        for(let i=0;i<pattern.length-1;i++){
+
+            if(getRoot(pattern[i]) === current){
+
+                const next = pattern[i+1];
+
+                if(!common.includes(next))
+                    common.push(next);
+            }
+        }
+    });
+
+    getDiatonicChords(key).forEach(chord=>{
+
+        if(chord !== current &&
+           !common.includes(chord))
+            alternative.push(chord);
+    });
+
+    [
+        current+"7",
+        current+"maj7",
+        current+"m7"
+    ].forEach(chord=>{
+
+        if(chord !== current &&
+           !alternative.includes(chord))
+            alternative.push(chord);
+    });
+
+    [1,3,6,8,10].forEach(offset=>{
+
+        const note =
+            noteNames[
+                (currentNumber+offset)%12
+            ];
+
+        if(!unusual.includes(note))
+            unusual.push(note);
+
+        if(!unusual.includes(note+"m"))
+            unusual.push(note+"m");
+    });
+
+    chordNames.forEach(chord=>{
+
+        if(common.length < 8 &&
+           chord !== current &&
+           !common.includes(chord))
+            common.push(chord);
+
+        else if(alternative.length < 7 &&
+                chord !== current &&
+                !common.includes(chord) &&
+                !alternative.includes(chord))
+            alternative.push(chord);
+
+        else if(unusual.length < 7 &&
+                chord !== current &&
+                !common.includes(chord) &&
+                !alternative.includes(chord) &&
+                !unusual.includes(chord))
+            unusual.push(chord);
+    });
+
+    return {
+        common:common.slice(0,8),
+        alternative:alternative.slice(0,7),
+        unusual:unusual.slice(0,7)
+    };
+}
+
+
+function createChordButton(chord,reason){
 
     const button =
         document.createElement("button");
 
-    button.className =
-        "chord-button";
-
+    button.className = "chord-button";
     button.type = "button";
 
     button.innerHTML = `
-
         <span class="chord-name">
             ${escapeHTML(chord)}
         </span>
@@ -2157,429 +1736,48 @@ function createChordButton(
             ${escapeHTML(reason)}
         </span>
 
+        <span class="chord-tools">
+
+            <button type="button"
+                    class="tiny-btn"
+                    title="Guitar and piano"
+                    onclick="event.stopPropagation();openChordInfo('${escapeAttribute(chord)}')">
+                🎸
+            </button>
+
+        </span>
     `;
 
-    button.onclick =
-        () => addChord(chord);
+    button.onclick = () => addChord(chord);
 
     return button;
-
 }
 
 
-/* =========================================================
-   RENDER RECOMMENDATIONS
-   ========================================================= */
-
-function renderRecommendations() {
+function renderRecommendations(){
 
     const recommendations =
         getRecommendations();
 
+    const lists = [
+        ["commonChords",recommendations.common,"Likely next"],
+        ["alternativeChords",recommendations.alternative,"Alternative"],
+        ["unusualChords",recommendations.unusual,"Try something different"]
+    ];
 
-    const common =
-        document.getElementById(
-            "commonChords"
-        );
+    lists.forEach(([id,chords,reason])=>{
 
-    const alternative =
-        document.getElementById(
-            "alternativeChords"
-        );
+        const container =
+            document.getElementById(id);
 
-    const unusual =
-        document.getElementById(
-            "unusualChords"
-        );
+        container.innerHTML = "";
 
-
-    common.innerHTML = "";
-
-    alternative.innerHTML = "";
-
-    unusual.innerHTML = "";
-
-
-    recommendations.common.forEach(
-        chord => {
-
-            common.appendChild(
-                createChordButton(
-                    chord,
-                    "Likely next"
-                )
+        chords.forEach(chord=>{
+            container.appendChild(
+                createChordButton(chord,reason)
             );
-
-        }
-    );
-
-
-    recommendations.alternative.forEach(
-        chord => {
-
-            alternative.appendChild(
-                createChordButton(
-                    chord,
-                    "Alternative"
-                )
-            );
-
-        }
-    );
-
-
-    recommendations.unusual.forEach(
-        chord => {
-
-            unusual.appendChild(
-                createChordButton(
-                    chord,
-                    "Try something different"
-                )
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ADD CHORD
-   ========================================================= */
-
-function addChord(chord) {
-
-    if (!chord) {
-        return;
-    }
-
-
-    saveHistory();
-
-
-    progression.push({
-
-        chord: chord.trim(),
-
-        beats: 1
-
+        });
     });
-
-
-    document.getElementById(
-        "currentChord"
-    ).textContent = chord;
-
-
-    renderProgression();
-
-    renderRecommendations();
-
-    autoDetectKey();
-
-}
-
-
-/* =========================================================
-   ADD MANUAL CHORD
-   ========================================================= */
-
-function addManualChord() {
-
-    const input =
-        document.getElementById(
-            "manualChord"
-        );
-
-
-    const chord =
-        input.value.trim();
-
-
-    if (!chord) {
-
-        showToast(
-            "Enter a chord first."
-        );
-
-        return;
-
-    }
-
-
-    addChord(chord);
-
-    input.value = "";
-
-}
-
-
-/* =========================================================
-   MANUAL ENTER KEY
-   ========================================================= */
-
-document
-    .getElementById("manualChord")
-    .addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                addManualChord();
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   RENDER PROGRESSION
-   ========================================================= */
-
-function renderProgression() {
-
-    const container =
-        document.getElementById(
-            "progression"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (progression.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty-progression">
-                Choose your first chord below.
-            </div>
-
-        `;
-
-        updateBeatCount();
-
-        return;
-
-    }
-
-
-    const wrapper =
-        document.createElement("div");
-
-    wrapper.className =
-        "progression";
-
-
-    progression.forEach(
-        (item, index) => {
-
-            if (index > 0) {
-
-                const arrow =
-                    document.createElement("span");
-
-                arrow.className =
-                    "progression-arrow";
-
-                arrow.textContent = "→";
-
-                wrapper.appendChild(
-                    arrow
-                );
-
-            }
-
-
-            const chord =
-                document.createElement("button");
-
-            chord.type = "button";
-
-            chord.className =
-                "progression-chord";
-
-
-            chord.innerHTML = `
-
-                <strong>
-                    ${escapeHTML(item.chord)}
-                </strong>
-
-                <small>
-                    ${item.beats}
-                    ${item.beats === 1 ? "beat" : "beats"}
-                </small>
-
-            `;
-
-
-            chord.onclick =
-                () =>
-                    editChord(index);
-
-
-            wrapper.appendChild(
-                chord
-            );
-
-        }
-    );
-
-
-    container.appendChild(
-        wrapper
-    );
-
-
-    updateBeatCount();
-
-}
-
-
-/* =========================================================
-   EDIT CHORD
-   ========================================================= */
-
-function editChord(index) {
-
-    const item =
-        progression[index];
-
-
-    if (!item) {
-        return;
-    }
-
-
-    const action =
-        prompt(
-
-            `${item.chord}\n\n` +
-            `Enter the number of beats this chord should last.\n` +
-            `Type DELETE to remove it.\n` +
-            `Type INSERT to add a chord after it.`,
-
-            item.beats
-
-        );
-
-
-    if (action === null) {
-        return;
-    }
-
-
-    if (
-        action.toUpperCase() ===
-        "DELETE"
-    ) {
-
-        saveHistory();
-
-        progression.splice(
-            index,
-            1
-        );
-
-        renderProgression();
-
-        renderRecommendations();
-
-        return;
-
-    }
-
-
-    if (
-        action.toUpperCase() ===
-        "INSERT"
-    ) {
-
-        const newChord =
-            prompt(
-                "Enter the chord to insert after " +
-                item.chord
-            );
-
-
-        if (
-            newChord &&
-            newChord.trim()
-        ) {
-
-            saveHistory();
-
-            progression.splice(
-                index + 1,
-                0,
-                {
-                    chord:
-                        newChord.trim(),
-
-                    beats: 1
-                }
-            );
-
-            renderProgression();
-
-            renderRecommendations();
-
-        }
-
-        return;
-
-    }
-
-
-    const beats =
-        parseInt(action, 10);
-
-
-    if (
-        !isNaN(beats) &&
-        beats > 0 &&
-        beats <= 64
-    ) {
-
-        saveHistory();
-
-        progression[index].beats =
-            beats;
-
-        renderProgression();
-
-    }
-
-}
-
-
-/* =========================================================
-   UPDATE BEAT COUNT
-   ========================================================= */
-
-function updateBeatCount() {
-
-    const total =
-        progression.reduce(
-            (
-                sum,
-                item
-            ) =>
-                sum + item.beats,
-            0
-        );
-
-
-    document.getElementById(
-        "beatCount"
-    ).textContent = total;
-
 }
 
 
@@ -2587,175 +1785,585 @@ function updateBeatCount() {
    HISTORY
    ========================================================= */
 
-function saveHistory() {
+function saveHistory(){
 
     history.push(
-        JSON.stringify(progression)
+        JSON.stringify({
+            progression,
+            beatMap
+        })
     );
 
-
-    if (history.length > 50) {
-
+    if(history.length > 50)
         history.shift();
 
-    }
-
-
     redoHistory = [];
-
 }
 
 
-function undoLast() {
+function restoreHistory(serialized){
 
-    if (
-        history.length === 0
-    ) {
+    const data = JSON.parse(serialized);
 
-        showToast(
-            "Nothing to undo."
-        );
+    progression = data.progression || [];
+
+    beatMap = data.beatMap || [];
+
+    syncBeatMapLength();
+
+    renderProgression();
+    renderBeatMap();
+    renderRecommendations();
+    updateBeatCount();
+}
+
+
+function undoLast(){
+
+    if(!history.length){
+
+        showToast("Nothing to undo.");
 
         return;
-
     }
-
 
     redoHistory.push(
-        JSON.stringify(progression)
+        JSON.stringify({
+            progression,
+            beatMap
+        })
     );
 
-
-    const previous =
-        history.pop();
-
-
-    progression =
-        JSON.parse(previous);
-
-
-    renderProgression();
-
-    renderRecommendations();
-
-    autoDetectKey();
-
+    restoreHistory(history.pop());
 }
 
 
-function redoLast() {
+function redoLast(){
 
-    if (
-        redoHistory.length === 0
-    ) {
+    if(!redoHistory.length){
 
-        showToast(
-            "Nothing to redo."
-        );
+        showToast("Nothing to redo.");
 
         return;
-
     }
 
-
     history.push(
-        JSON.stringify(progression)
+        JSON.stringify({
+            progression,
+            beatMap
+        })
     );
 
-
-    progression =
-        JSON.parse(
-            redoHistory.pop()
-        );
-
-
-    renderProgression();
-
-    renderRecommendations();
-
-    autoDetectKey();
-
+    restoreHistory(redoHistory.pop());
 }
 
 
 /* =========================================================
-   CLEAR
+   PROGRESSION
    ========================================================= */
 
-function clearProgression() {
+function addChord(chord){
 
-    if (
-        progression.length === 0
-    ) {
-
+    if(!chord)
         return;
-
-    }
-
-
-    if (
-        !confirm(
-            "Clear the entire progression?"
-        )
-    ) {
-
-        return;
-
-    }
-
 
     saveHistory();
 
+    progression.push({
+        chord:chord.trim(),
+        beats:1
+    });
 
-    progression = [];
+    syncBeatMapLength();
 
-
-    document.getElementById(
-        "currentChord"
-    ).textContent = "—";
-
+    document.getElementById("currentChord")
+        .textContent = chord;
 
     renderProgression();
+    renderBeatMap();
+    renderRecommendations();
+    autoDetectKey();
+}
 
+
+function addManualChord(){
+
+    const input =
+        document.getElementById("manualChord");
+
+    const chord =
+        input.value.trim();
+
+    if(!chord){
+
+        showToast("Enter a chord first.");
+
+        return;
+    }
+
+    addChord(chord);
+
+    input.value = "";
+}
+
+
+function renderProgression(){
+
+    const container =
+        document.getElementById("progression");
+
+    container.innerHTML = "";
+
+    if(!progression.length){
+
+        container.innerHTML = `
+            <div class="empty-progression">
+                Choose your first chord below.
+            </div>
+        `;
+
+        updateBeatCount();
+
+        return;
+    }
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className = "progression";
+
+    progression.forEach((item,index)=>{
+
+        if(index > 0){
+
+            const arrow =
+                document.createElement("span");
+
+            arrow.className = "progression-arrow";
+            arrow.textContent = "→";
+
+            wrapper.appendChild(arrow);
+        }
+
+        const card =
+            document.createElement("div");
+
+        card.className = "progression-card";
+
+        card.innerHTML = `
+            <strong>${escapeHTML(item.chord)}</strong>
+
+            <small>
+                ${item.beats}
+                ${item.beats === 1 ? "beat" : "beats"}
+            </small>
+
+            <div class="progression-actions">
+
+                <button class="tiny-btn"
+                        onclick="openChordInfo('${escapeAttribute(item.chord)}')">
+                    🎸
+                </button>
+
+                <button class="tiny-btn"
+                        onclick="editChord(${index})">
+                    ✎
+                </button>
+
+                <button class="tiny-btn tiny-danger"
+                        onclick="deleteChord(${index})">
+                    ×
+                </button>
+
+            </div>
+        `;
+
+        wrapper.appendChild(card);
+    });
+
+    container.appendChild(wrapper);
+
+    updateBeatCount();
+}
+
+
+function editChord(index){
+
+    const item = progression[index];
+
+    if(!item)
+        return;
+
+    const action =
+        prompt(
+            `${item.chord}\n\n` +
+            `Enter number of full beats:\n` +
+            `Type INSERT to add a chord after it.\n` +
+            `Type DELETE to remove it.`,
+            item.beats
+        );
+
+    if(action === null)
+        return;
+
+    if(action.toUpperCase() === "DELETE"){
+
+        deleteChord(index);
+
+        return;
+    }
+
+    if(action.toUpperCase() === "INSERT"){
+
+        const newChord =
+            prompt(
+                "Enter the chord to insert after " +
+                item.chord
+            );
+
+        if(newChord && newChord.trim()){
+
+            saveHistory();
+
+            progression.splice(index+1,0,{
+                chord:newChord.trim(),
+                beats:1
+            });
+
+            syncBeatMapLength();
+            renderProgression();
+            renderBeatMap();
+            renderRecommendations();
+        }
+
+        return;
+    }
+
+    const beats =
+        parseInt(action,10);
+
+    if(!isNaN(beats) &&
+       beats > 0 &&
+       beats <= 64){
+
+        saveHistory();
+
+        item.beats = beats;
+
+        syncBeatMapLength();
+        renderProgression();
+        renderBeatMap();
+    }
+}
+
+
+function deleteChord(index){
+
+    if(!progression[index])
+        return;
+
+    if(!confirm(
+        `Delete ${progression[index].chord} from the progression?`
+    ))
+        return;
+
+    saveHistory();
+
+    progression.splice(index,1);
+
+    syncBeatMapLength();
+    renderProgression();
+    renderBeatMap();
     renderRecommendations();
 
+    showToast("Chord deleted.");
+}
+
+
+function clearProgression(){
+
+    if(!progression.length)
+        return;
+
+    if(!confirm("Clear the entire progression?"))
+        return;
+
+    saveHistory();
+
+    progression = [];
+    beatMap = [];
+
+    document.getElementById("currentChord")
+        .textContent = "—";
+
+    renderProgression();
+    renderBeatMap();
+    renderRecommendations();
 }
 
 
 /* =========================================================
-   KEY DETECTION
+   BEAT MAP
    ========================================================= */
 
-function autoDetectKey() {
+function getBeatList(){
 
-    const keySelect =
-        document.getElementById(
-            "key"
-        );
+    const beats = [];
+
+    progression.forEach((item, chordIndex)=>{
+
+        for(let b=0;b<item.beats;b++){
+
+            beats.push({
+                chord:item.chord,
+                chordIndex,
+                beatWithinChord:b+1
+            });
+        }
+    });
+
+    return beats;
+}
 
 
-    if (
-        keySelect.value !==
-        "auto"
-    ) {
+function syncBeatMapLength(){
+
+    const beats = getBeatList();
+
+    while(beatMap.length < beats.length){
+
+        beatMap.push({
+            lyrics:"",
+            subdivision:1,
+            subLyrics:[""]
+        });
+    }
+
+    if(beatMap.length > beats.length)
+        beatMap.length = beats.length;
+
+    beatMap.forEach(item=>{
+
+        const count =
+            Number(item.subdivision) || 1;
+
+        item.subdivision = count;
+
+        if(!Array.isArray(item.subLyrics))
+            item.subLyrics = [""];
+
+        while(item.subLyrics.length < count)
+            item.subLyrics.push("");
+
+        if(item.subLyrics.length > count)
+            item.subLyrics.length = count;
+
+        if(count === 1 &&
+           item.lyrics &&
+           !item.subLyrics[0])
+            item.subLyrics[0] = item.lyrics;
+    });
+}
+
+
+function renderBeatMap(){
+
+    syncBeatMapLength();
+
+    const container =
+        document.getElementById("beatMap");
+
+    container.innerHTML = "";
+
+    const beats = getBeatList();
+
+    if(!beats.length){
+
+        container.innerHTML = `
+            <div class="empty-progression">
+                Add chords above and your beat/lyrics map will appear here.
+            </div>
+        `;
 
         return;
-
     }
 
+    beats.forEach((beat,index)=>{
 
-    const detected =
-        detectLikelyKey();
+        const data =
+            beatMap[index];
+
+        const row =
+            document.createElement("div");
+
+        row.className = "beat-row";
+
+        const subdivision =
+            Number(data.subdivision) || 1;
+
+        let subbeats = "";
+
+        if(subdivision > 1){
+
+            const inputs = [];
+
+            for(let i=0;i<subdivision;i++){
+
+                inputs.push(`
+                    <input class="subbeat-input"
+                           placeholder="Part ${i+1}"
+                           value="${escapeAttribute(data.subLyrics[i] || "")}"
+                           oninput="setSubLyrics(${index},${i},this.value)">
+                `);
+            }
+
+            subbeats = `
+                <div class="subbeat-row"
+                     style="grid-template-columns:repeat(${subdivision},1fr)">
+                    ${inputs.join("")}
+                </div>
+            `;
+        }
+
+        row.innerHTML = `
+
+            <div class="beat-number">
+                ${index+1}
+            </div>
+
+            <div class="beat-chord">
+                ${escapeHTML(beat.chord)}
+            </div>
+
+            <input class="lyrics-input"
+                   placeholder="Lyrics on this beat..."
+                   value="${escapeAttribute(data.lyrics || "")}"
+                   oninput="setBeatLyrics(${index},this.value)">
+
+            <select class="subdivision"
+                    onchange="setSubdivision(${index},this.value)">
+
+                <option value="1" ${subdivision===1?"selected":""}>
+                    1 · Full beat
+                </option>
+
+                <option value="2" ${subdivision===2?"selected":""}>
+                    2 · Half beats
+                </option>
+
+                <option value="3" ${subdivision===3?"selected":""}>
+                    3 · Third beats
+                </option>
+
+                <option value="4" ${subdivision===4?"selected":""}>
+                    4 · Quarter beats
+                </option>
+
+            </select>
+
+            ${subbeats}
+        `;
+
+        container.appendChild(row);
+    });
+}
 
 
-    if (detected) {
+function setBeatLyrics(index,value){
 
-        keySelect.title =
-            "Likely key: " +
-            detected;
+    if(!beatMap[index])
+        return;
 
+    beatMap[index].lyrics = value;
+
+    if((beatMap[index].subdivision || 1) === 1)
+        beatMap[index].subLyrics[0] = value;
+}
+
+
+function setSubdivision(index,value){
+
+    const count =
+        Math.max(1,Math.min(4,parseInt(value,10) || 1));
+
+    if(!beatMap[index])
+        return;
+
+    beatMap[index].subdivision = count;
+
+    if(!Array.isArray(beatMap[index].subLyrics))
+        beatMap[index].subLyrics = [""];
+
+    while(beatMap[index].subLyrics.length < count)
+        beatMap[index].subLyrics.push("");
+
+    beatMap[index].subLyrics.length = count;
+
+    if(count > 1 &&
+       beatMap[index].lyrics &&
+       !beatMap[index].subLyrics.some(Boolean)){
+
+        beatMap[index].subLyrics[0] =
+            beatMap[index].lyrics;
     }
 
+    renderBeatMap();
+}
+
+
+function setSubLyrics(beatIndex,subIndex,value){
+
+    if(!beatMap[beatIndex])
+        return;
+
+    beatMap[beatIndex].subLyrics[subIndex] = value;
+
+    beatMap[beatIndex].lyrics =
+        beatMap[beatIndex].subLyrics
+            .filter(Boolean)
+            .join(" ");
+}
+
+
+function syncLyrics(){
+
+    syncBeatMapLength();
+
+    renderBeatMap();
+
+    showToast("Beat map refreshed.");
+}
+
+
+function clearLyrics(){
+
+    if(!beatMap.length)
+        return;
+
+    if(!confirm("Clear all lyrics from this song?"))
+        return;
+
+    beatMap.forEach(item=>{
+        item.lyrics = "";
+        item.subLyrics = [""];
+        item.subdivision = 1;
+    });
+
+    renderBeatMap();
+}
+
+
+/* =========================================================
+   BEAT COUNT
+   ========================================================= */
+
+function updateBeatCount(){
+
+    const total =
+        getBeatList().length;
+
+    document.getElementById("beatCount")
+        .textContent = total;
 }
 
 
@@ -2763,495 +2371,226 @@ function autoDetectKey() {
    PLAYBACK
    ========================================================= */
 
-function startPlayback() {
+function startPlayback(){
 
-    if (
-        progression.length === 0
-    ) {
+    if(!progression.length){
 
-        showToast(
-            "Add some chords before playing."
-        );
+        showToast("Add some chords before playing.");
 
         return;
-
     }
-
 
     stopPlayback();
 
-
     isPlaying = true;
-
     isPaused = false;
+    playbackBeatIndex = 0;
 
-    playbackIndex = 0;
-
-
-    showCountdown(
-        () => {
-
-            if (isPlaying) {
-
-                playCurrentBeat();
-
-            }
-
-        }
-    );
-
+    showCountdown(()=>{
+        if(isPlaying)
+            playCurrentBeat();
+    });
 }
 
 
-/* =========================================================
-   COUNTDOWN
-   ========================================================= */
-
-function showCountdown(
-    callback
-) {
+function showCountdown(callback){
 
     const overlay =
-        document.getElementById(
-            "countdownOverlay"
-        );
+        document.getElementById("countdownOverlay");
 
     const number =
-        document.getElementById(
-            "countdownNumber"
-        );
+        document.getElementById("countdownNumber");
 
     const beat =
-        document.getElementById(
-            "countdownBeat"
-        );
+        document.getElementById("countdownBeat");
 
-
-    overlay.classList.add(
-        "visible"
-    );
-
+    overlay.classList.add("visible");
 
     let count = 4;
 
-
-    number.textContent =
-        count;
-
-    beat.textContent =
-        "Beat " + count;
-
+    number.textContent = count;
+    beat.textContent = "Beat " + count;
 
     countdownTimer =
-        setInterval(
-            () => {
+        setInterval(()=>{
 
-                count--;
+            count--;
 
+            if(count <= 0){
 
-                if (count <= 0) {
+                clearInterval(countdownTimer);
 
-                    clearInterval(
-                        countdownTimer
-                    );
+                countdownTimer = null;
 
-                    countdownTimer =
-                        null;
+                overlay.classList.remove("visible");
 
-                    overlay.classList.remove(
-                        "visible"
-                    );
+                callback();
 
-                    callback();
+                return;
+            }
 
-                    return;
+            number.textContent = count;
+            beat.textContent = "Beat " + count;
 
-                }
-
-
-                number.textContent =
-                    count;
-
-                beat.textContent =
-                    "Beat " + count;
-
-            },
-            1000
-        );
-
+        },1000);
 }
 
 
-/* =========================================================
-   PLAY CURRENT BEAT
-   ========================================================= */
+function playCurrentBeat(){
 
-function playCurrentBeat() {
-
-    if (
-        !isPlaying ||
-        isPaused
-    ) {
-
+    if(!isPlaying || isPaused)
         return;
 
-    }
+    const beats = getBeatList();
 
-
-    if (
-        playbackIndex >=
-        progression.length
-    ) {
+    if(playbackBeatIndex >= beats.length){
 
         stopPlayback();
 
         return;
-
     }
 
+    const beat =
+        beats[playbackBeatIndex];
 
-    const item =
-        progression[
-            playbackIndex
-        ];
-
-
-    document.getElementById(
-        "currentChord"
-    ).textContent =
-        item.chord;
-
+    document.getElementById("currentChord")
+        .textContent = beat.chord;
 
     const status =
-        document.getElementById(
-            "playbackStatus"
-        );
+        document.getElementById("playbackStatus");
 
-
-    status.classList.add(
-        "playing"
-    );
-
+    status.classList.add("playing");
 
     status.textContent =
         "Playing beat " +
-        (playbackIndex + 1) +
+        (playbackBeatIndex+1) +
         " of " +
-        progression.length +
+        beats.length +
         " · " +
-        item.chord;
+        beat.chord;
 
-
-    /*
-       One progression item represents
-       one or more beats.
-
-       We calculate the beat duration
-       from BPM.
-    */
-
-    const bpm =
-        getBPM();
-
-
-    const beatLength =
-        60000 / bpm;
-
-
-    playbackIndex++;
-
+    playbackBeatIndex++;
 
     playbackTimer =
         setTimeout(
             playCurrentBeat,
-            beatLength
+            60000 / getBPM()
         );
-
 }
 
 
-/* =========================================================
-   PAUSE
-   ========================================================= */
+function pausePlayback(){
 
-function pausePlayback() {
-
-    if (
-        !isPlaying
-    ) {
-
+    if(!isPlaying)
         return;
-
-    }
-
 
     isPaused = true;
 
-
-    clearTimeout(
-        playbackTimer
-    );
-
+    clearTimeout(playbackTimer);
 
     playbackTimer = null;
 
-
-    document.getElementById(
-        "playbackStatus"
-    ).textContent =
-        "Paused";
-
+    document.getElementById("playbackStatus")
+        .textContent = "Paused";
 }
 
 
-/* =========================================================
-   RESUME
-   ========================================================= */
+function resumePlayback(){
 
-function resumePlayback() {
+    if(!isPlaying){
 
-    if (
-        !isPlaying
-    ) {
-
-        showToast(
-            "Nothing is currently playing."
-        );
+        showToast("Nothing is currently playing.");
 
         return;
-
     }
 
-
-    if (
-        !isPaused
-    ) {
-
+    if(!isPaused)
         return;
-
-    }
-
 
     isPaused = false;
-
-
-    document.getElementById(
-        "playbackStatus"
-    ).classList.add(
-        "playing"
-    );
-
-
-    document.getElementById(
-        "playbackStatus"
-    ).textContent =
-        "Resuming";
-
 
     playCurrentBeat();
-
 }
 
 
-/* =========================================================
-   STOP
-   ========================================================= */
-
-function stopPlayback() {
+function stopPlayback(){
 
     isPlaying = false;
-
     isPaused = false;
 
-    clearTimeout(
-        playbackTimer
-    );
-
-    clearInterval(
-        countdownTimer
-    );
+    clearTimeout(playbackTimer);
+    clearInterval(countdownTimer);
 
     playbackTimer = null;
-
     countdownTimer = null;
 
-
-    const overlay =
-        document.getElementById(
-            "countdownOverlay"
-        );
-
-
-    overlay.classList.remove(
-        "visible"
-    );
-
+    document.getElementById("countdownOverlay")
+        .classList.remove("visible");
 
     const status =
-        document.getElementById(
-            "playbackStatus"
-        );
+        document.getElementById("playbackStatus");
 
-
-    status.classList.remove(
-        "playing"
-    );
-
-
-    status.textContent =
-        "Ready";
-
+    status.classList.remove("playing");
+    status.textContent = "Ready";
 }
 
 
-/* =========================================================
-   BPM
-   ========================================================= */
-
-function getBPM() {
+function getBPM(){
 
     let bpm =
         parseInt(
-            document.getElementById(
-                "bpm"
-            ).value,
+            document.getElementById("bpm").value,
             10
         );
 
-
-    if (
-        isNaN(bpm)
-    ) {
-
+    if(isNaN(bpm))
         bpm = 90;
 
-    }
-
-
-    bpm =
-        Math.max(
-            40,
-            Math.min(
-                240,
-                bpm
-            )
-        );
-
-
-    return bpm;
-
+    return Math.max(40,Math.min(240,bpm));
 }
 
 
 /* =========================================================
-   NEW SONG
+   SAVE / LOAD
    ========================================================= */
 
-function newSong() {
+function getSavedSongs(){
 
-    if (
-        progression.length > 0
-    ) {
+    try{
 
-        const proceed =
-            confirm(
-                "Start a new song? " +
-                "Make sure you have saved this one first."
-            );
+        return JSON.parse(
+            localStorage.getItem("ml6cmgSongs")
+        ) || [];
 
+    }catch{
 
-        if (!proceed) {
-            return;
-        }
-
+        return [];
     }
-
-
-    stopPlayback();
-
-
-    progression = [];
-
-    history = [];
-
-    redoHistory = [];
-
-
-    document.getElementById(
-        "songTitle"
-    ).value = "";
-
-
-    document.getElementById(
-        "key"
-    ).value = "auto";
-
-
-    document.getElementById(
-        "bpm"
-    ).value = 90;
-
-
-    document.getElementById(
-        "currentChord"
-    ).textContent = "—";
-
-
-    renderProgression();
-
-    renderRecommendations();
-
-
-    showToast(
-        "New song ready."
-    );
-
 }
 
 
-/* =========================================================
-   SAVE SONG
-   ========================================================= */
+function saveSong(){
 
-function saveSong() {
+    if(!progression.length){
 
-    if (
-        progression.length === 0
-    ) {
-
-        showToast(
-            "Add at least one chord before saving."
-        );
+        showToast("Add at least one chord before saving.");
 
         return;
-
     }
 
+    syncBeatMapLength();
 
     let title =
-        document.getElementById(
-            "songTitle"
-        ).value.trim();
+        document.getElementById("songTitle")
+            .value.trim();
 
+    if(!title)
+        title = "Untitled Song";
 
-    if (!title) {
-
-        title =
-            "Untitled Song";
-
-    }
-
-
-    const songs =
-        getSavedSongs();
-
+    const songs = getSavedSongs();
 
     const existingIndex =
-        songs.findIndex(
-            song =>
-                song.title === title
-        );
-
+        songs.findIndex(song=>song.title === title);
 
     const song = {
 
@@ -3260,17 +2599,18 @@ function saveSong() {
                 ? songs[existingIndex].id
                 : Date.now(),
 
-        title: title,
+        title,
 
-        bpm: getBPM(),
+        bpm:getBPM(),
 
         key:
-            document.getElementById(
-                "key"
-            ).value,
+            document.getElementById("key").value,
 
         progression:
-            progression,
+            JSON.parse(JSON.stringify(progression)),
+
+        beatMap:
+            JSON.parse(JSON.stringify(beatMap)),
 
         created:
             existingIndex >= 0
@@ -3279,469 +2619,529 @@ function saveSong() {
 
         modified:
             new Date().toISOString()
-
     };
 
-
-    if (
-        existingIndex >= 0
-    ) {
-
-        songs[existingIndex] =
-            song;
-
-    } else {
-
+    if(existingIndex >= 0)
+        songs[existingIndex] = song;
+    else
         songs.push(song);
-
-    }
-
 
     localStorage.setItem(
         "ml6cmgSongs",
         JSON.stringify(songs)
     );
 
-
     renderSavedSongs();
 
-
-    showToast(
-        "Song saved on this device."
-    );
-
+    showToast("Song saved on this device.");
 }
 
 
-/* =========================================================
-   LOAD SONGS
-   ========================================================= */
-
-function getSavedSongs() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem(
-                "ml6cmgSongs"
-            )
-        ) || [];
-
-    } catch {
-
-        return [];
-
-    }
-
-}
-
-
-/* =========================================================
-   RENDER SAVED SONGS
-   ========================================================= */
-
-function renderSavedSongs() {
+function renderSavedSongs(){
 
     const container =
-        document.getElementById(
-            "savedSongs"
-        );
+        document.getElementById("savedSongs");
 
-
-    const songs =
-        getSavedSongs();
-
+    const songs = getSavedSongs();
 
     container.innerHTML = "";
 
-
-    if (
-        songs.length === 0
-    ) {
+    if(!songs.length){
 
         container.innerHTML = `
-
             <div class="empty-progression">
                 No songs saved yet.
             </div>
-
         `;
 
         return;
-
     }
 
+    songs.slice().reverse().forEach(song=>{
 
-    songs
-        .slice()
-        .reverse()
-        .forEach(
-            song => {
+        const row =
+            document.createElement("div");
 
-                const row =
-                    document.createElement(
-                        "div"
-                    );
+        row.className = "saved-song";
 
-                row.className =
-                    "saved-song";
+        const date =
+            new Date(song.modified)
+                .toLocaleDateString();
 
+        row.innerHTML = `
 
-                const date =
-                    new Date(
-                        song.modified
-                    )
-                    .toLocaleDateString();
+            <div>
 
+                <div class="saved-song-name">
+                    ${escapeHTML(song.title)}
+                </div>
 
-                row.innerHTML = `
+                <div class="saved-song-meta">
+                    ${song.progression.length}
+                    chords ·
+                    ${song.bpm} BPM ·
+                    Modified ${date}
+                </div>
 
-                    <div>
+            </div>
 
-                        <div
-                            class="saved-song-name">
+            <div class="saved-song-actions">
 
-                            ${escapeHTML(
-                                song.title
-                            )}
+                <button class="btn"
+                        onclick="loadSong(${song.id})">
+                    Open
+                </button>
 
-                        </div>
+                <button class="btn btn-primary"
+                        onclick="exportSavedSong(${song.id})">
+                    Export
+                </button>
 
-                        <div
-                            class="saved-song-meta">
+                <button class="btn btn-danger"
+                        onclick="deleteSong(${song.id})">
+                    Delete
+                </button>
 
-                            ${song.progression.length}
-                            chords ·
-                            ${song.bpm} BPM ·
-                            Modified ${date}
+            </div>
+        `;
 
-                        </div>
-
-                    </div>
-
-                    <div
-                        class="saved-song-actions">
-
-                        <button
-                            class="btn"
-                            onclick="loadSong(${song.id})">
-
-                            Open
-
-                        </button>
-
-                        <button
-                            class="btn btn-danger"
-                            onclick="deleteSong(${song.id})">
-
-                            Delete
-
-                        </button>
-
-                    </div>
-
-                `;
-
-
-                container.appendChild(
-                    row
-                );
-
-            }
-        );
-
+        container.appendChild(row);
+    });
 }
 
 
-/* =========================================================
-   LOAD SONG
-   ========================================================= */
-
-function loadSong(id) {
-
-    const songs =
-        getSavedSongs();
-
+function loadSong(id){
 
     const song =
-        songs.find(
-            item =>
-                item.id === id
-        );
+        getSavedSongs()
+            .find(item=>item.id === id);
 
-
-    if (!song) {
+    if(!song)
         return;
-    }
-
 
     stopPlayback();
 
-
     progression =
         JSON.parse(
-            JSON.stringify(
-                song.progression
-            )
+            JSON.stringify(song.progression || [])
         );
 
+    beatMap =
+        JSON.parse(
+            JSON.stringify(song.beatMap || [])
+        );
 
     history = [];
-
     redoHistory = [];
 
+    document.getElementById("songTitle").value =
+        song.title || "";
 
-    document.getElementById(
-        "songTitle"
-    ).value =
-        song.title;
+    document.getElementById("bpm").value =
+        song.bpm || 90;
 
+    document.getElementById("key").value =
+        song.key || "auto";
 
-    document.getElementById(
-        "bpm"
-    ).value =
-        song.bpm;
+    syncBeatMapLength();
 
-
-    document.getElementById(
-        "key"
-    ).value =
-        song.key;
-
-
-    if (
-        progression.length > 0
-    ) {
-
-        document.getElementById(
-            "currentChord"
-        ).textContent =
-            progression[
-                progression.length - 1
-            ].chord;
-
-    } else {
-
-        document.getElementById(
-            "currentChord"
-        ).textContent =
-            "—";
-
-    }
-
+    document.getElementById("currentChord")
+        .textContent =
+            progression.length
+                ? progression[progression.length-1].chord
+                : "—";
 
     renderProgression();
-
+    renderBeatMap();
     renderRecommendations();
+    renderSavedSongs();
 
-
-    showToast(
-        "Song opened."
-    );
-
+    showToast("Song opened.");
 
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
     });
-
 }
 
 
-/* =========================================================
-   DELETE SONG
-   ========================================================= */
+function deleteSong(id){
 
-function deleteSong(id) {
-
-    if (
-        !confirm(
-            "Delete this saved song?"
-        )
-    ) {
-
+    if(!confirm("Delete this saved song?"))
         return;
 
-    }
-
-
-    let songs =
-        getSavedSongs();
-
+    let songs = getSavedSongs();
 
     songs =
-        songs.filter(
-            song =>
-                song.id !== id
-        );
-
+        songs.filter(song=>song.id !== id);
 
     localStorage.setItem(
         "ml6cmgSongs",
         JSON.stringify(songs)
     );
 
-
     renderSavedSongs();
 
-
-    showToast(
-        "Song deleted."
-    );
-
+    showToast("Song deleted.");
 }
 
 
 /* =========================================================
-   ESCAPE HTML
+   NEW SONG
    ========================================================= */
 
-function escapeHTML(value) {
+function newSong(){
+
+    if(progression.length){
+
+        if(!confirm(
+            "Start a new song? Make sure this one is saved first."
+        ))
+            return;
+    }
+
+    stopPlayback();
+
+    progression = [];
+    beatMap = [];
+    history = [];
+    redoHistory = [];
+
+    document.getElementById("songTitle").value = "";
+    document.getElementById("bpm").value = 90;
+    document.getElementById("key").value = "auto";
+    document.getElementById("currentChord").textContent = "—";
+
+    renderProgression();
+    renderBeatMap();
+    renderRecommendations();
+
+    showToast("New song ready.");
+}
+
+
+/* =========================================================
+   AUTO KEY
+   ========================================================= */
+
+function autoDetectKey(){
+
+    const select =
+        document.getElementById("key");
+
+    if(select.value !== "auto")
+        return;
+
+    const detected = detectLikelyKey();
+
+    if(detected)
+        select.title = "Likely key: " + detected;
+}
+
+
+/* =========================================================
+   EXPORT
+   ========================================================= */
+
+function exportSongDoc(){
+
+    if(!progression.length){
+
+        showToast("Add chords before exporting.");
+
+        return;
+    }
+
+    syncBeatMapLength();
+
+    const title =
+        document.getElementById("songTitle")
+            .value.trim() || "Untitled Song";
+
+    const key =
+        document.getElementById("key").value;
+
+    const bpm = getBPM();
+
+    const beats = getBeatList();
+
+    let rows = "";
+
+    beats.forEach((beat,index)=>{
+
+        const data = beatMap[index] || {
+            lyrics:"",
+            subdivision:1,
+            subLyrics:[""]
+        };
+
+        let lyrics = data.lyrics || "";
+
+        if(Number(data.subdivision) > 1){
+
+            lyrics =
+                data.subLyrics
+                    .filter(Boolean)
+                    .join(" / ");
+        }
+
+        rows += `
+            <tr>
+                <td>${index+1}</td>
+                <td><strong>${escapeHTML(beat.chord)}</strong></td>
+                <td>${escapeHTML(lyrics)}</td>
+                <td>${data.subdivision || 1}</td>
+            </tr>
+        `;
+    });
+
+    const chordSummary =
+        progression.map(item =>
+            `${escapeHTML(item.chord)}
+             (${item.beats} ${item.beats===1?"beat":"beats"})`
+        ).join(" → ");
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${escapeHTML(title)}</title>
+<style>
+body{
+    font-family:Arial,sans-serif;
+    margin:40px;
+    color:#111;
+}
+h1{
+    margin-bottom:4px;
+}
+h2{
+    margin-top:30px;
+}
+.meta{
+    color:#555;
+    margin-bottom:20px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    border:1px solid #999;
+    padding:8px;
+    text-align:left;
+}
+th{
+    background:#eee;
+}
+.chords{
+    padding:15px;
+    background:#f3f3f3;
+}
+</style>
+</head>
+
+<body>
+
+<h1>${escapeHTML(title)}</h1>
+
+<div class="meta">
+Key: ${escapeHTML(key)}
+&nbsp;&nbsp; | &nbsp;&nbsp;
+BPM: ${bpm}
+&nbsp;&nbsp; | &nbsp;&nbsp;
+Beats: ${beats.length}
+</div>
+
+<h2>Chord Progression</h2>
+
+<div class="chords">
+${chordSummary}
+</div>
+
+<h2>Chords & Lyrics</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Beat</th>
+<th>Chord</th>
+<th>Lyrics</th>
+<th>Subdivision</th>
+</tr>
+</thead>
+
+<tbody>
+${rows}
+</tbody>
+
+</table>
+
+</body>
+</html>
+`;
+
+    const blob =
+        new Blob(
+            [html],
+            {type:"application/msword"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        safeFileName(title) + ".doc";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast("Word document exported.");
+}
+
+
+function exportSavedSong(id){
+
+    const song =
+        getSavedSongs()
+            .find(item=>item.id === id);
+
+    if(!song)
+        return;
+
+    const oldProgression = progression;
+    const oldBeatMap = beatMap;
+
+    progression =
+        JSON.parse(JSON.stringify(song.progression || []));
+
+    beatMap =
+        JSON.parse(JSON.stringify(song.beatMap || []));
+
+    document.getElementById("songTitle").value =
+        song.title || "";
+
+    document.getElementById("bpm").value =
+        song.bpm || 90;
+
+    document.getElementById("key").value =
+        song.key || "auto";
+
+    exportSongDoc();
+
+    progression = oldProgression;
+    beatMap = oldBeatMap;
+}
+
+
+function safeFileName(value){
 
     return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+        .replace(/[^a-z0-9_\- ]/gi,"")
+        .trim()
+        .replace(/\s+/g,"_")
+        .slice(0,80) || "ML6CMG_Song";
 }
 
 
 /* =========================================================
-   TOAST
+   UTILITY
    ========================================================= */
 
-let toastTimeout = null;
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
 
-function showToast(message) {
+function escapeAttribute(value){
+
+    return escapeHTML(value)
+        .replace(/`/g,"&#096;");
+}
+
+
+function showToast(message){
 
     const toast =
-        document.getElementById(
-            "toast"
-        );
+        document.getElementById("toast");
 
+    toast.textContent = message;
 
-    toast.textContent =
-        message;
+    toast.classList.add("show");
 
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimeout
-    );
-
+    clearTimeout(toastTimeout);
 
     toastTimeout =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
-        );
-
+        setTimeout(()=>{
+            toast.classList.remove("show");
+        },2500);
 }
 
 
 /* =========================================================
-   BPM CHANGE
+   EVENTS
    ========================================================= */
 
 document
-    .getElementById("bpm")
-    .addEventListener(
-        "change",
-        function() {
+    .getElementById("manualChord")
+    .addEventListener("keydown",event=>{
 
-            const value =
-                parseInt(
-                    this.value,
-                    10
-                );
+        if(event.key === "Enter")
+            addManualChord();
+    });
 
-
-            if (
-                isNaN(value)
-            ) {
-
-                this.value = 90;
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   KEY CHANGE
-   ========================================================= */
 
 document
     .getElementById("key")
-    .addEventListener(
-        "change",
-        function() {
+    .addEventListener("change",()=>{
+        renderRecommendations();
+    });
 
-            renderRecommendations();
 
-        }
-    );
+document
+    .getElementById("chordModal")
+    .addEventListener("click",event=>{
+
+        if(event.target.id === "chordModal")
+            closeChordModal();
+    });
 
 
 /* =========================================================
-   INITIALISE APP
+   START
    ========================================================= */
 
 renderRecommendations();
 
 renderProgression();
 
+renderBeatMap();
+
 renderSavedSongs();
 
-
-/* =========================================================
-   WELCOME MESSAGE
-   ========================================================= */
-
-setTimeout(
-    () => {
-
-        showToast(
-            "Tap a chord to start building your song."
-        );
-
-    },
-    600
-);
+setTimeout(()=>{
+    showToast(
+        "Tap a chord once for one complete beat."
+    );
+},600);
 
 </script>
 
