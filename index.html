@@ -2,834 +2,859 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ML6CMG Chord & Lyrics Builder</title>
 
-<title>ML6 Community Music Group - Chord & Lyrics Builder</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#080808;
+    color:#eee8dc;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-html {
-    scroll-behavior: smooth;
+button,input,textarea,select{font:inherit}
+
+button{
+    cursor:pointer;
+    background:#241b10;
+    color:#e1bd78;
+    border:1px solid #745a35;
+    border-radius:8px;
+    padding:9px 13px;
 }
 
-body {
-    margin: 0;
+button:hover{
+    background:#392a18;
+    border-color:#b08a4e;
+}
+
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+input,textarea,select{
+    background:#0d0d0d;
+    color:#eee;
+    border:1px solid #5d4a2e;
+    border-radius:8px;
+    padding:10px;
+}
+
+textarea{
+    resize:vertical;
+}
+
+.hidden{display:none!important}
+
+/* LOGIN */
+
+#loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
     background:
-        radial-gradient(circle at top, #34291b 0%, #15110d 38%, #070707 100%);
-    color: #eee9df;
-    font-family: Arial, Helvetica, sans-serif;
+        radial-gradient(circle at top,#382b1a,#090909 60%);
 }
 
-button,
-input,
-textarea,
-select {
-    font: inherit;
+.loginBox{
+    width:min(440px,100%);
+    background:#15110d;
+    border:1px solid #80623b;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 15px 60px #000;
+    text-align:center;
 }
 
-button {
-    cursor: pointer;
+.loginBox h1{
+    margin-top:0;
+    color:#e0bc76;
+    font-family:Georgia,serif;
 }
 
-button:active {
-    transform: scale(.97);
+.loginLogo{
+    width:110px;
+    max-width:50%;
+    margin-bottom:15px;
 }
 
-.app {
-    width: min(1200px, 95%);
-    margin: auto;
-    padding-bottom: 80px;
+.loginBox input{
+    width:100%;
+    margin:7px 0;
 }
 
-header {
-    text-align: center;
-    padding: 28px 10px 18px;
+.loginBox button{
+    width:100%;
+    margin-top:10px;
 }
 
-header h1 {
-    margin: 0;
-    color: #d8b56c;
-    font-family: Georgia, serif;
-    font-size: clamp(28px, 6vw, 48px);
+.loginMessage{
+    min-height:25px;
+    margin-top:15px;
+    color:#c8bda9;
 }
 
-header p {
-    color: #a79d8e;
-    margin: 8px 0 0;
+/* APP */
+
+.app{
+    width:min(1200px,95%);
+    margin:auto;
+    padding-bottom:80px;
 }
 
-.panel {
-    background: rgba(18, 16, 13, .96);
-    border: 1px solid #58462d;
-    border-radius: 14px;
-    padding: 20px;
-    margin: 18px 0;
-    box-shadow: 0 8px 30px rgba(0,0,0,.28);
+header{
+    text-align:center;
+    padding:25px 10px 15px;
 }
 
-.panel h2 {
-    color: #d9b66d;
-    font-family: Georgia, serif;
-    margin-top: 0;
+header h1{
+    color:#dfba73;
+    font-family:Georgia,serif;
+    margin:0;
 }
 
-.help {
-    color: #9d958a;
-    line-height: 1.55;
+header p{
+    color:#999084;
 }
 
-.info {
-    background: #0c0c0c;
-    border-left: 3px solid #8b6b3e;
-    padding: 12px;
-    color: #aaa39a;
-    line-height: 1.55;
-    border-radius: 4px;
+.logout{
+    position:absolute;
+    right:15px;
+    top:15px;
 }
 
-button {
-    background: #241c12;
-    color: #dfbf83;
-    border: 1px solid #735a36;
-    border-radius: 8px;
-    padding: 9px 13px;
+.panel{
+    background:#13110e;
+    border:1px solid #55432a;
+    border-radius:14px;
+    padding:20px;
+    margin:18px 0;
 }
 
-button:hover {
-    background: #392b1a;
-    border-color: #b08b51;
+.panel h2{
+    margin-top:0;
+    color:#dfba73;
+    font-family:Georgia,serif;
 }
 
-input,
-textarea,
-select {
-    background: #0b0b0b;
-    color: #eee;
-    border: 1px solid #5c4a30;
-    border-radius: 8px;
-    padding: 10px;
+.help{
+    color:#999187;
+    line-height:1.5;
 }
 
-textarea {
-    resize: vertical;
+.info{
+    background:#0b0b0b;
+    border-left:3px solid #8a693c;
+    padding:12px;
+    color:#aaa196;
+    line-height:1.5;
+    border-radius:4px;
 }
 
-.hidden {
-    display: none !important;
+/* KEY */
+
+.keyControls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
 }
 
-/* ---------------------------------------
-   KEY
---------------------------------------- */
+/* SELECTED */
 
-.keyControls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
+.selectedPanel{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(8,8,8,.97);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid #654d2e;
+    padding:12px 0;
 }
 
-#keySelect {
-    min-width: 150px;
+.selectedTitle{
+    color:#dfba73;
+    font-family:Georgia,serif;
+    font-size:20px;
 }
 
-/* ---------------------------------------
-   SELECTED CHORDS
---------------------------------------- */
-
-.selectedPanel {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(8,8,8,.97);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #695334;
-    padding: 12px 0;
+.selectedList{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    min-height:76px;
+    padding:8px 2px;
 }
 
-.selectedTitle {
-    color: #d9b66d;
-    font-family: Georgia, serif;
-    font-size: 20px;
-    margin-bottom: 8px;
+.selectedCard{
+    flex:0 0 auto;
+    width:108px;
+    min-height:74px;
+    position:relative;
+    text-align:center;
+    background:#21190f;
+    border:1px solid #70552f;
+    border-radius:9px;
+    padding:7px;
 }
 
-.selectedList {
-    display: flex;
-    gap: 9px;
-    overflow-x: auto;
-    padding: 4px 2px 8px;
-    min-height: 76px;
+.selectedNumber{
+    color:#777;
+    font-size:9px;
 }
 
-.selectedCard {
-    flex: 0 0 auto;
-    width: 105px;
-    min-height: 72px;
-    background: #211a11;
-    border: 1px solid #705632;
-    border-radius: 9px;
-    padding: 7px;
-    text-align: center;
-    position: relative;
+.selectedChordName{
+    display:block;
+    color:#e7c98e;
+    font-size:19px;
+    font-weight:bold;
+    margin:3px;
 }
 
-.selectedNumber {
-    font-size: 9px;
-    color: #777;
+.removeSelected{
+    position:absolute;
+    top:-7px;
+    right:-7px;
+    width:23px;
+    height:23px;
+    padding:0;
+    border-radius:50%;
+    background:#321616;
 }
 
-.selectedChordName {
-    display: block;
-    color: #e6c68b;
-    font-size: 19px;
-    font-weight: bold;
-    margin: 3px 0 6px;
+.beatControls{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:7px;
 }
 
-.removeSelected {
-    position: absolute;
-    top: -7px;
-    right: -7px;
-    width: 22px;
-    height: 22px;
-    padding: 0;
-    border-radius: 50%;
-    background: #321616;
-    color: #e3a8a8;
+.beatControls button{
+    width:26px;
+    height:26px;
+    padding:0;
 }
 
-.beatControls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
+/* CIRCLE */
+
+.circleArea{
+    display:flex;
+    justify-content:center;
+    padding:20px 0;
 }
 
-.beatControls button {
-    width: 25px;
-    height: 25px;
-    padding: 0;
-}
-
-.beatNumber {
-    min-width: 20px;
-    text-align: center;
-}
-
-/* ---------------------------------------
-   CIRCLE OF FIFTHS
---------------------------------------- */
-
-.circleArea {
-    display: flex;
-    justify-content: center;
-    padding: 18px 0 10px;
-}
-
-.circle {
-    position: relative;
-    width: min(92vw, 650px);
-    aspect-ratio: 1;
-    border-radius: 50%;
-
+.circle{
+    position:relative;
+    width:min(94vw,650px);
+    aspect-ratio:1;
+    border-radius:50%;
     background:
         radial-gradient(
             circle,
-            #18130e 0 18%,
-            #302417 18.5% 38%,
-            #18130e 38.5% 61%,
-            #090909 61.5% 100%
+            #18130d 0 18%,
+            #302416 18.5% 38%,
+            #17120d 38.5% 61%,
+            #080808 61.5% 100%
         );
-
-    border: 2px solid #735b38;
-
-    box-shadow:
-        inset 0 0 35px rgba(0,0,0,.7),
-        0 0 35px rgba(0,0,0,.5);
+    border:2px solid #735a36;
+    box-shadow:inset 0 0 40px #000;
 }
 
-.circleCenter {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-
-    width: 115px;
-    height: 115px;
-
-    border-radius: 50%;
-
-    background: #17120d;
-    border: 1px solid #a07b47;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    color: #e0bd78;
-    font-family: Georgia, serif;
-
-    z-index: 30;
+.circleCenter{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:115px;
+    height:115px;
+    border-radius:50%;
+    background:#17120d;
+    border:1px solid #a47c45;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#dfba73;
+    font-family:Georgia,serif;
+    z-index:30;
 }
 
-.circleButton {
-    position: absolute;
-    transform: translate(-50%,-50%);
-
-    width: 66px;
-    height: 66px;
-
-    border-radius: 50%;
-
-    padding: 0;
-
-    font-weight: bold;
-
-    touch-action: manipulation;
-    user-select: none;
-
-    z-index: 20;
+.circleButton{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    padding:0;
+    z-index:20;
+    touch-action:manipulation;
+    user-select:none;
 }
 
-.circleMajor {
-    background: #2a2015;
-    border-color: #aa844d;
-    color: #e7c98d;
+.circleMajor{
+    background:#2a2015;
+    border-color:#aa824b;
+    color:#e5c68a;
 }
 
-.circleMinor {
-    background: #14191c;
-    border-color: #66737b;
-    color: #d0d9dd;
+.circleMinor{
+    background:#15191c;
+    border-color:#66747b;
+    color:#d0d9dd;
 }
 
-.circleDim {
-    background: #211515;
-    border-color: #895757;
-    color: #ddb0b0;
+.circleDim{
+    background:#211515;
+    border-color:#875555;
+    color:#ddb0b0;
 }
 
-/* ---------------------------------------
-   SUGGESTIONS
---------------------------------------- */
+/* SUGGESTIONS */
 
-.suggestionList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+.suggestionList{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-/* ---------------------------------------
-   SONG BUILDER
---------------------------------------- */
+/* BUILDER */
 
-.builderToolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 15px 0;
+.builderToolbar,
+.actionRow,
+.rowToolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-.songRows {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.songRows{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:15px;
 }
 
-.songRow {
-    background: #0c0c0c;
-    border: 1px solid #413525;
-    border-radius: 10px;
-    padding: 12px;
+.songRow{
+    background:#0c0c0c;
+    border:1px solid #433625;
+    border-radius:10px;
+    padding:12px;
 }
 
-.songHeader {
-    background: #15110d;
-    border-left: 4px solid #997542;
+.songHeader{
+    border-left:4px solid #9b7542;
+    background:#15110d;
 }
 
-.headerInput {
-    width: 100%;
-    font-size: 19px;
-    color: #e2bf79;
-    font-family: Georgia, serif;
-    font-weight: bold;
+.headerInput{
+    width:100%;
+    font-size:19px;
+    color:#e0bc76;
+    font-family:Georgia,serif;
+    font-weight:bold;
 }
 
-.rowToolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 10px;
+.lineChords{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    min-height:43px;
+    margin:10px 0;
 }
 
-.lineChords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    min-height: 43px;
-    margin-bottom: 10px;
+.noChords{
+    color:#666;
+    font-style:italic;
+    padding:8px 0;
 }
 
-.noChords {
-    color: #666;
-    font-style: italic;
-    padding: 8px 0;
+.lineChord{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:#241b10;
+    border:1px solid #735a36;
+    border-radius:7px;
+    padding:6px;
 }
 
-.lineChord {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-
-    background: #241c12;
-    border: 1px solid #735a36;
-
-    border-radius: 7px;
-    padding: 6px;
+.lineChordName{
+    color:#e4c487;
+    font-weight:bold;
 }
 
-.lineChordName {
-    color: #e5c68b;
-    font-weight: bold;
+.lineChord button{
+    padding:3px 7px;
 }
 
-.lineChord button {
-    padding: 3px 7px;
+.lyricInput{
+    width:100%;
+    min-height:55px;
 }
 
-.lyricInput {
-    width: 100%;
-    min-height: 52px;
-    line-height: 1.4;
+.strumArea{
+    margin-top:10px;
 }
 
-.strumArea {
-    margin-top: 9px;
+.strumLabel{
+    color:#888;
+    font-size:13px;
+    margin-bottom:5px;
 }
 
-.strumLabel {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 5px;
+.strumButtons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
 }
 
-.strumButtons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+.strumButton{
+    min-width:38px;
 }
 
-.strumButton {
-    min-width: 38px;
-    padding: 7px;
+.strumButton.active{
+    background:#795b37;
+    color:white;
 }
 
-.strumButton.active {
-    background: #795c37;
-    color: white;
+.lineChordPicker{
+    background:#15110d;
+    border:1px solid #675033;
+    border-radius:9px;
+    padding:12px;
+    margin:12px 0;
 }
 
-.lineChordPicker {
-    background: #15110d;
-    border: 1px solid #675033;
-    border-radius: 9px;
-    padding: 12px;
-    margin-bottom: 12px;
+.pickerButtons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:8px;
 }
 
-.pickerButtons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 8px;
+/* PREVIEW */
+
+.preview{
+    background:white;
+    color:#111;
+    border-radius:8px;
+    padding:35px;
+    margin-top:18px;
+    overflow-x:auto;
 }
 
-/* ---------------------------------------
-   PREVIEW
---------------------------------------- */
-
-.preview {
-    background: white;
-    color: black;
-    border-radius: 8px;
-    padding: 35px;
-    margin-top: 18px;
-    overflow-x: auto;
+.preview h1{
+    font-family:Georgia,serif;
 }
 
-.preview h1 {
-    font-family: Georgia, serif;
+.previewSection{
+    margin-top:30px;
 }
 
-.previewSection {
-    margin-top: 30px;
+.previewSectionTitle{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:12px;
 }
 
-.previewSectionTitle {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 12px;
+.previewLine{
+    margin-bottom:25px;
 }
 
-.previewLine {
-    margin-bottom: 25px;
+.previewChords,
+.previewLyrics,
+.previewStrum{
+    font-family:monospace;
+    white-space:pre-wrap;
 }
 
-.previewChords {
-    font-family: monospace;
-    font-weight: bold;
-    white-space: pre;
+.previewChords{
+    font-weight:bold;
 }
 
-.previewLyrics {
-    font-family: monospace;
-    white-space: pre-wrap;
-    min-height: 20px;
+.previewStrum{
+    color:#555;
 }
 
-.previewStrum {
-    font-family: monospace;
-    color: #555;
-    white-space: pre;
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,0,0,.84);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
-/* ---------------------------------------
-   ACTIONS
---------------------------------------- */
-
-.actionRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
+.modalBox{
+    width:min(520px,100%);
+    background:#18130d;
+    border:1px solid #80643d;
+    border-radius:14px;
+    padding:22px;
 }
 
-/* ---------------------------------------
-   MODAL
---------------------------------------- */
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.82);
-    z-index: 1000;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 20px;
+.modalBox h2{
+    color:#e1bd77;
+    font-family:Georgia,serif;
 }
 
-.modalBox {
-    width: min(520px,100%);
-    background: #18130d;
-    border: 1px solid #80643d;
-    border-radius: 14px;
-    padding: 22px;
+.variationGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:18px 0;
 }
 
-.modalBox h2 {
-    color: #e1bd77;
-    font-family: Georgia, serif;
-}
+@media(max-width:700px){
 
-.variationGrid {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 8px;
-    margin: 18px 0;
-}
-
-/* ---------------------------------------
-   MOBILE
---------------------------------------- */
-
-@media(max-width:700px) {
-
-    .circleButton {
-        width: 52px;
-        height: 52px;
-        font-size: 12px;
+    .logout{
+        position:static;
+        margin-top:10px;
     }
 
-    .circleCenter {
-        width: 90px;
-        height: 90px;
-        font-size: 12px;
+    .circleButton{
+        width:52px;
+        height:52px;
+        font-size:12px;
     }
 
-    .variationGrid {
-        grid-template-columns: repeat(2,1fr);
+    .circleCenter{
+        width:90px;
+        height:90px;
+        font-size:12px;
     }
 
-    .panel {
-        padding: 15px;
+    .variationGrid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .preview {
-        padding: 20px;
+    .panel{
+        padding:15px;
+    }
+
+    .preview{
+        padding:20px;
     }
 }
 </style>
 </head>
 
-
 <body>
 
-<div class="app">
-
-<header>
-
-    <h1>ML6 Community Music Group</h1>
-
-    <p>
-        Chord & Lyrics Builder
-    </p>
-
-</header>
-
-
 <!-- =====================================================
-     KEY
+     LOGIN SCREEN
 ===================================================== -->
 
-<section class="panel">
+<div id="loginScreen">
 
-    <h2>Song Key</h2>
+    <div class="loginBox">
 
-    <div class="keyControls">
+        <img
+            src="CBEAA820-5E84-48ED-8A65-DE2308AB11C5.png"
+            class="loginLogo"
+            alt="ML6CMG"
+        >
 
-        <label for="keySelect">
-            Choose key:
-        </label>
+        <h1>ML6CMG</h1>
 
-        <select id="keySelect"></select>
+        <p class="help">
+            Members Chord & Lyrics Builder
+        </p>
 
-    </div>
+        <form id="loginForm">
 
-    <p class="help">
-        Choose the song key. The circle and suggested
-        chords will change to match the key.
-    </p>
+            <input
+                id="loginEmail"
+                type="email"
+                autocomplete="username"
+                placeholder="Username / email"
+                required
+            >
 
-</section>
+            <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Password"
+                required
+            >
 
+            <button type="submit">
+                Login
+            </button>
 
-<!-- =====================================================
-     SELECTED CHORDS
-===================================================== -->
-
-<section class="selectedPanel">
-
-    <div class="selectedTitle">
-        Chords Chosen
-    </div>
-
-    <div
-        id="selectedList"
-        class="selectedList">
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CIRCLE
-===================================================== -->
-
-<section class="panel">
-
-    <h2>Circle of Fifths</h2>
-
-    <div class="info">
-
-        <strong>Tap a chord:</strong>
-        add it to Chords Chosen.
-
-        <br>
-
-        <strong>Hold a chord for 2 seconds:</strong>
-        choose chord variations.
-
-        <br>
-
-        Every tap creates a separate chord selection.
-        Selecting C twice therefore creates two separate C chords.
-
-    </div>
-
-    <div class="circleArea">
+        </form>
 
         <div
-            id="circle"
-            class="circle">
-
-            <div
-                id="circleCenter"
-                class="circleCenter">
-            </div>
-
+            id="loginMessage"
+            class="loginMessage">
         </div>
 
     </div>
-
-</section>
-
-
-<!-- =====================================================
-     SUGGESTIONS
-===================================================== -->
-
-<section class="panel">
-
-    <h2>Suggested Chords</h2>
-
-    <p
-        id="suggestionText"
-        class="help">
-    </p>
-
-    <div
-        id="suggestionList"
-        class="suggestionList">
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SONG BUILDER
-===================================================== -->
-
-<section class="panel">
-
-    <h2>Lyrics Builder</h2>
-
-    <div class="info">
-
-        Build each line freely.
-
-        <br><br>
-
-        You can put multiple chords on the same lyric
-        line. Chords are not permanently tied to the
-        original selected-chord order.
-
-        <br><br>
-
-        Example:
-
-        <br><br>
-
-        <strong>
-        C &nbsp;&nbsp;&nbsp; F &nbsp;&nbsp;&nbsp; Am &nbsp;&nbsp;&nbsp; C
-        </strong>
-
-        <br>
-
-        I walked down the road and wondered why
-
-        <br>
-
-        ↓ ↑ ↓ ↑ &nbsp;&nbsp; ↓ ↑ ↓ ↑ &nbsp;&nbsp; ↓ ↑ ↓ ↑ &nbsp;&nbsp; ↓ ↑ ↓ ↑
-
-    </div>
-
-
-    <div class="builderToolbar">
-
-        <button id="addLine">
-            + Next Line
-        </button>
-
-        <button id="addSection">
-            + Add Section / Header
-        </button>
-
-    </div>
-
-
-    <div
-        id="songRows"
-        class="songRows">
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SAVE
-===================================================== -->
-
-<section class="panel">
-
-    <h2>Save Your Work</h2>
-
-    <div class="actionRow">
-
-        <button id="saveProject">
-            Save / Update
-        </button>
-
-        <button id="loadProject">
-            Load Saved Work
-        </button>
-
-        <button id="clearProject">
-            Clear
-        </button>
-
-    </div>
-
-    <p class="help">
-        For now the project is saved to this browser/device.
-        The member/cloud saving system can be connected later.
-    </p>
-
-</section>
-
-
-<!-- =====================================================
-     PREVIEW / EXPORT
-===================================================== -->
-
-<section class="panel">
-
-    <h2>Preview & Export</h2>
-
-    <div class="actionRow">
-
-        <button id="previewButton">
-            Preview Document
-        </button>
-
-        <button id="exportButton">
-            Export Document
-        </button>
-
-        <button id="printButton">
-            Print
-        </button>
-
-    </div>
-
-    <div id="previewArea"></div>
-
-</section>
 
 </div>
 
 
 <!-- =====================================================
-     CHORD VARIATIONS
+     APP
 ===================================================== -->
+
+<div
+    id="app"
+    class="app hidden">
+
+    <button
+        id="logoutButton"
+        class="logout">
+        Log out
+    </button>
+
+    <header>
+
+        <h1>
+            ML6CMG Chord & Lyrics Builder
+        </h1>
+
+        <p>
+            Build your chords, lyrics and strumming patterns.
+        </p>
+
+    </header>
+
+
+    <!-- KEY -->
+
+    <section class="panel">
+
+        <h2>Song Key</h2>
+
+        <div class="keyControls">
+
+            <label>
+                Choose key:
+            </label>
+
+            <select id="keySelect"></select>
+
+        </div>
+
+        <p class="help">
+            The circle and suggested chords change with
+            the selected key.
+        </p>
+
+    </section>
+
+
+    <!-- SELECTED CHORDS -->
+
+    <section class="selectedPanel">
+
+        <div class="selectedTitle">
+            Chords Chosen
+        </div>
+
+        <div
+            id="selectedList"
+            class="selectedList">
+        </div>
+
+    </section>
+
+
+    <!-- CIRCLE -->
+
+    <section class="panel">
+
+        <h2>Circle of Fifths</h2>
+
+        <div class="info">
+
+            <strong>Tap a chord</strong>
+            to add it to Chords Chosen.
+
+            <br>
+
+            <strong>Hold for 2 seconds</strong>
+            for chord variations.
+
+            <br>
+
+            Every tap creates a separate chord.
+            C → F → Am → C therefore gives four
+            separate entries.
+
+        </div>
+
+        <div class="circleArea">
+
+            <div
+                id="circle"
+                class="circle">
+
+                <div
+                    id="circleCenter"
+                    class="circleCenter">
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUGGESTIONS -->
+
+    <section class="panel">
+
+        <h2>
+            Suggested Chords
+        </h2>
+
+        <p
+            id="suggestionText"
+            class="help">
+        </p>
+
+        <div
+            id="suggestionList"
+            class="suggestionList">
+        </div>
+
+    </section>
+
+
+    <!-- LYRICS -->
+
+    <section class="panel">
+
+        <h2>
+            Lyrics Builder
+        </h2>
+
+        <div class="info">
+
+            Add chords to each individual lyric line.
+
+            <br><br>
+
+            You can put one chord, four chords or as
+            many as you need on a line.
+
+            <br><br>
+
+            Add section headings such as:
+
+            <strong>
+                Verse 1, Chorus, Pre-Chorus, Bridge,
+                Solo, Verse 2
+            </strong>
+
+            <br><br>
+
+            Chord beats can be changed independently
+            after you place them.
+
+        </div>
+
+        <div class="builderToolbar">
+
+            <button id="addLine">
+                + Next Line
+            </button>
+
+            <button id="addSection">
+                + Add Section / Header
+            </button>
+
+        </div>
+
+        <div
+            id="songRows"
+            class="songRows">
+        </div>
+
+    </section>
+
+
+    <!-- SAVE -->
+
+    <section class="panel">
+
+        <h2>
+            Save Your Work
+        </h2>
+
+        <div class="actionRow">
+
+            <button id="saveProject">
+                Save / Update
+            </button>
+
+            <button id="loadProject">
+                Load Saved Work
+            </button>
+
+            <button id="clearProject">
+                Clear
+            </button>
+
+        </div>
+
+        <p class="help">
+            This version saves the current project in the
+            browser on this device. Your Supabase login
+            controls access to the app.
+        </p>
+
+    </section>
+
+
+    <!-- EXPORT -->
+
+    <section class="panel">
+
+        <h2>
+            Preview & Export
+        </h2>
+
+        <div class="actionRow">
+
+            <button id="previewButton">
+                Preview Document
+            </button>
+
+            <button id="exportButton">
+                Export Document
+            </button>
+
+            <button id="printButton">
+                Print
+            </button>
+
+        </div>
+
+        <div id="previewArea"></div>
+
+    </section>
+
+</div>
+
+
+<!-- VARIATION MODAL -->
 
 <div
     id="variationModal"
@@ -842,7 +867,7 @@ textarea {
         </h2>
 
         <p class="help">
-            Choose the chord variation you want to add.
+            Choose the chord variation you want.
         </p>
 
         <div
@@ -862,94 +887,318 @@ textarea {
 <script>
 
 /* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://reflccbrpxomrcpodozm.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_giDU_21FYNzjA1gn90b96A_VXW_pAsD";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =====================================================
+   LOGIN ELEMENTS
+===================================================== */
+
+const loginScreen =
+    document.getElementById(
+        "loginScreen"
+    );
+
+const app =
+    document.getElementById(
+        "app"
+    );
+
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
+const loginMessage =
+    document.getElementById(
+        "loginMessage"
+    );
+
+
+/* =====================================================
+   SHOW / HIDE APP
+===================================================== */
+
+function showApp(){
+
+    loginScreen.classList.add(
+        "hidden"
+    );
+
+    app.classList.remove(
+        "hidden"
+    );
+
+    initialiseBuilder();
+
+}
+
+
+function showLogin(){
+
+    app.classList.add(
+        "hidden"
+    );
+
+    loginScreen.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+loginForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        loginMessage.textContent =
+            "Logging in...";
+
+
+        const email =
+            document
+                .getElementById(
+                    "loginEmail"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "loginPassword"
+                )
+                .value;
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email:
+                        email,
+
+                    password:
+                        password
+
+                });
+
+
+        if(error){
+
+            console.error(
+                error
+            );
+
+            loginMessage.textContent =
+                "Login failed. Please check your username/email and password.";
+
+            return;
+
+        }
+
+
+        if(data.session){
+
+            loginMessage.textContent =
+                "";
+
+            showApp();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient.auth.signOut();
+
+            showLogin();
+
+        }
+    );
+
+
+/* =====================================================
+   CHECK EXISTING LOGIN
+===================================================== */
+
+async function checkLogin(){
+
+    const {
+        data
+    } =
+        await supabaseClient.auth
+            .getSession();
+
+
+    if(
+        data &&
+        data.session
+    ){
+
+        showApp();
+
+    }
+    else{
+
+        showLogin();
+
+    }
+
+}
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+supabaseClient.auth
+    .onAuthStateChange(
+        (
+            event,
+            session
+        ) => {
+
+            if(session){
+
+                showApp();
+
+            }
+            else{
+
+                showLogin();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
    KEY DATA
 ===================================================== */
 
 const keyData = {
 
-    "C": {
-        major:["C","G","D","A","E","B","F#","Db","Ab","Eb","Bb","F"],
-        diatonic:["C","Dm","Em","F","G","Am","Bdim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Am"
-    },
+"C":{
+major:["C","G","D","A","E","B","F#","Db","Ab","Eb","Bb","F"],
+diatonic:["C","Dm","Em","F","G","Am","Bdim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Am"
+},
 
-    "G": {
-        major:["G","D","A","E","B","F#","C#","Ab","Eb","Bb","F","C"],
-        diatonic:["G","Am","Bm","C","D","Em","F#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Em"
-    },
+"G":{
+major:["G","D","A","E","B","F#","C#","Ab","Eb","Bb","F","C"],
+diatonic:["G","Am","Bm","C","D","Em","F#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Em"
+},
 
-    "D": {
-        major:["D","A","E","B","F#","C#","G#","Eb","Bb","F","C","G"],
-        diatonic:["D","Em","F#m","G","A","Bm","C#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Bm"
-    },
+"D":{
+major:["D","A","E","B","F#","C#","G#","Eb","Bb","F","C","G"],
+diatonic:["D","Em","F#m","G","A","Bm","C#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Bm"
+},
 
-    "A": {
-        major:["A","E","B","F#","C#","G#","D#","Bb","F","C","G","D"],
-        diatonic:["A","Bm","C#m","D","E","F#m","G#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"F#m"
-    },
+"A":{
+major:["A","E","B","F#","C#","G#","D#","Bb","F","C","G","D"],
+diatonic:["A","Bm","C#m","D","E","F#m","G#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"F#m"
+},
 
-    "E": {
-        major:["E","B","F#","C#","G#","D#","A#","F","C","G","D","A"],
-        diatonic:["E","F#m","G#m","A","B","C#m","D#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"C#m"
-    },
+"E":{
+major:["E","B","F#","C#","G#","D#","A#","F","C","G","D","A"],
+diatonic:["E","F#m","G#m","A","B","C#m","D#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"C#m"
+},
 
-    "B": {
-        major:["B","F#","C#","G#","D#","A#","E#","C","G","D","A","E"],
-        diatonic:["B","C#m","D#m","E","F#","G#m","A#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"G#m"
-    },
+"B":{
+major:["B","F#","C#","G#","D#","A#","E#","C","G","D","A","E"],
+diatonic:["B","C#m","D#m","E","F#","G#m","A#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"G#m"
+},
 
-    "F#": {
-        major:["F#","C#","G#","D#","A#","E#","B#","Db","Ab","Eb","Bb","F"],
-        diatonic:["F#","G#m","A#m","B","C#","D#m","E#dim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"D#m"
-    },
+"F#":{
+major:["F#","C#","G#","D#","A#","E#","B#","Db","Ab","Eb","Bb","F"],
+diatonic:["F#","G#m","A#m","B","C#","D#m","E#dim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"D#m"
+},
 
-    "Db": {
-        major:["Db","Ab","Eb","Bb","F","C","G","D","A","E","B","F#"],
-        diatonic:["Db","Ebm","Fm","Gb","Ab","Bbm","Cdim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Bbm"
-    },
+"Db":{
+major:["Db","Ab","Eb","Bb","F","C","G","D","A","E","B","F#"],
+diatonic:["Db","Ebm","Fm","Gb","Ab","Bbm","Cdim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Bbm"
+},
 
-    "Ab": {
-        major:["Ab","Eb","Bb","F","C","G","D","A","E","B","F#","C#"],
-        diatonic:["Ab","Bbm","Cm","Db","Eb","Fm","Gdim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Fm"
-    },
+"Ab":{
+major:["Ab","Eb","Bb","F","C","G","D","A","E","B","F#","C#"],
+diatonic:["Ab","Bbm","Cm","Db","Eb","Fm","Gdim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Fm"
+},
 
-    "Eb": {
-        major:["Eb","Bb","F","C","G","D","A","E","B","F#","C#","G#"],
-        diatonic:["Eb","Fm","Gm","Ab","Bb","Cm","Ddim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Cm"
-    },
+"Eb":{
+major:["Eb","Bb","F","C","G","D","A","E","B","F#","C#","G#"],
+diatonic:["Eb","Fm","Gm","Ab","Bb","Cm","Ddim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Cm"
+},
 
-    "Bb": {
-        major:["Bb","F","C","G","D","A","E","B","F#","C#","G#","D#"],
-        diatonic:["Bb","Cm","Dm","Eb","F","Gm","Adim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Gm"
-    },
+"Bb":{
+major:["Bb","F","C","G","D","A","E","B","F#","C#","G#","D#"],
+diatonic:["Bb","Cm","Dm","Eb","F","Gm","Adim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Gm"
+},
 
-    "F": {
-        major:["F","C","G","D","A","E","B","F#","C#","G#","D#","A#"],
-        diatonic:["F","Gm","Am","Bb","C","Dm","Edim"],
-        numerals:["I","ii","iii","IV","V","vi","vii°"],
-        relativeMinor:"Dm"
-    }
+"F":{
+major:["F","C","G","D","A","E","B","F#","C#","G#","D#","A#"],
+diatonic:["F","Gm","Am","Bb","C","Dm","Edim"],
+numerals:["I","ii","iii","IV","V","vi","vii°"],
+relativeMinor:"Dm"
+}
 
 };
 
@@ -958,21 +1207,15 @@ const keyData = {
    PROGRESSION SUGGESTIONS
 ===================================================== */
 
-const progressionMap = {
+const progressionMap={
 
-    "I":["IV","V","vi","ii","iii"],
-
-    "ii":["V","vi","IV","I"],
-
-    "iii":["vi","IV","ii","V"],
-
-    "IV":["I","V","ii","vi"],
-
-    "V":["I","vi","IV","iii"],
-
-    "vi":["IV","V","ii","I"],
-
-    "vii°":["I","iii","V"]
+"I":["IV","V","vi","ii","iii"],
+"ii":["V","vi","IV","I"],
+"iii":["vi","IV","ii","V"],
+"IV":["I","V","ii","vi"],
+"V":["I","vi","IV","iii"],
+"vi":["IV","V","ii","I"],
+"vii°":["I","iii","V"]
 
 };
 
@@ -981,135 +1224,228 @@ const progressionMap = {
    STATE
 ===================================================== */
 
-let currentKey = "C";
+let currentKey="C";
 
-let selectedChords = [];
+let selectedChords=[];
 
-let songRows = [];
+let songRows=[];
+
+let builderInitialised=false;
 
 
 /* =====================================================
    DOM
 ===================================================== */
 
-const keySelect =
-    document.getElementById(
-        "keySelect"
-    );
+const keySelect=
+document.getElementById(
+    "keySelect"
+);
 
-const circle =
-    document.getElementById(
-        "circle"
-    );
+const circle=
+document.getElementById(
+    "circle"
+);
 
-const circleCenter =
-    document.getElementById(
-        "circleCenter"
-    );
+const circleCenter=
+document.getElementById(
+    "circleCenter"
+);
 
-const selectedList =
-    document.getElementById(
-        "selectedList"
-    );
+const selectedList=
+document.getElementById(
+    "selectedList"
+);
 
-const suggestionList =
-    document.getElementById(
-        "suggestionList"
-    );
+const suggestionList=
+document.getElementById(
+    "suggestionList"
+);
 
-const suggestionText =
-    document.getElementById(
-        "suggestionText"
-    );
+const suggestionText=
+document.getElementById(
+    "suggestionText"
+);
 
-const songRowsElement =
-    document.getElementById(
-        "songRows"
-    );
+const songRowsElement=
+document.getElementById(
+    "songRows"
+);
 
-const variationModal =
-    document.getElementById(
-        "variationModal"
-    );
+const variationModal=
+document.getElementById(
+    "variationModal"
+);
 
-const variationTitle =
-    document.getElementById(
-        "variationTitle"
-    );
+const variationTitle=
+document.getElementById(
+    "variationTitle"
+);
 
-const variationGrid =
-    document.getElementById(
-        "variationGrid"
-    );
+const variationGrid=
+document.getElementById(
+    "variationGrid"
+);
 
 
 /* =====================================================
-   KEY DROPDOWN
+   INITIALISE
 ===================================================== */
 
-Object.keys(keyData).forEach(
-    key => {
+function initialiseBuilder(){
 
-        const option =
-            document.createElement(
-                "option"
-            );
+    if(builderInitialised)
+        return;
 
-        option.value = key;
+    builderInitialised=true;
 
-        option.textContent =
-            key + " Major";
 
-        keySelect.appendChild(
-            option
+    Object.keys(keyData)
+        .forEach(
+            key=>{
+
+                const option=
+                document.createElement(
+                    "option"
+                );
+
+                option.value=key;
+
+                option.textContent=
+                    key+" Major";
+
+                keySelect.appendChild(
+                    option
+                );
+
+            }
         );
 
-    }
-);
 
-keySelect.value =
-    currentKey;
+    keySelect.value=
+        currentKey;
 
 
-keySelect.addEventListener(
-    "change",
-    () => {
+    keySelect.addEventListener(
+        "change",
+        ()=>{
 
-        currentKey =
-            keySelect.value;
+            currentKey=
+                keySelect.value;
 
-        renderCircle();
+            renderCircle();
 
-        renderSuggestions();
+            renderSuggestions();
 
-    }
-);
+        }
+    );
+
+
+    document
+        .getElementById(
+            "addLine"
+        )
+        .onclick=
+            ()=>addNewLine();
+
+
+    document
+        .getElementById(
+            "addSection"
+        )
+        .onclick=
+            ()=>addNewSection();
+
+
+    document
+        .getElementById(
+            "saveProject"
+        )
+        .onclick=
+            saveProject;
+
+
+    document
+        .getElementById(
+            "loadProject"
+        )
+        .onclick=
+            loadProject;
+
+
+    document
+        .getElementById(
+            "clearProject"
+        )
+        .onclick=
+            clearProject;
+
+
+    document
+        .getElementById(
+            "previewButton"
+        )
+        .onclick=
+            renderPreview;
+
+
+    document
+        .getElementById(
+            "exportButton"
+        )
+        .onclick=
+            exportDocument;
+
+
+    document
+        .getElementById(
+            "printButton"
+        )
+        .onclick=
+            ()=>window.print();
+
+
+    document
+        .getElementById(
+            "closeVariation"
+        )
+        .onclick=
+            closeVariations;
+
+
+    variationModal.addEventListener(
+        "click",
+        event=>{
+
+            if(
+                event.target===
+                variationModal
+            ){
+
+                closeVariations();
+
+            }
+
+        }
+    );
+
+
+    renderCircle();
+
+    renderSelectedChords();
+
+    renderSuggestions();
+
+    renderSongRows();
+
+}
 
 
 /* =====================================================
    ADD SELECTED CHORD
 ===================================================== */
 
-function addSelectedChord(
-    chord
-) {
-
-    /*
-       IMPORTANT:
-
-       Every click creates a NEW object.
-
-       Therefore:
-
-       C → F → Am → C
-
-       becomes:
-
-       [C1] [F] [Am] [C2]
-
-       The second C will NEVER merge into
-       the first C.
-    */
+function addSelectedChord(chord){
 
     selectedChords.push({
 
@@ -1135,31 +1471,31 @@ function addSelectedChord(
    ID
 ===================================================== */
 
-function generateID() {
+function generateID(){
 
     return Date.now()
-        .toString(36)
-        +
+        .toString(36)+
         Math.random()
-            .toString(36)
-            .substring(2);
+        .toString(36)
+        .substring(2);
 
 }
 
 
 /* =====================================================
-   SELECTED CHORD DISPLAY
+   SELECTED CHORDS
 ===================================================== */
 
-function renderSelectedChords() {
+function renderSelectedChords(){
 
-    selectedList.innerHTML = "";
+    selectedList.innerHTML="";
 
-    if (
-        selectedChords.length === 0
-    ) {
 
-        selectedList.innerHTML =
+    if(
+        selectedChords.length===0
+    ){
+
+        selectedList.innerHTML=
             `<span class="help">
                 Tap a chord in the circle to choose it.
             </span>`;
@@ -1170,188 +1506,152 @@ function renderSelectedChords() {
 
 
     selectedChords.forEach(
-        (item,index) => {
+        (item,index)=>{
 
-            const card =
+            const card=
                 document.createElement(
                     "div"
                 );
 
-            card.className =
+            card.className=
                 "selectedCard";
 
 
-            const remove =
+            const remove=
                 document.createElement(
                     "button"
                 );
 
-            remove.className =
+            remove.className=
                 "removeSelected";
 
-            remove.textContent =
-                "×";
-
-            remove.title =
-                "Remove this chord";
+            remove.textContent="×";
 
 
-            remove.onclick =
-                () => {
+            remove.onclick=()=>{
 
-                    selectedChords.splice(
-                        index,
-                        1
-                    );
+                selectedChords.splice(
+                    index,
+                    1
+                );
 
-                    /*
-                       Remove references to
-                       this chord from lyric lines.
-                    */
+                songRows.forEach(
+                    row=>{
 
-                    songRows.forEach(
-                        row => {
+                        if(
+                            row.type==="line"
+                        ){
 
-                            if (
-                                row.type ===
-                                "line"
-                            ) {
-
-                                row.chords =
-                                    row.chords
-                                        .filter(
-                                            c =>
-                                                c.chordId
-                                                !==
-                                                item.id
-                                        );
-
-                            }
+                            row.chords=
+                                row.chords
+                                .filter(
+                                    c=>
+                                    c.chordId!==
+                                    item.id
+                                );
 
                         }
-                    );
 
-                    renderSelectedChords();
-
-                    renderSongRows();
-
-                };
+                    }
+                );
 
 
-            const number =
+                renderSelectedChords();
+
+                renderSongRows();
+
+            };
+
+
+            const number=
                 document.createElement(
                     "div"
                 );
 
-            number.className =
+            number.className=
                 "selectedNumber";
 
-            number.textContent =
-                "CHORD " +
-                (index + 1);
+            number.textContent=
+                "CHORD "+(index+1);
 
 
-            const name =
+            const name=
                 document.createElement(
                     "span"
                 );
 
-            name.className =
+            name.className=
                 "selectedChordName";
 
-            name.textContent =
+            name.textContent=
                 item.chord;
 
 
-            const controls =
+            const controls=
                 document.createElement(
                     "div"
                 );
 
-            controls.className =
+            controls.className=
                 "beatControls";
 
 
-            const minus =
+            const minus=
                 document.createElement(
                     "button"
                 );
 
-            minus.textContent =
-                "−";
+            minus.textContent="−";
+
+            minus.onclick=()=>{
+
+                item.beats=
+                    Math.max(
+                        1,
+                        item.beats-1
+                    );
+
+                renderSelectedChords();
+
+            };
 
 
-            minus.onclick =
-                () => {
-
-                    item.beats =
-                        Math.max(
-                            1,
-                            item.beats - 1
-                        );
-
-                    renderSelectedChords();
-
-                };
-
-
-            const beats =
+            const beats=
                 document.createElement(
                     "span"
                 );
 
-            beats.className =
-                "beatNumber";
-
-            beats.textContent =
+            beats.textContent=
                 item.beats;
 
 
-            const plus =
+            const plus=
                 document.createElement(
                     "button"
                 );
 
-            plus.textContent =
-                "+";
+            plus.textContent="+";
+
+            plus.onclick=()=>{
+
+                item.beats++;
+
+                renderSelectedChords();
+
+            };
 
 
-            plus.onclick =
-                () => {
-
-                    item.beats++;
-
-                    renderSelectedChords();
-
-                };
-
-
-            controls.appendChild(
-                minus
-            );
-
-            controls.appendChild(
-                beats
-            );
-
-            controls.appendChild(
+            controls.append(
+                minus,
+                beats,
                 plus
             );
 
 
-            card.appendChild(
-                remove
-            );
-
-            card.appendChild(
-                number
-            );
-
-            card.appendChild(
-                name
-            );
-
-            card.appendChild(
+            card.append(
+                remove,
+                number,
+                name,
                 controls
             );
 
@@ -1370,31 +1670,28 @@ function renderSelectedChords() {
    CIRCLE
 ===================================================== */
 
-function renderCircle() {
+function renderCircle(){
 
     circle
         .querySelectorAll(
             ".circleButton"
         )
         .forEach(
-            button =>
-                button.remove()
+            b=>b.remove()
         );
 
 
-    const data =
+    const data=
         keyData[currentKey];
 
 
-    circleCenter.innerHTML =
+    circleCenter.innerHTML=
         `
         <div>
             <strong>
                 ${currentKey} Major
             </strong>
-
             <br>
-
             <small>
                 Relative minor:
                 ${data.relativeMinor}
@@ -1403,34 +1700,26 @@ function renderCircle() {
         `;
 
 
-    /*
-       OUTER CIRCLE
-       Major keys
-    */
-
     data.major.forEach(
-        (key,index) => {
+        (key,index)=>{
 
-            const angle =
-                index * 30 - 90;
+            const angle=
+                index*30-90;
 
-            const radius =
-                43;
+            const radius=43;
 
-            const x =
-                50 +
-                radius *
+            const x=
+                50+
+                radius*
                 Math.cos(
-                    angle *
-                    Math.PI / 180
+                    angle*Math.PI/180
                 );
 
-            const y =
-                50 +
-                radius *
+            const y=
+                50+
+                radius*
                 Math.sin(
-                    angle *
-                    Math.PI / 180
+                    angle*Math.PI/180
                 );
 
 
@@ -1445,67 +1734,49 @@ function renderCircle() {
     );
 
 
-    /*
-       INNER CIRCLE
-       Diatonic chords of selected key
-    */
-
     data.diatonic.forEach(
-        (chord,index) => {
+        (chord,index)=>{
 
-            const angle =
-                index *
-                (360 / 7)
-                -
-                90;
+            const angle=
+                index*(360/7)-90;
 
-            const radius =
-                23;
+            const radius=23;
 
-            const x =
-                50 +
-                radius *
+            const x=
+                50+
+                radius*
                 Math.cos(
-                    angle *
-                    Math.PI / 180
+                    angle*Math.PI/180
                 );
 
-            const y =
-                50 +
-                radius *
+            const y=
+                50+
+                radius*
                 Math.sin(
-                    angle *
-                    Math.PI / 180
+                    angle*Math.PI/180
                 );
 
 
-            let className =
+            let cls=
                 "circleMajor";
 
 
-            if (
+            if(
                 chord.endsWith("dim")
-            ) {
+            )
+                cls="circleDim";
 
-                className =
-                    "circleDim";
-
-            }
-            else if (
+            else if(
                 chord.endsWith("m")
-            ) {
-
-                className =
-                    "circleMinor";
-
-            }
+            )
+                cls="circleMinor";
 
 
             createCircleButton(
                 chord,
                 x,
                 y,
-                className
+                cls
             );
 
         }
@@ -1522,47 +1793,43 @@ function createCircleButton(
     chord,
     x,
     y,
-    className
-) {
+    cls
+){
 
-    const button =
+    const button=
         document.createElement(
             "button"
         );
 
-    button.className =
-        "circleButton " +
-        className;
+    button.className=
+        "circleButton "+cls;
 
-    button.textContent =
+    button.textContent=
         chord;
 
-    button.style.left =
-        x + "%";
+    button.style.left=
+        x+"%";
 
-    button.style.top =
-        y + "%";
+    button.style.top=
+        y+"%";
 
 
-    let holdTimer = null;
+    let timer=null;
 
-    let longPress =
-        false;
+    let longPress=false;
 
 
     button.addEventListener(
         "pointerdown",
-        () => {
+        ()=>{
 
-            longPress =
-                false;
+            longPress=false;
 
-            holdTimer =
+            timer=
                 setTimeout(
-                    () => {
+                    ()=>{
 
-                        longPress =
-                            true;
+                        longPress=true;
 
                         openVariations(
                             chord
@@ -1576,18 +1843,13 @@ function createCircleButton(
     );
 
 
-    function cancelHold() {
+    function cancel(){
 
-        if (
-            holdTimer
-        ) {
+        if(timer){
 
-            clearTimeout(
-                holdTimer
-            );
+            clearTimeout(timer);
 
-            holdTimer =
-                null;
+            timer=null;
 
         }
 
@@ -1596,27 +1858,25 @@ function createCircleButton(
 
     button.addEventListener(
         "pointerup",
-        cancelHold
+        cancel
     );
 
     button.addEventListener(
         "pointerleave",
-        cancelHold
+        cancel
     );
 
     button.addEventListener(
         "pointercancel",
-        cancelHold
+        cancel
     );
 
 
     button.addEventListener(
         "click",
-        () => {
+        ()=>{
 
-            if (
-                !longPress
-            ) {
+            if(!longPress){
 
                 addSelectedChord(
                     chord
@@ -1624,8 +1884,7 @@ function createCircleButton(
 
             }
 
-            longPress =
-                false;
+            longPress=false;
 
         }
     );
@@ -1642,31 +1901,28 @@ function createCircleButton(
    SUGGESTIONS
 ===================================================== */
 
-function renderSuggestions() {
+function renderSuggestions(){
 
-    suggestionList.innerHTML = "";
+    suggestionList.innerHTML="";
 
 
-    const data =
+    const data=
         keyData[currentKey];
 
 
-    if (
-        selectedChords.length === 0
-    ) {
+    if(
+        selectedChords.length===0
+    ){
 
-        suggestionText.textContent =
+        suggestionText.textContent=
             "Start by choosing a chord.";
 
         data.diatonic.forEach(
-            (chord,index) => {
-
+            (chord,i)=>
                 addSuggestion(
                     chord,
-                    data.numerals[index]
-                );
-
-            }
+                    data.numerals[i]
+                )
         );
 
         return;
@@ -1674,34 +1930,29 @@ function renderSuggestions() {
     }
 
 
-    const last =
+    const last=
         selectedChords[
-            selectedChords.length - 1
+            selectedChords.length-1
         ].chord;
 
 
-    const index =
+    const index=
         data.diatonic.indexOf(
             last
         );
 
 
-    if (
-        index < 0
-    ) {
+    if(index<0){
 
-        suggestionText.textContent =
+        suggestionText.textContent=
             "Chords from the selected key:";
 
         data.diatonic.forEach(
-            (chord,i) => {
-
+            (chord,i)=>
                 addSuggestion(
                     chord,
                     data.numerals[i]
-                );
-
-            }
+                )
         );
 
         return;
@@ -1709,42 +1960,37 @@ function renderSuggestions() {
     }
 
 
-    const numeral =
+    const numeral=
         data.numerals[index];
 
 
-    suggestionText.textContent =
-        "Suggested progression after " +
-        last;
+    suggestionText.textContent=
+        "Suggested progression after "+last;
 
 
-    const suggestions = [];
+    const suggestions=[];
 
 
     (
-        progressionMap[numeral] || []
+        progressionMap[numeral]||[]
     ).forEach(
-        nextNumeral => {
+        next=>{
 
-            const nextIndex =
+            const i=
                 data.numerals.indexOf(
-                    nextNumeral
+                    next
                 );
 
-            if (
-                nextIndex >= 0
-            ) {
+            if(i>=0){
 
-                const chord =
-                    data.diatonic[
-                        nextIndex
-                    ];
+                const chord=
+                    data.diatonic[i];
 
-                if (
+                if(
                     !suggestions.includes(
                         chord
                     )
-                ) {
+                ){
 
                     suggestions.push(
                         chord
@@ -1758,34 +2004,26 @@ function renderSuggestions() {
     );
 
 
-    /*
-       Then add any remaining
-       diatonic chords.
-    */
-
     data.diatonic.forEach(
-        chord => {
+        chord=>{
 
-            if (
+            if(
                 !suggestions.includes(
                     chord
                 )
-            ) {
-
+            )
                 suggestions.push(
                     chord
                 );
-
-            }
 
         }
     );
 
 
     suggestions.forEach(
-        chord => {
+        chord=>{
 
-            const i =
+            const i=
                 data.diatonic.indexOf(
                     chord
                 );
@@ -1804,28 +2042,24 @@ function renderSuggestions() {
 function addSuggestion(
     chord,
     numeral
-) {
+){
 
-    const button =
+    const button=
         document.createElement(
             "button"
         );
 
-    button.textContent =
+    button.textContent=
         chord;
 
-    button.title =
-        numeral || "";
+    button.title=
+        numeral||"";
 
 
-    button.onclick =
-        () => {
-
-            addSelectedChord(
-                chord
-            );
-
-        };
+    button.onclick=
+        ()=>addSelectedChord(
+            chord
+        );
 
 
     suggestionList.appendChild(
@@ -1841,49 +2075,46 @@ function addSuggestion(
 
 function openVariations(
     chord
-) {
+){
 
-    variationTitle.textContent =
-        chord +
-        " — Chord Options";
-
-
-    variationGrid.innerHTML =
-        "";
+    variationTitle.textContent=
+        chord+" — Chord Options";
 
 
-    const options = [
+    variationGrid.innerHTML="";
+
+
+    const options=[
         chord,
-        chord + "7",
-        chord + "9",
-        chord + "maj7",
-        chord + "m7",
-        chord + "m9",
-        chord + "sus2",
-        chord + "sus4",
-        chord + "add9",
-        chord + "6",
-        chord + "dim",
-        chord + "dim7"
+        chord+"7",
+        chord+"9",
+        chord+"maj7",
+        chord+"m7",
+        chord+"m9",
+        chord+"sus2",
+        chord+"sus4",
+        chord+"add9",
+        chord+"6",
+        chord+"dim",
+        chord+"dim7"
     ];
 
 
-    [
-        ...new Set(options)
-    ].forEach(
-        variation => {
+    [...new Set(options)]
+    .forEach(
+        variation=>{
 
-            const button =
+            const button=
                 document.createElement(
                     "button"
                 );
 
-            button.textContent =
+            button.textContent=
                 variation;
 
 
-            button.onclick =
-                () => {
+            button.onclick=
+                ()=>{
 
                     addSelectedChord(
                         variation
@@ -1909,7 +2140,7 @@ function openVariations(
 }
 
 
-function closeVariations() {
+function closeVariations(){
 
     variationModal.classList.add(
         "hidden"
@@ -1918,87 +2149,36 @@ function closeVariations() {
 }
 
 
-document
-    .getElementById(
-        "closeVariation"
-    )
-    .onclick =
-        closeVariations;
-
-
-variationModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            variationModal
-        ) {
-
-            closeVariations();
-
-        }
-
-    }
-);
-
-
 /* =====================================================
    ADD LINE
 ===================================================== */
 
 function addNewLine(
-    afterIndex = null
-) {
+    afterIndex=null
+){
 
-    const line = {
-
-        type:
-            "line",
-
-        text:
-            "",
-
-        chords:
-            [],
-
-        strum:
-            []
-
+    const line={
+        type:"line",
+        text:"",
+        chords:[],
+        strum:[]
     };
 
 
-    if (
-        afterIndex === null
-    ) {
+    if(afterIndex===null)
+        songRows.push(line);
 
-        songRows.push(
-            line
-        );
-
-    }
-    else {
-
+    else
         songRows.splice(
-            afterIndex + 1,
+            afterIndex+1,
             0,
             line
         );
-
-    }
 
 
     renderSongRows();
 
 }
-
-
-document
-    .getElementById(
-        "addLine"
-    )
-    .onclick =
-        () => addNewLine();
 
 
 /* =====================================================
@@ -2006,55 +2186,38 @@ document
 ===================================================== */
 
 function addNewSection(
-    afterIndex = null
-) {
+    afterIndex=null
+){
 
-    const name =
+    const name=
         prompt(
             "Enter section name:",
             "VERSE 1"
         );
 
 
-    if (
-        !name ||
+    if(
+        !name||
         !name.trim()
-    ) {
-
+    )
         return;
 
-    }
 
-
-    const section = {
-
-        type:
-            "header",
-
-        text:
-            name.trim()
-
+    const section={
+        type:"header",
+        text:name.trim()
     };
 
 
-    if (
-        afterIndex === null
-    ) {
+    if(afterIndex===null)
+        songRows.push(section);
 
-        songRows.push(
-            section
-        );
-
-    }
-    else {
-
+    else
         songRows.splice(
-            afterIndex + 1,
+            afterIndex+1,
             0,
             section
         );
-
-    }
 
 
     renderSongRows();
@@ -2062,34 +2225,24 @@ function addNewSection(
 }
 
 
-document
-    .getElementById(
-        "addSection"
-    )
-    .onclick =
-        () => addNewSection();
-
-
 /* =====================================================
-   RENDER SONG ROWS
+   RENDER SONG
 ===================================================== */
 
-function renderSongRows() {
+function renderSongRows(){
 
-    songRowsElement.innerHTML =
-        "";
+    songRowsElement.innerHTML="";
 
 
-    if (
-        songRows.length === 0
-    ) {
+    if(
+        songRows.length===0
+    ){
 
-        songRowsElement.innerHTML =
+        songRowsElement.innerHTML=
             `
             <div class="info">
-                No lines yet.
                 Press <strong>+ Next Line</strong>
-                to begin.
+                to begin your song.
             </div>
             `;
 
@@ -2099,27 +2252,21 @@ function renderSongRows() {
 
 
     songRows.forEach(
-        (row,index) => {
+        (row,index)=>{
 
-            if (
-                row.type ===
-                "header"
-            ) {
-
+            if(
+                row.type==="header"
+            )
                 renderHeader(
                     row,
                     index
                 );
 
-            }
-            else {
-
+            else
                 renderLyricLine(
                     row,
                     index
                 );
-
-            }
 
         }
     );
@@ -2134,102 +2281,83 @@ function renderSongRows() {
 function renderHeader(
     row,
     index
-) {
+){
 
-    const element =
+    const element=
         document.createElement(
             "div"
         );
 
-    element.className =
+    element.className=
         "songRow songHeader";
 
 
-    const input =
+    const input=
         document.createElement(
             "input"
         );
 
-    input.className =
+    input.className=
         "headerInput";
 
-    input.value =
+    input.value=
         row.text;
 
 
-    input.oninput =
-        () => {
-
-            row.text =
-                input.value;
-
-        };
+    input.oninput=
+        ()=>row.text=
+            input.value;
 
 
-    const toolbar =
+    const toolbar=
         document.createElement(
             "div"
         );
 
-    toolbar.className =
+    toolbar.className=
         "rowToolbar";
 
 
-    const addLine =
+    const addLine=
         document.createElement(
             "button"
         );
 
-    addLine.textContent =
+    addLine.textContent=
         "+ Next Line";
 
-
-    addLine.onclick =
-        () => {
-
-            addNewLine(
-                index
-            );
-
-        };
+    addLine.onclick=
+        ()=>addNewLine(index);
 
 
-    const addSection =
+    const addSection=
         document.createElement(
             "button"
         );
 
-    addSection.textContent =
+    addSection.textContent=
         "+ Section";
 
-
-    addSection.onclick =
-        () => {
-
-            addNewSection(
-                index
-            );
-
-        };
+    addSection.onclick=
+        ()=>addNewSection(index);
 
 
-    const deleteButton =
+    const del=
         document.createElement(
             "button"
         );
 
-    deleteButton.textContent =
+    del.textContent=
         "Delete Section";
 
+    del.onclick=
+        ()=>{
 
-    deleteButton.onclick =
-        () => {
-
-            if (
+            if(
                 confirm(
                     "Delete this section?"
                 )
-            ) {
+            ){
 
                 songRows.splice(
                     index,
@@ -2243,24 +2371,15 @@ function renderHeader(
         };
 
 
-    toolbar.appendChild(
-        addLine
-    );
-
-    toolbar.appendChild(
-        addSection
-    );
-
-    toolbar.appendChild(
-        deleteButton
+    toolbar.append(
+        addLine,
+        addSection,
+        del
     );
 
 
-    element.appendChild(
-        input
-    );
-
-    element.appendChild(
+    element.append(
+        input,
         toolbar
     );
 
@@ -2279,97 +2398,138 @@ function renderHeader(
 function renderLyricLine(
     row,
     index
-) {
+){
 
-    const element =
+    const element=
         document.createElement(
             "div"
         );
 
-    element.className =
+    element.className=
         "songRow";
 
 
-    /* TOOLBAR */
-
-    const toolbar =
+    const toolbar=
         document.createElement(
             "div"
         );
 
-    toolbar.className =
+    toolbar.className=
         "rowToolbar";
 
 
-    const addChord =
+    const addChord=
         document.createElement(
             "button"
         );
 
-    addChord.textContent =
+    addChord.textContent=
         "+ Add Chord";
 
-
-    addChord.onclick =
-        () => {
-
-            openLineChordPicker(
-                row,
-                element
-            );
-
-        };
+    addChord.onclick=
+        ()=>openLineChordPicker(
+            row
+        );
 
 
-    const nextLine =
+    const next=
         document.createElement(
             "button"
         );
 
-    nextLine.textContent =
+    next.textContent=
         "+ Next Line";
 
-
-    nextLine.onclick =
-        () => {
-
-            addNewLine(
-                index
-            );
-
-        };
+    next.onclick=
+        ()=>addNewLine(index);
 
 
-    const section =
+    const section=
         document.createElement(
             "button"
         );
 
-    section.textContent =
+    section.textContent=
         "+ Section";
 
-
-    section.onclick =
-        () => {
-
-            addNewSection(
-                index
-            );
-
-        };
+    section.onclick=
+        ()=>addNewSection(index);
 
 
-    const deleteButton =
+    const up=
         document.createElement(
             "button"
         );
 
-    deleteButton.textContent =
+    up.textContent="↑";
+
+    up.disabled=
+        index===0;
+
+    up.onclick=
+        ()=>{
+
+            if(index>0){
+
+                [
+                    songRows[index-1],
+                    songRows[index]
+                ]=[
+                    songRows[index],
+                    songRows[index-1]
+                ];
+
+                renderSongRows();
+
+            }
+
+        };
+
+
+    const down=
+        document.createElement(
+            "button"
+        );
+
+    down.textContent="↓";
+
+    down.disabled=
+        index===
+        songRows.length-1;
+
+    down.onclick=
+        ()=>{
+
+            if(
+                index<
+                songRows.length-1
+            ){
+
+                [
+                    songRows[index],
+                    songRows[index+1]
+                ]=[
+                    songRows[index+1],
+                    songRows[index]
+                ];
+
+                renderSongRows();
+
+            }
+
+        };
+
+
+    const del=
+        document.createElement(
+            "button"
+        );
+
+    del.textContent=
         "Delete Line";
 
-
-    deleteButton.onclick =
-        () => {
+    del.onclick=
+        ()=>{
 
             songRows.splice(
                 index,
@@ -2381,137 +2541,30 @@ function renderLyricLine(
         };
 
 
-    /*
-       MOVE UP
-    */
-
-    const up =
-        document.createElement(
-            "button"
-        );
-
-    up.textContent =
-        "↑";
-
-
-    up.title =
-        "Move line up";
-
-
-    up.disabled =
-        index === 0;
-
-
-    up.onclick =
-        () => {
-
-            if (
-                index > 0
-            ) {
-
-                const temp =
-                    songRows[index - 1];
-
-                songRows[index - 1] =
-                    songRows[index];
-
-                songRows[index] =
-                    temp;
-
-                renderSongRows();
-
-            }
-
-        };
-
-
-    /*
-       MOVE DOWN
-    */
-
-    const down =
-        document.createElement(
-            "button"
-        );
-
-    down.textContent =
-        "↓";
-
-
-    down.title =
-        "Move line down";
-
-
-    down.disabled =
-        index ===
-        songRows.length - 1;
-
-
-    down.onclick =
-        () => {
-
-            if (
-                index <
-                songRows.length - 1
-            ) {
-
-                const temp =
-                    songRows[index + 1];
-
-                songRows[index + 1] =
-                    songRows[index];
-
-                songRows[index] =
-                    temp;
-
-                renderSongRows();
-
-            }
-
-        };
-
-
-    toolbar.appendChild(
-        addChord
-    );
-
-    toolbar.appendChild(
-        nextLine
-    );
-
-    toolbar.appendChild(
-        section
-    );
-
-    toolbar.appendChild(
-        up
-    );
-
-    toolbar.appendChild(
-        down
-    );
-
-    toolbar.appendChild(
-        deleteButton
+    toolbar.append(
+        addChord,
+        next,
+        section,
+        up,
+        down,
+        del
     );
 
 
-    /* CHORDS */
-
-    const chordArea =
+    const chordArea=
         document.createElement(
             "div"
         );
 
-    chordArea.className =
+    chordArea.className=
         "lineChords";
 
 
-    if (
-        row.chords.length === 0
-    ) {
+    if(
+        row.chords.length===0
+    ){
 
-        chordArea.innerHTML =
+        chordArea.innerHTML=
             `
             <span class="noChords">
                 No chords on this line yet.
@@ -2522,147 +2575,115 @@ function renderLyricLine(
 
 
     row.chords.forEach(
-        (lineChord,
-        chordIndex) => {
-
+        (item,i)=>
             renderLineChord(
                 row,
-                chordIndex,
+                i,
                 chordArea
-            );
-
-        }
+            )
     );
 
 
-    /* LYRICS */
-
-    const lyrics =
+    const lyrics=
         document.createElement(
             "textarea"
         );
 
-    lyrics.className =
+    lyrics.className=
         "lyricInput";
 
-    lyrics.placeholder =
-        "Type lyrics for this line...";
+    lyrics.placeholder=
+        "Type the lyrics for this line...";
 
-    lyrics.value =
+    lyrics.value=
         row.text;
 
-
-    lyrics.addEventListener(
-        "input",
-        () => {
-
-            row.text =
-                lyrics.value;
-
-        }
-    );
+    lyrics.oninput=
+        ()=>row.text=
+            lyrics.value;
 
 
-    /* STRUMMING */
-
-    const strumArea =
+    const strumArea=
         document.createElement(
             "div"
         );
 
-    strumArea.className =
+    strumArea.className=
         "strumArea";
 
 
-    const strumLabel =
+    const label=
         document.createElement(
             "div"
         );
 
-    strumLabel.className =
+    label.className=
         "strumLabel";
 
-    strumLabel.textContent =
-        "Strumming — tap arrows to switch ↓ / ↑";
+    label.textContent=
+        "Strumming — tap an arrow to switch ↓ / ↑";
 
 
-    const strumButtons =
+    const strums=
         document.createElement(
             "div"
         );
 
-    strumButtons.className =
+    strums.className=
         "strumButtons";
 
 
-    const totalBeats =
-        getTotalLineBeats(
-            row
-        );
+    const total=
+        getTotalLineBeats(row);
 
 
-    for (
-        let i = 0;
-        i < totalBeats;
+    for(
+        let i=0;
+        i<total;
         i++
-    ) {
+    ){
 
-        const button =
+        const b=
             document.createElement(
                 "button"
             );
 
-        button.className =
+        b.className=
             "strumButton";
 
 
-        button.textContent =
-            row.strum[i] ||
-            "↓";
+        b.textContent=
+            row.strum[i]||"↓";
 
 
-        button.onclick =
-            () => {
+        b.onclick=
+            ()=>{
 
-                row.strum[i] =
-                    row.strum[i] === "↑"
-                        ? "↓"
-                        : "↑";
+                row.strum[i]=
+                    row.strum[i]==="↑"
+                        ?"↓"
+                        :"↑";
 
                 renderSongRows();
 
             };
 
 
-        strumButtons.appendChild(
-            button
-        );
+        strums.appendChild(b);
 
     }
 
 
-    strumArea.appendChild(
-        strumLabel
-    );
-
-    strumArea.appendChild(
-        strumButtons
+    strumArea.append(
+        label,
+        strums
     );
 
 
-    element.appendChild(
-        toolbar
-    );
-
-    element.appendChild(
-        chordArea
-    );
-
-    element.appendChild(
-        lyrics
-    );
-
-    element.appendChild(
+    element.append(
+        toolbar,
+        chordArea,
+        lyrics,
         strumArea
     );
 
@@ -2682,93 +2703,67 @@ function renderLineChord(
     row,
     chordIndex,
     container
-) {
+){
 
-    const item =
-        row.chords[
-            chordIndex
-        ];
+    const item=
+        row.chords[chordIndex];
 
 
-    const selected =
+    const selected=
         selectedChords.find(
-            chord =>
-                chord.id ===
+            c=>
+                c.id===
                 item.chordId
         );
 
 
-    if (
-        !selected
-    ) {
-
+    if(!selected)
         return;
 
-    }
 
-
-    const chip =
+    const chip=
         document.createElement(
             "div"
         );
 
-    chip.className =
+    chip.className=
         "lineChord";
 
 
-    const name =
+    const name=
         document.createElement(
             "span"
         );
 
-    name.className =
+    name.className=
         "lineChordName";
 
-    name.textContent =
+    name.textContent=
         selected.chord;
 
 
-    /* MOVE LEFT */
-
-    const left =
+    const left=
         document.createElement(
             "button"
         );
 
-    left.textContent =
-        "←";
+    left.textContent="←";
 
-    left.title =
-        "Move chord left";
+    left.disabled=
+        chordIndex===0;
 
+    left.onclick=
+        ()=>{
 
-    left.disabled =
-        chordIndex === 0;
+            if(chordIndex>0){
 
-
-    left.onclick =
-        () => {
-
-            if (
-                chordIndex > 0
-            ) {
-
-                const temp =
-                    row.chords[
-                        chordIndex - 1
-                    ];
-
-                row.chords[
-                    chordIndex - 1
-                ] =
-                    row.chords[
-                        chordIndex
-                    ];
-
-                row.chords[
-                    chordIndex
-                ] =
-                    temp;
+                [
+                    row.chords[chordIndex-1],
+                    row.chords[chordIndex]
+                ]=[
+                    row.chords[chordIndex],
+                    row.chords[chordIndex-1]
+                ];
 
                 renderSongRows();
 
@@ -2777,49 +2772,32 @@ function renderLineChord(
         };
 
 
-    /* MOVE RIGHT */
-
-    const right =
+    const right=
         document.createElement(
             "button"
         );
 
-    right.textContent =
-        "→";
+    right.textContent="→";
 
-    right.title =
-        "Move chord right";
+    right.disabled=
+        chordIndex===
+        row.chords.length-1;
 
+    right.onclick=
+        ()=>{
 
-    right.disabled =
-        chordIndex ===
-        row.chords.length - 1;
+            if(
+                chordIndex<
+                row.chords.length-1
+            ){
 
-
-    right.onclick =
-        () => {
-
-            if (
-                chordIndex <
-                row.chords.length - 1
-            ) {
-
-                const temp =
-                    row.chords[
-                        chordIndex + 1
-                    ];
-
-                row.chords[
-                    chordIndex + 1
-                ] =
-                    row.chords[
-                        chordIndex
-                    ];
-
-                row.chords[
-                    chordIndex
-                ] =
-                    temp;
+                [
+                    row.chords[chordIndex],
+                    row.chords[chordIndex+1]
+                ]=[
+                    row.chords[chordIndex+1],
+                    row.chords[chordIndex]
+                ];
 
                 renderSongRows();
 
@@ -2828,24 +2806,20 @@ function renderLineChord(
         };
 
 
-    /* MINUS */
-
-    const minus =
+    const minus=
         document.createElement(
             "button"
         );
 
-    minus.textContent =
-        "−";
+    minus.textContent="−";
 
+    minus.onclick=
+        ()=>{
 
-    minus.onclick =
-        () => {
-
-            item.beats =
+            item.beats=
                 Math.max(
                     1,
-                    item.beats - 1
+                    item.beats-1
                 );
 
             renderSongRows();
@@ -2853,33 +2827,24 @@ function renderLineChord(
         };
 
 
-    /* BEATS */
-
-    const beat =
+    const beat=
         document.createElement(
             "span"
         );
 
-    beat.className =
-        "beatNumber";
-
-    beat.textContent =
+    beat.textContent=
         item.beats;
 
 
-    /* PLUS */
-
-    const plus =
+    const plus=
         document.createElement(
             "button"
         );
 
-    plus.textContent =
-        "+";
+    plus.textContent="+";
 
-
-    plus.onclick =
-        () => {
+    plus.onclick=
+        ()=>{
 
             item.beats++;
 
@@ -2888,23 +2853,15 @@ function renderLineChord(
         };
 
 
-    /* REMOVE */
-
-    const remove =
+    const remove=
         document.createElement(
             "button"
         );
 
-    remove.textContent =
-        "×";
+    remove.textContent="×";
 
-
-    remove.title =
-        "Remove chord from this line";
-
-
-    remove.onclick =
-        () => {
+    remove.onclick=
+        ()=>{
 
             row.chords.splice(
                 chordIndex,
@@ -2916,31 +2873,13 @@ function renderLineChord(
         };
 
 
-    chip.appendChild(
-        name
-    );
-
-    chip.appendChild(
-        left
-    );
-
-    chip.appendChild(
-        right
-    );
-
-    chip.appendChild(
-        minus
-    );
-
-    chip.appendChild(
-        beat
-    );
-
-    chip.appendChild(
-        plus
-    );
-
-    chip.appendChild(
+    chip.append(
+        name,
+        left,
+        right,
+        minus,
+        beat,
+        plus,
         remove
     );
 
@@ -2953,92 +2892,63 @@ function renderLineChord(
 
 
 /* =====================================================
-   LINE CHORD PICKER
+   CHORD PICKER
 ===================================================== */
 
 function openLineChordPicker(
-    row,
-    parentElement
-) {
-
-    /*
-       Remove any existing picker.
-    */
+    row
+){
 
     document
         .querySelectorAll(
             ".lineChordPicker"
         )
         .forEach(
-            picker =>
-                picker.remove()
+            p=>p.remove()
         );
 
 
-    const picker =
+    const picker=
         document.createElement(
             "div"
         );
 
-    picker.className =
+    picker.className=
         "lineChordPicker";
 
 
-    const title =
+    const title=
         document.createElement(
             "strong"
         );
 
-    title.textContent =
+    title.textContent=
         "Choose a chord for this lyric line:";
 
 
-    const buttons =
+    const buttons=
         document.createElement(
             "div"
         );
 
-    buttons.className =
+    buttons.className=
         "pickerButtons";
 
 
-    if (
-        selectedChords.length === 0
-    ) {
-
-        buttons.innerHTML =
-            `
-            <span class="help">
-                Choose chords from the circle first.
-            </span>
-            `;
-
-    }
-
-
     selectedChords.forEach(
-        (item,index) => {
+        (item,index)=>{
 
-            const button =
+            const b=
                 document.createElement(
                     "button"
                 );
 
-            button.textContent =
-                `${index + 1}. ${item.chord}`;
+            b.textContent=
+                `${index+1}. ${item.chord}`;
 
 
-            button.onclick =
-                () => {
-
-                    /*
-                       This creates a new reference
-                       to the selected chord.
-
-                       The same selected chord can
-                       therefore be placed on many
-                       different lyric lines.
-                    */
+            b.onclick=
+                ()=>{
 
                     row.chords.push({
 
@@ -3058,30 +2968,37 @@ function openLineChordPicker(
                 };
 
 
-            buttons.appendChild(
-                button
-            );
+            buttons.appendChild(b);
 
         }
     );
 
 
-    /*
-       Also allow directly adding a new chord
-       from the current key.
-    */
+    if(
+        selectedChords.length===0
+    ){
 
-    const addNew =
+        buttons.innerHTML=
+            `
+            <span class="help">
+                Choose chords from the circle first.
+            </span>
+            `;
+
+    }
+
+
+    const direct=
         document.createElement(
             "button"
         );
 
-    addNew.textContent =
-        "+ Add Another Chord";
+    direct.textContent=
+        "+ Add New Chord";
 
 
-    addNew.onclick =
-        () => {
+    direct.onclick=
+        ()=>{
 
             picker.remove();
 
@@ -3093,22 +3010,15 @@ function openLineChordPicker(
 
 
     buttons.appendChild(
-        addNew
+        direct
     );
 
 
-    picker.appendChild(
-        title
-    );
-
-    picker.appendChild(
+    picker.append(
+        title,
         buttons
     );
 
-
-    /*
-       Insert before the song rows.
-    */
 
     songRowsElement.parentNode.insertBefore(
         picker,
@@ -3124,106 +3034,103 @@ function openLineChordPicker(
 
 function openDirectChordPicker(
     row
-) {
+){
 
-    const picker =
+    const picker=
         document.createElement(
             "div"
         );
 
-    picker.className =
+    picker.className=
         "lineChordPicker";
 
 
-    const title =
+    const title=
         document.createElement(
             "strong"
         );
 
-    title.textContent =
+    title.textContent=
         "Choose from the current key:";
 
 
-    const buttons =
+    const buttons=
         document.createElement(
             "div"
         );
 
-    buttons.className =
+    buttons.className=
         "pickerButtons";
 
 
-    keyData[
-        currentKey
-    ].diatonic.forEach(
-        chord => {
+    keyData[currentKey]
+        .diatonic
+        .forEach(
+            chord=>{
 
-            const button =
-                document.createElement(
-                    "button"
-                );
+                const b=
+                    document.createElement(
+                        "button"
+                    );
 
-            button.textContent =
-                chord;
+                b.textContent=
+                    chord;
 
 
-            button.onclick =
-                () => {
+                b.onclick=
+                    ()=>{
 
-                    const newChord = {
+                        const newChord={
 
-                        id:
-                            generateID(),
+                            id:
+                                generateID(),
 
-                        chord:
-                            chord,
+                            chord:
+                                chord,
 
-                        beats:
-                            4
+                            beats:
+                                4
+
+                        };
+
+
+                        selectedChords.push(
+                            newChord
+                        );
+
+
+                        row.chords.push({
+
+                            chordId:
+                                newChord.id,
+
+                            beats:
+                                4
+
+                        });
+
+
+                        picker.remove();
+
+                        renderSelectedChords();
+
+                        renderSuggestions();
+
+                        renderSongRows();
 
                     };
 
 
-                    selectedChords.push(
-                        newChord
-                    );
+                buttons.appendChild(
+                    b
+                );
+
+            }
+        );
 
 
-                    row.chords.push({
-
-                        chordId:
-                            newChord.id,
-
-                        beats:
-                            4
-
-                    });
-
-
-                    picker.remove();
-
-                    renderSelectedChords();
-
-                    renderSuggestions();
-
-                    renderSongRows();
-
-                };
-
-
-            buttons.appendChild(
-                button
-            );
-
-        }
-    );
-
-
-    picker.appendChild(
-        title
-    );
-
-    picker.appendChild(
+    picker.append(
+        title,
         buttons
     );
 
@@ -3237,21 +3144,16 @@ function openDirectChordPicker(
 
 
 /* =====================================================
-   TOTAL BEATS
+   BEATS
 ===================================================== */
 
-function getTotalLineBeats(
-    row
-) {
+function getTotalLineBeats(row){
 
     return row.chords.reduce(
-        (
-            total,
-            chord
-        ) =>
-            total +
+        (total,c)=>
+            total+
             Number(
-                chord.beats || 0
+                c.beats||0
             ),
         0
     );
@@ -3263,235 +3165,237 @@ function getTotalLineBeats(
    SAVE
 ===================================================== */
 
-document
-    .getElementById(
-        "saveProject"
-    )
-    .onclick =
-        () => {
+function getStorageKey(){
 
-            const project = {
+    return "ML6CMG_PROJECT_"+
+        currentUserId();
 
-                version:
-                    3,
-
-                key:
-                    currentKey,
-
-                selectedChords:
-                    selectedChords,
-
-                songRows:
-                    songRows,
-
-                savedAt:
-                    new Date()
-                        .toISOString()
-
-            };
+}
 
 
-            localStorage.setItem(
-                "ML6CMG_SONG_PROJECT",
-                JSON.stringify(
-                    project
-                )
-            );
+function currentUserId(){
+
+    return (
+        window.__ML6_USER_ID||
+        "unknown"
+    );
+
+}
 
 
-            alert(
-                "Your work has been saved."
-            );
+async function setCurrentUserId(){
 
-        };
+    const {
+        data
+    }=
+        await supabaseClient.auth
+            .getUser();
+
+
+    if(
+        data &&
+        data.user
+    ){
+
+        window.__ML6_USER_ID=
+            data.user.id;
+
+    }
+
+}
+
+
+async function saveProject(){
+
+    await setCurrentUserId();
+
+
+    const project={
+
+        version:4,
+
+        key:
+            currentKey,
+
+        selectedChords:
+            selectedChords,
+
+        songRows:
+            songRows,
+
+        savedAt:
+            new Date()
+            .toISOString()
+
+    };
+
+
+    localStorage.setItem(
+        getStorageKey(),
+        JSON.stringify(
+            project
+        )
+    );
+
+
+    alert(
+        "Your work has been saved."
+    );
+
+}
 
 
 /* =====================================================
    LOAD
 ===================================================== */
 
-document
-    .getElementById(
-        "loadProject"
-    )
-    .onclick =
-        () => {
+async function loadProject(){
 
-            const saved =
-                localStorage.getItem(
-                    "ML6CMG_SONG_PROJECT"
-                );
+    await setCurrentUserId();
 
 
-            if (
-                !saved
-            ) {
-
-                alert(
-                    "There is no saved project on this device."
-                );
-
-                return;
-
-            }
+    const saved=
+        localStorage.getItem(
+            getStorageKey()
+        );
 
 
-            try {
+    if(!saved){
 
-                const project =
-                    JSON.parse(
-                        saved
-                    );
+        alert(
+            "There is no saved project on this device."
+        );
 
+        return;
 
-                currentKey =
-                    project.key ||
-                    "C";
+    }
 
 
-                selectedChords =
-                    Array.isArray(
-                        project.selectedChords
-                    )
-                        ? project.selectedChords
-                        : [];
+    try{
+
+        const project=
+            JSON.parse(saved);
 
 
-                songRows =
-                    Array.isArray(
-                        project.songRows
-                    )
-                        ? project.songRows
-                        : [];
+        currentKey=
+            project.key||"C";
 
 
-                keySelect.value =
-                    currentKey;
+        selectedChords=
+            Array.isArray(
+                project.selectedChords
+            )
+                ?project.selectedChords
+                :[];
 
 
-                renderCircle();
+        songRows=
+            Array.isArray(
+                project.songRows
+            )
+                ?project.songRows
+                :[];
 
-                renderSelectedChords();
 
-                renderSuggestions();
-
-                renderSongRows();
+        keySelect.value=
+            currentKey;
 
 
-                alert(
-                    "Your saved work has been loaded."
-                );
+        renderCircle();
 
-            }
-            catch(error) {
+        renderSelectedChords();
 
-                console.error(
-                    error
-                );
+        renderSuggestions();
 
-                alert(
-                    "The saved project could not be loaded."
-                );
+        renderSongRows();
 
-            }
 
-        };
+        alert(
+            "Your saved work has been loaded."
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "The saved project could not be loaded."
+        );
+
+    }
+
+}
 
 
 /* =====================================================
    CLEAR
 ===================================================== */
 
-document
-    .getElementById(
-        "clearProject"
+function clearProject(){
+
+    if(
+        !confirm(
+            "Clear this song from the current device?"
+        )
     )
-    .onclick =
-        () => {
-
-            if (
-                !confirm(
-                    "Are you sure you want to clear this project?"
-                )
-            ) {
-
-                return;
-
-            }
+        return;
 
 
-            selectedChords =
-                [];
+    selectedChords=[];
 
-            songRows =
-                [];
+    songRows=[];
 
 
-            renderSelectedChords();
+    renderSelectedChords();
 
-            renderSongRows();
+    renderSuggestions();
 
-            renderSuggestions();
+    renderSongRows();
 
-        };
+}
 
 
 /* =====================================================
    PREVIEW
 ===================================================== */
 
-document
-    .getElementById(
-        "previewButton"
-    )
-    .onclick =
-        renderPreview;
+function renderPreview(){
 
-
-function renderPreview() {
-
-    const area =
+    const area=
         document.getElementById(
             "previewArea"
         );
 
 
-    let html = `
+    let html=`
 
     <div class="preview">
 
-        <h1>
-            ML6CMG Chords & Lyrics
-        </h1>
+    <h1>
+        ML6CMG Chords & Lyrics
+    </h1>
 
-        <p>
-            Key:
-            ${escapeHTML(
-                currentKey
-            )}
-            Major
-        </p>
+    <p>
+        Key: ${escapeHTML(currentKey)} Major
+    </p>
     `;
 
 
     songRows.forEach(
-        row => {
+        row=>{
 
-            if (
-                row.type ===
-                "header"
-            ) {
+            if(
+                row.type==="header"
+            ){
 
-                html += `
+                html+=`
 
                 <div class="previewSection">
 
                     <div class="previewSectionTitle">
-                        ${escapeHTML(
-                            row.text
-                        )}
+                        ${escapeHTML(row.text)}
                     </div>
-
                 `;
 
                 return;
@@ -3499,46 +3403,35 @@ function renderPreview() {
             }
 
 
-            html += `
+            html+=`
 
                 <div class="previewLine">
 
                     <div class="previewChords">
-                        ${escapeHTML(
-                            makeChordLine(
-                                row
-                            )
-                        )}
+${escapeHTML(makeChordLine(row))}
                     </div>
 
                     <div class="previewLyrics">
-                        ${escapeHTML(
-                            row.text
-                        )}
+${escapeHTML(row.text)}
                     </div>
 
                     <div class="previewStrum">
-                        ${escapeHTML(
-                            makeStrumLine(
-                                row
-                            )
-                        )}
+${escapeHTML(makeStrumLine(row))}
                     </div>
 
                 </div>
-
             `;
 
         }
     );
 
 
-    html += `
+    html+=`
     </div>
     `;
 
 
-    area.innerHTML =
+    area.innerHTML=
         html;
 
 }
@@ -3548,59 +3441,40 @@ function renderPreview() {
    CHORD LINE
 ===================================================== */
 
-function makeChordLine(
-    row
-) {
+function makeChordLine(row){
 
-    if (
-        row.chords.length === 0
-    ) {
-
+    if(
+        row.chords.length===0
+    )
         return "";
 
-    }
 
-
-    let output = "";
+    let output="";
 
 
     row.chords.forEach(
-        item => {
+        item=>{
 
-            const selected =
+            const selected=
                 selectedChords.find(
-                    chord =>
-                        chord.id ===
+                    c=>
+                        c.id===
                         item.chordId
                 );
 
 
-            if (
-                !selected
-            ) {
-
+            if(!selected)
                 return;
 
-            }
 
-
-            /*
-               The width is based on beats.
-
-               This keeps the chord positioned
-               above the corresponding lyric area
-               as closely as possible in a text
-               document.
-            */
-
-            const width =
+            const width=
                 Math.max(
                     5,
-                    item.beats * 3
+                    item.beats*3
                 );
 
 
-            output +=
+            output+=
                 selected.chord.padEnd(
                     width,
                     " "
@@ -3619,37 +3493,27 @@ function makeChordLine(
    STRUM LINE
 ===================================================== */
 
-function makeStrumLine(
-    row
-) {
+function makeStrumLine(row){
 
-    const total =
-        getTotalLineBeats(
-            row
-        );
+    const total=
+        getTotalLineBeats(row);
 
 
-    if (
-        total === 0
-    ) {
-
+    if(total===0)
         return "";
 
-    }
+
+    const arrows=[];
 
 
-    const arrows = [];
-
-
-    for (
-        let i = 0;
-        i < total;
+    for(
+        let i=0;
+        i<total;
         i++
-    ) {
+    ){
 
         arrows.push(
-            row.strum[i] ||
-            "↓"
+            row.strum[i]||"↓"
         );
 
     }
@@ -3664,17 +3528,9 @@ function makeStrumLine(
    EXPORT
 ===================================================== */
 
-document
-    .getElementById(
-        "exportButton"
-    )
-    .onclick =
-        exportDocument;
+function exportDocument(){
 
-
-function exportDocument() {
-
-    let html = `
+    let html=`
 
 <!DOCTYPE html>
 
@@ -3690,47 +3546,44 @@ ML6CMG Chords & Lyrics
 
 <style>
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    max-width: 950px;
-    margin: 40px auto;
-    padding: 30px;
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    max-width:950px;
+    margin:40px auto;
+    padding:30px;
 }
 
-h1 {
-    font-family: Georgia, serif;
+h1{
+    font-family:Georgia,serif;
 }
 
-.section {
-    margin-top: 35px;
+.section{
+    margin-top:35px;
 }
 
-.sectionTitle {
-    font-weight: bold;
-    font-size: 21px;
-    margin-bottom: 15px;
+.sectionTitle{
+    font-size:21px;
+    font-weight:bold;
+    margin-bottom:15px;
 }
 
-.line {
-    margin-bottom: 25px;
+.line{
+    margin-bottom:25px;
 }
 
-.chords {
-    font-family: monospace;
-    font-weight: bold;
-    white-space: pre;
+.chords,
+.lyrics,
+.strum{
+    font-family:monospace;
+    white-space:pre-wrap;
 }
 
-.lyrics {
-    font-family: monospace;
-    white-space: pre-wrap;
-    min-height: 20px;
+.chords{
+    font-weight:bold;
 }
 
-.strum {
-    font-family: monospace;
-    color: #555;
-    white-space: pre;
+.strum{
+    color:#555;
 }
 
 </style>
@@ -3744,97 +3597,74 @@ ML6CMG Chords & Lyrics
 </h1>
 
 <p>
-Key:
-${escapeHTML(currentKey)}
-Major
+Key: ${escapeHTML(currentKey)} Major
 </p>
 `;
 
 
-    let sectionOpen =
-        false;
+    let sectionOpen=false;
 
 
     songRows.forEach(
-        row => {
+        row=>{
 
-            if (
-                row.type ===
-                "header"
-            ) {
+            if(
+                row.type==="header"
+            ){
 
-                if (
-                    sectionOpen
-                ) {
-
-                    html +=
-                        "</div>";
-
-                }
+                if(sectionOpen)
+                    html+="</div>";
 
 
-                html += `
+                html+=`
 
                 <div class="section">
 
                     <div class="sectionTitle">
-                        ${escapeHTML(
-                            row.text
-                        )}
+                        ${escapeHTML(row.text)}
                     </div>
                 `;
 
 
-                sectionOpen =
-                    true;
-
+                sectionOpen=true;
 
                 return;
 
             }
 
 
-            if (
-                !sectionOpen
-            ) {
+            if(!sectionOpen){
 
-                html +=
+                html+=
                     `<div class="section">`;
 
-                sectionOpen =
-                    true;
+                sectionOpen=true;
 
             }
 
 
             /*
-               EXACT EXPORT ORDER:
+              EXACT EXPORT STRUCTURE:
 
-               Line 1 — chords
-               Line 2 — lyrics
-               Line 3 — strumming
+              LINE 1 = CHORDS
+              LINE 2 = LYRICS
+              LINE 3 = STRUMMING
             */
 
-            html += `
+            html+=`
 
                 <div class="line">
 
                     <div class="chords">
-${escapeHTML(
-    makeChordLine(row)
-)}
+${escapeHTML(makeChordLine(row))}
                     </div>
 
                     <div class="lyrics">
-${escapeHTML(
-    row.text
-)}
+${escapeHTML(row.text)}
                     </div>
 
                     <div class="strum">
-${escapeHTML(
-    makeStrumLine(row)
-)}
+${escapeHTML(makeStrumLine(row))}
                     </div>
 
                 </div>
@@ -3845,17 +3675,11 @@ ${escapeHTML(
     );
 
 
-    if (
-        sectionOpen
-    ) {
-
-        html +=
-            "</div>";
-
-    }
+    if(sectionOpen)
+        html+="</div>";
 
 
-    html += `
+    html+=`
 
 </body>
 
@@ -3863,7 +3687,7 @@ ${escapeHTML(
 `;
 
 
-    const blob =
+    const blob=
         new Blob(
             [html],
             {
@@ -3873,22 +3697,21 @@ ${escapeHTML(
         );
 
 
-    const url =
+    const url=
         URL.createObjectURL(
             blob
         );
 
 
-    const link =
+    const link=
         document.createElement(
             "a"
         );
 
 
-    link.href =
-        url;
+    link.href=url;
 
-    link.download =
+    link.download=
         "ML6CMG-Chords-Lyrics.doc";
 
 
@@ -3898,18 +3721,12 @@ ${escapeHTML(
 
     link.click();
 
-    document.body.removeChild(
-        link
-    );
+    link.remove();
 
 
     setTimeout(
-        () => {
-
-            URL.revokeObjectURL(
-                url
-            );
-
+        ()=>{
+            URL.revokeObjectURL(url);
         },
         1000
     );
@@ -3918,67 +3735,43 @@ ${escapeHTML(
 
 
 /* =====================================================
-   PRINT
-===================================================== */
-
-document
-    .getElementById(
-        "printButton"
-    )
-    .onclick =
-        () => {
-
-            window.print();
-
-        };
-
-
-/* =====================================================
    ESCAPE HTML
 ===================================================== */
 
-function escapeHTML(
-    value
-) {
+function escapeHTML(value){
 
     return String(
-        value ?? ""
+        value??""
     )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
 
 /* =====================================================
-   START APP
+   START AUTH CHECK
 ===================================================== */
 
-renderCircle();
-
-renderSelectedChords();
-
-renderSuggestions();
-
-renderSongRows();
+checkLogin();
 
 </script>
 
